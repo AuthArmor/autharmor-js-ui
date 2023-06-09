@@ -26,7 +26,8 @@ export interface IAuthArmorInteractiveClientConfiguration {
     defaultWebAuthnRegisterOptions?: Partial<IWebAuthnRegisterOptions>;
     defaultEmailMagicLinkRegisterOptions?: Partial<IEmailMagicLinkRegisterOptions>;
 
-    emailMagicLinkRedirectUrl?: string;
+    defaultEmailMagicLinkLogInRedirectUrl?: string;
+    defaultEmailMagicLinkRegisterRedirectUrl?: string;
 
     uiOptions?: IUiOptions;
 

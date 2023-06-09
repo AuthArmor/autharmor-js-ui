@@ -1,0 +1,93 @@
+.dialog {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: min(30rem, 80vw);
+}
+
+.title {
+    padding: .75rem 2.5rem;
+    color: var(--aa-status-title-foreground-color);
+    font-size: .875rem;
+}
+
+.logo {
+    box-sizing: border-box;
+    padding: 1rem 2.5rem;
+    height: 10rem;
+}
+
+.qrCode {
+    box-sizing: border-box;
+    border-radius: 10px;
+    margin-block-start: 1rem;
+    padding: 1rem;
+    width: 10rem;
+    height: 10rem;
+    background-color: var(--aa-qr-code-background-color);
+    color: var(--aa-qr-code-foreground-color);
+}
+
+.qrCodePrompt {
+    margin-block-start: .75rem;
+    max-width: 10rem;
+    color: var(--aa-qr-code-prompt-foreground-color);
+    font-size: .75rem;
+    font-weight: 600;
+}
+
+.appLink {
+    background-color: #f70;
+    padding: .5rem;
+}
+
+.statusMessage {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-block-start: 1.5rem;
+    padding: .75rem 2.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    transition: background-color .2s ease-out, color .2s ease-out;
+}
+
+.waitingStatusMessage {
+    background-color: var(--aa-status-message-waiting-background-color);
+    color: var(--aa-status-message-waiting-foreground-color);
+}
+
+.successStatusMessage {
+    background-color: var(--aa-status-message-success-background-color);
+    color: var(--aa-status-message-success-foreground-color);
+}
+
+.errorStatusMessage {   
+    background-color: var(--aa-status-message-error-background-color);
+    color: var(--aa-status-message-error-foreground-color);
+}
+
+.pulser {
+    margin-inline-start: .5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--aa-status-message-pulser-foreground-color);
+}
+
+.qrToggler {
+    align-self: stretch;
+    padding: .25rem 2.5rem;
+    background-color: var(--aa-qr-code-toggler-background-color);
+    color: var(--aa-qr-code-toggler-foreground-color);
+    font-size: .8rem;
+    transition: color .2s ease-out;
+}
+
+.qrToggler:hover, .qrToggler:focus-visible {
+    outline: transparent;
+    background-color: var(--aa-qr-code-toggler-hover-background-color);
+    color: var(--aa-qr-code-toggler-hover-foreground-color);
+    text-decoration: underline;
+}

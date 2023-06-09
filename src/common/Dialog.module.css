@@ -1,0 +1,62 @@
+.dialogBackdrop {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    background: var(--aa-backdrop-color);
+}
+
+.dialogBackdrop * {
+    border: none;
+    margin: 0;
+    padding: 0;
+    text-align: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    background-color: transparent;
+    color: inherit;
+}
+
+.dialogBackdrop button {
+    cursor: pointer;
+}
+
+.dialogContainer {
+    position: relative;
+}
+
+.dialogContainer>.closeButton {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    transform: translate(50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4ch;
+    height: 4ch;
+    border-radius: 2ch;
+    background-color: var(--aa-close-button-background-color);
+    color: var(--aa-close-button-foreground-color);
+    transition: background-color .2s ease-out, color .2s ease-out;
+}
+
+.dialogContainer>.closeButton:hover, .dialogContainer>.closeButton:focus-visible {
+    outline: transparent;
+    background-color: var(--aa-close-button-hover-background-color);
+    color: var(--aa-close-button-hover-foreground-color);
+}
+
+.dialogContainer>.closeButton>img {
+    width: 1.5ch;
+}
+
+.dialog {
+    border-radius: var(--aa-border-radius);
+    background-color: var(--aa-background-color);
+    color: var(--aa-foreground-color);
+    font-family: var(--aa-font-family);
+    overflow: hidden;
+}

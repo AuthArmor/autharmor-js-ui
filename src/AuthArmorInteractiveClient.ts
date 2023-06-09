@@ -304,7 +304,8 @@ export class AuthArmorInteractiveClient {
         setTitle(this.tt.statusDialog.emailMagicLink.logIn.title);
         setStatusMessage(this.tt.statusDialog.emailMagicLink.logIn.status.sending);
 
-        const finalRedirectUrl = redirectUrl ?? this.configuration.emailMagicLinkRedirectUrl;
+        const finalRedirectUrl =
+            redirectUrl ?? this.configuration.defaultEmailMagicLinkLogInRedirectUrl;
 
         if (finalRedirectUrl === undefined) {
             setStatusMessage(this.tt.statusDialog.emailMagicLink.logIn.status.unknownFailed);
@@ -602,7 +603,8 @@ export class AuthArmorInteractiveClient {
         setTitle(this.tt.statusDialog.emailMagicLink.register.title);
         setStatusMessage(this.tt.statusDialog.emailMagicLink.register.status.sending);
 
-        const finalRedirectUrl = redirectUrl ?? this.configuration.emailMagicLinkRedirectUrl;
+        const finalRedirectUrl =
+            redirectUrl ?? this.configuration.defaultEmailMagicLinkRegisterRedirectUrl;
 
         if (finalRedirectUrl === undefined) {
             setStatusMessage(this.tt.statusDialog.emailMagicLink.register.status.unknownFailed);

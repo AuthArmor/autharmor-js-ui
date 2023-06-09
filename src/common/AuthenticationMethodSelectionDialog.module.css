@@ -1,0 +1,53 @@
+.dialog {
+    padding: 2.5rem 2.75rem;
+    text-align: center;
+}
+
+.prompt {
+    color: var(--aa-method-selector-title-foreground-color);
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.methods {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 1rem;
+    margin-block-start: 2rem;
+}
+
+.methods>button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    padding: 1.5rem 2rem;
+    max-width: 25ch;
+    background-color: var(--aa-button-background-color);
+    color: var(--aa-button-foreground-color);
+    border-radius: var(--aa-control-border-radius);
+    transition: background-color .2s ease-out, color .2s ease-out;
+}
+
+.methods>button:hover {
+    background-color: var(--aa-button-hover-background-color);
+    color: var(--aa-button-hover-foreground-color);
+}
+
+.methods>button>img {
+    height: 3rem;
+}
+
+.methods>button>p:first-of-type {
+    margin-block-start: .5rem;
+    color: var(--aa-button-foreground-accent-color);
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.methods>button>p:not(:first-of-type) {
+    color: var(--aa-button-foreground-auxiliary-color);
+    font-size: .875rem;
+}

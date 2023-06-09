@@ -1,0 +1,7 @@
+import { IRegistrationSuccessResult } from "../../../client";
+
+export class RegisterEvent extends Event {
+    constructor(public readonly registrationResult: IRegistrationSuccessResult) {
+        super("register");
+    }
+}

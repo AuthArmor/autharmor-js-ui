@@ -59,6 +59,6 @@ customElement(
 
 declare global {
     interface HTMLElementTagNameMap {
-        "autharmor-form": ComponentType<IAuthArmorFormCustomElementProps>;
+        "autharmor-form": HTMLElement & IAuthArmorFormCustomElementProps;
     }
 }

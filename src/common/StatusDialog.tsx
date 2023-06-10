@@ -9,6 +9,7 @@ import { IDialogUiOptions } from "../options";
 import { AppLinkButton } from "./AppLinkButton";
 import { isMobile } from "./isMobile";
 import { ITranslationTable } from "../i18n/ITranslationTable";
+import { createAppLinkHandler } from "./createAppLinkHandler";
 
 export interface IStatusDialogProps {
     title: string;
@@ -51,47 +52,7 @@ export function StatusDialog(props: IStatusDialogProps) {
         setUserShowQrCode((s) => !s);
     };
 
-    let existingWindow: Window | null = null;
-
-    const tryCloseWindow = () => {
-        if (existingWindow !== null) {
-            existingWindow.close();
-            existingWindow = null;
-        }
-    };
-
-    const handleAppLinkClicked = (): boolean | void => {
-        const { authenticationUrl } = props;
-
-        if (authenticationUrl === null) {
-            return;
-        }
-
-        existingWindow = window.open(authenticationUrl, "_blank");
-
-        if (existingWindow === null) {
-            return;
-        }
-
-        return false;
-    };
-
-    createEffect(on(() => props.authenticationUrl, tryCloseWindow));
-
-    createEffect(
-        on(
-            () => props.statusType,
-            () => {
-                if (props.statusType !== "waiting") {
-                    tryCloseWindow();
-                }
-            }
-        )
-    );
-
-    onCleanup(() => {
-        tryCloseWindow();
-    });
+    const handleAppLinkClicked = createAppLinkHandler(() => props.authenticationUrl);
 
     return (
         <Dialog

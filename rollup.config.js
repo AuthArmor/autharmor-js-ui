@@ -6,7 +6,9 @@ import image from "@rollup/plugin-image";
 import postcss from "rollup-plugin-postcss";
 import { existsSync, rmSync } from "node:fs";
 import ts from "typescript";
-import pkg from "./package.json" assert { type: "json" };
+import requireJSON5 from "require-json5";
+
+const pkg = requireJSON5("./package.json");
 
 rmSync("dist", {
     force: true,
@@ -64,13 +66,14 @@ export default defineConfig({
                     target: ts.ScriptTarget.ESNext,
                     module: ts.ModuleKind.ESNext,
                     moduleResolution: ts.ModuleResolutionKind.Bundler,
+                    jsx: ts.JsxEmit.Preserve,
+                    jsxImportSource: "solid-js",
                     allowSyntheticDefaultImports: true,
                     esModuleInterop: true,
                     rootDir: "src",
                     declarationDir: "dist/types",
                     declaration: true,
-                    emitDeclarationOnly: true,
-                    allowJs: true
+                    emitDeclarationOnly: true
                 }).emit();
             }
         }

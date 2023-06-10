@@ -53,6 +53,13 @@ export function StatusDialog(props: IStatusDialogProps) {
 
     let existingWindow: Window | null = null;
 
+    const tryCloseWindow = () => {
+        if (existingWindow !== null) {
+            existingWindow.close();
+            existingWindow = null;
+        }
+    };
+
     const handleAppLinkClicked = (): boolean | void => {
         const { authenticationUrl } = props;
 
@@ -69,23 +76,21 @@ export function StatusDialog(props: IStatusDialogProps) {
         return false;
     };
 
+    createEffect(on(() => props.authenticationUrl, tryCloseWindow));
+
     createEffect(
         on(
-            () => props.authenticationUrl,
+            () => props.statusType,
             () => {
-                if (existingWindow !== null) {
-                    existingWindow.close();
-                    existingWindow = null;
+                if (props.statusType !== "waiting") {
+                    tryCloseWindow();
                 }
             }
         )
     );
 
     onCleanup(() => {
-        if (existingWindow !== null) {
-            existingWindow.close();
-            existingWindow = null;
-        }
+        tryCloseWindow();
     });
 
     return (

@@ -21,7 +21,7 @@ export function AppLinkButton(props: IAppLinkButtonProps) {
     };
 
     return (
-        <a class={buttonClass()} href={props.link} onClick={handleLinkClicked}>
+        <a class={buttonClass()} href={props.link} target="_blank" onClick={handleLinkClicked}>
             <img class={styles.logo} src={logo} alt="Auth Armor App" />
             <p class={styles.label}>{props.children}</p>
         </a>

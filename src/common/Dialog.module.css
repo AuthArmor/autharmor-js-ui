@@ -8,11 +8,12 @@
     background: var(--aa-backdrop-color);
 }
 
-.dialogBackdrop * {
+:where(.dialogBackdrop) * {
     border: none;
     margin: 0;
     padding: 0;
     text-align: inherit;
+    text-decoration: inherit;
     font-size: inherit;
     font-family: inherit;
     background-color: transparent;

@@ -10,6 +10,7 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                 authenticatorApp: {
                     prompt: "Sign in using the Auth Armor Authenticator app",
                     appLink: "Log in with app",
+                    appLinkLoading: "Please wait",
                     qrCodePrompt: "Scan this QR code using the app to sign in",
                     retryButton: "Try again",
                     errors: {
@@ -51,9 +52,12 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
             common: {
                 logoAltText: "Auth Armor logo",
                 qrCodePrompt: "Please scan the QR code with your device",
+                appLinkPrompt: "Please click the button to open or download the AuthArmor app",
                 appLink: "Open in app",
                 showQrCodeButton: "Scan a QR code instead",
-                hideQrCodeButton: "Hide QR code"
+                hideQrCodeButton: "Hide QR code",
+                showAppLinkButton: "Show button to open app",
+                hideAppLinkButton: "Hide app button"
             },
             authenticator: {
                 logIn: {
@@ -69,10 +73,10 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                     }
                 },
                 register: {
-                    title: "We're making a QR code to register your device",
+                    title: "We're making a link to register your device",
                     status: {
                         sending: "Please wait",
-                        pending: "Please scan the QR code with your phone",
+                        pending: "Register on device",
                         approved: "Registered",
                         timedOut: "Timed out",
                         aborted: "Aborted",

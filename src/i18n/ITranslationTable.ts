@@ -5,6 +5,7 @@ export interface ITranslationTable {
             authenticatorApp: {
                 prompt: string;
                 appLink: string;
+                appLinkLoading: string;
                 qrCodePrompt: string;
                 retryButton: string;
                 errors: {
@@ -47,8 +48,11 @@ export interface ITranslationTable {
             logoAltText: string;
             qrCodePrompt: string;
             appLink: string;
+            appLinkPrompt: string;
             showQrCodeButton: string;
             hideQrCodeButton: string;
+            showAppLinkButton: string;
+            hideAppLinkButton: string;
         };
         authenticator: {
             logIn: {

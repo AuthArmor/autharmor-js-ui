@@ -86,6 +86,7 @@ export function StatusDialog(props: IStatusDialogProps) {
                         >
                             {tt().statusDialog.common.appLink}
                         </AppLinkButton>
+                        <p class={styles.appLinkPrompt}>{tt().statusDialog.common.appLinkPrompt}</p>
                     </Match>
                 </Switch>
             </Show>
@@ -99,9 +100,18 @@ export function StatusDialog(props: IStatusDialogProps) {
 
             <Show when={allowTogglingQrCode()}>
                 <button class={styles.qrToggler} onClick={handleQrCodeToggled}>
-                    {userShowQrCode()
-                        ? tt().statusDialog.common.hideQrCodeButton
-                        : tt().statusDialog.common.showQrCodeButton}
+                    <Show
+                        when={isMobile}
+                        fallback={
+                            userShowQrCode()
+                                ? tt().statusDialog.common.hideQrCodeButton
+                                : tt().statusDialog.common.showQrCodeButton
+                        }
+                    >
+                        {userShowQrCode()
+                            ? tt().statusDialog.common.hideAppLinkButton
+                            : tt().statusDialog.common.showAppLinkButton}
+                    </Show>
                 </button>
             </Show>
         </Dialog>

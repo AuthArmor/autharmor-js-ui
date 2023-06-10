@@ -54,7 +54,10 @@ const defaultFormUiOptions: IFormUiOptions = {
     buttonBackgroundColor: "#0bdbdb",
     buttonForegroundColor: "#eeeeee",
     buttonHoverBackgroundColor: "#21f1f1",
-    buttonHoverForegroundColor: "#f7f7f7"
+    buttonHoverForegroundColor: "#f7f7f7",
+    appButtonBackgroundColor: "#121319",
+    appButtonForegroundColor: "#b0b0b0",
+    appButtonIconBackgroundColor: "#242426"
 };
 
 export function AuthenticationForm(props: IAuthenticationFormProps): JSXElement {

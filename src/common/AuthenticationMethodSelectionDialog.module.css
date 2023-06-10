@@ -1,18 +1,19 @@
 .dialog {
     padding: 2.5rem 2.75rem;
     text-align: center;
+    max-width: 80vw;
 }
 
 .prompt {
     color: var(--aa-method-selector-title-foreground-color);
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 600;
 }
 
 .methods {
     display: grid;
-    grid-auto-flow: column;
     grid-auto-columns: 1fr;
+    justify-items: center;
     gap: 1rem;
     margin-block-start: 2rem;
 }
@@ -50,4 +51,14 @@
 .methods>button>p:not(:first-of-type) {
     color: var(--aa-button-foreground-auxiliary-color);
     font-size: .875rem;
+}
+
+@media screen and (min-width: 768px) {
+    .methods {
+        grid-auto-flow: column;
+    }
+
+    .prompt {
+        font-size: 2rem;
+    }
 }

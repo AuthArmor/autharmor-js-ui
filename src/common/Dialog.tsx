@@ -47,7 +47,10 @@ const defaultDialogUiOptions: IDialogUiOptions = {
     qrCodeTogglerBackgroundColor: "#707075",
     qrCodeTogglerForegroundColor: "#c0c0c0",
     qrCodeTogglerHoverBackgroundColor: "#707075",
-    qrCodeTogglerHoverForegroundColor: "#e0e0e0"
+    qrCodeTogglerHoverForegroundColor: "#e0e0e0",
+    appButtonBackgroundColor: "#121319",
+    appButtonForegroundColor: "#b0b0b0",
+    appButtonIconBackgroundColor: "#242426"
 };
 
 export function Dialog(props: IDialogProps) {

@@ -135,29 +135,51 @@ export default function QrSignIn(props: IQrSignInProps) {
 
     return (
         <section>
-            <div class={styles.qrCodeContainer}>
-                <Show when={signInUrl() !== null}>
-                    <Switch fallback={<QrCode class={styles.qrCode} data={signInUrl()!} />}>
-                        <Match when={isMobile}>
-                            <AppLinkButton link={signInUrl()!} onClick={handleAppLinkClicked}>
-                                {tt.form.logIn.authenticatorApp.appLink}
-                            </AppLinkButton>
-                        </Match>
-                    </Switch>
-                </Show>
-                <Show when={isLoading()}>
-                    <LoadingSpinner class={styles.qrCodeSpinner} />
-                </Show>
-                <Show when={error() !== null}>
-                    <div class={styles.error}>
-                        <p>{error()!}</p>
-                        <button onClick={tryAuthentication}>
-                            {tt.form.logIn.authenticatorApp.retryButton}
-                        </button>
-                    </div>
-                </Show>
-            </div>
-            <p class={styles.qrPrompt}>{tt.form.logIn.authenticatorApp.qrCodePrompt}</p>
+            <Show
+                when={isMobile}
+                fallback={
+                    <>
+                        <div class={styles.qrCodeContainer}>
+                            <Show when={signInUrl() !== null}>
+                                <QrCode class={styles.qrCode} data={signInUrl()!} />
+                            </Show>
+                            <Show when={isLoading()}>
+                                <LoadingSpinner class={styles.qrCodeSpinner} />
+                            </Show>
+                            <Show when={error() !== null}>
+                                <div class={styles.error}>
+                                    <p>{error()!}</p>
+                                    <button onClick={tryAuthentication}>
+                                        {tt.form.logIn.authenticatorApp.retryButton}
+                                    </button>
+                                </div>
+                            </Show>
+                        </div>
+                        <p class={styles.qrPrompt}>{tt.form.logIn.authenticatorApp.qrCodePrompt}</p>
+                    </>
+                }
+            >
+                <Switch>
+                    <Match when={isLoading()}>
+                        <AppLinkButton link={null}>
+                            {tt.form.logIn.authenticatorApp.appLinkLoading}
+                        </AppLinkButton>
+                    </Match>
+                    <Match when={error() !== null}>
+                        <p class={styles.mobileError}>
+                            {error()}{" "}
+                            <button class={styles.mobileRetryButton} onClick={tryAuthentication}>
+                                {tt.form.logIn.authenticatorApp.retryButton}
+                            </button>
+                        </p>
+                    </Match>
+                    <Match when={signInUrl() !== null}>
+                        <AppLinkButton link={signInUrl()} onClick={handleAppLinkClicked}>
+                            {tt.form.logIn.authenticatorApp.appLink}
+                        </AppLinkButton>
+                    </Match>
+                </Switch>
+            </Show>
         </section>
     );
 }

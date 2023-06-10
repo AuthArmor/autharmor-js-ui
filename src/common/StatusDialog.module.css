@@ -4,6 +4,7 @@
     align-items: center;
     text-align: center;
     min-width: min(30rem, 80vw);
+    max-width: 95vw;
 }
 
 .title {
@@ -29,7 +30,8 @@
     color: var(--aa-qr-code-foreground-color);
 }
 
-.qrCodePrompt {
+.qrCodePrompt,
+.appLinkPrompt {
     margin-block-start: .75rem;
     max-width: 10rem;
     color: var(--aa-qr-code-prompt-foreground-color);
@@ -38,8 +40,7 @@
 }
 
 .appLink {
-    background-color: #f70;
-    padding: .5rem;
+    margin-block-start: 1.5rem;
 }
 
 .statusMessage {

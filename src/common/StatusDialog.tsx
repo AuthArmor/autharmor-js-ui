@@ -139,8 +139,8 @@ export function StatusDialog(props: IStatusDialogProps) {
             <Show when={allowTogglingQrCode()}>
                 <button class={styles.qrToggler} onClick={handleQrCodeToggled}>
                     {userShowQrCode()
-                        ? tt().statusDialog.common.showQrCodeButton
-                        : tt().statusDialog.common.hideQrCodeButton}
+                        ? tt().statusDialog.common.hideQrCodeButton
+                        : tt().statusDialog.common.showQrCodeButton}
                 </button>
             </Show>
         </Dialog>

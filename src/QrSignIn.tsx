@@ -4,7 +4,7 @@ import {
     AuthenticationResult,
     ApiError
 } from "autharmor-sdk";
-import { Match, Show, Switch, createEffect, createSignal, on, onCleanup, onMount } from "solid-js";
+import { Match, Show, Switch, createSignal, on, onCleanup, onMount } from "solid-js";
 import { QrCode } from "./common/QrCode";
 import { useClient } from "./context/useClient";
 import styles from "./Form.module.css";
@@ -13,6 +13,7 @@ import { isMobile } from "./common/isMobile";
 import { AppLinkButton } from "./common/AppLinkButton";
 import { useTranslationTable } from "./context/useTranslationTable";
 import { useDocumentVisibility } from "./common/useDocumentVisibility";
+import { createAppLinkHandler } from "./common/createAppLinkHandler";
 
 export interface IQrSignInProps {
     onLogIn: (authenticationResult: IAuthenticationSuccessResult) => void;
@@ -122,40 +123,13 @@ export default function QrSignIn(props: IQrSignInProps) {
         props.onLogIn(authenticationResult);
     };
 
-    let existingWindow: Window | null = null;
-
-    const tryCloseWindow = () => {
-        if (existingWindow !== null) {
-            existingWindow.close();
-            existingWindow = null;
-        }
-    };
-
-    const handleAppLinkClicked = (): boolean | void => {
-        const authenticationUrl = signInUrl();
-
-        if (authenticationUrl === null) {
-            return;
-        }
-
-        existingWindow = window.open(authenticationUrl, "_blank");
-
-        if (existingWindow === null) {
-            return;
-        }
-
-        return false;
-    };
-
-    createEffect(on(signInUrl, tryCloseWindow));
+    const handleAppLinkClicked = createAppLinkHandler(signInUrl);
 
     onMount(() => {
         tryAuthentication();
     });
 
     onCleanup(() => {
-        tryCloseWindow();
-
         abortController.abort();
     });
 

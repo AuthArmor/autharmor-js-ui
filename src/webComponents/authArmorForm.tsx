@@ -3,7 +3,7 @@ import {
     IAuthenticationSuccessResult,
     IRegistrationSuccessResult
 } from "autharmor-sdk";
-import { ComponentType, customElement, noShadowDOM } from "solid-element";
+import { customElement, noShadowDOM } from "solid-element";
 import { LogInEvent } from "./events/LogInEvent";
 import { RegisterEvent } from "./events/RegisterEvent";
 import { AuthenticationForm, AuthenticationMode } from "../AuthenticationForm";

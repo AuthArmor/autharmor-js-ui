@@ -1,3 +1,31 @@
-.logo {}
+.button {
+    display: inline-flex;
+    border-radius: var(--aa-control-border-radius);
+    overflow: hidden;
+    background-color: var(--aa-app-button-background-color);
+    color: var(--aa-app-button-foreground-color);
+}
 
-.label {}
+.label {
+    padding: .5rem 1.5rem;
+}
+
+.logoContainer {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem;
+    background-color: var(--aa-app-button-icon-background-color);
+}
+
+.logo {
+    width: 1.5rem;
+    height: auto;
+}
+
+.label {
+    align-self: center;
+    font-size: 1rem;
+    font-weight: bold;
+}

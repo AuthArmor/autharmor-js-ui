@@ -26,6 +26,9 @@ export interface IFormUiOptions {
     buttonForegroundColor?: string;
     buttonHoverBackgroundColor?: string;
     buttonHoverForegroundColor?: string;
+    appButtonBackgroundColor?: string;
+    appButtonForegroundColor?: string;
+    appButtonIconBackgroundColor?: string;
 }
 
 export interface IDialogUiOptions {
@@ -44,6 +47,9 @@ export interface IDialogUiOptions {
     buttonForegroundAuxiliaryColor?: string;
     buttonHoverBackgroundColor?: string;
     buttonHoverForegroundColor?: string;
+    appButtonBackgroundColor?: string;
+    appButtonForegroundColor?: string;
+    appButtonIconBackgroundColor?: string;
     methodSelectorTitleForegroundColor?: string;
     statusTitleForegroundColor?: string;
     statusMessageWaitingBackgroundColor?: string;

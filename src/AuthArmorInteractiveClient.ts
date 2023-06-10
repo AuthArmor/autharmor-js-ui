@@ -198,6 +198,7 @@ export class AuthArmorInteractiveClient {
 
             setStatusMessage(failureMessage);
             setStatusType("error");
+            setAuthenticationUrl(null);
         }
 
         abortSignal?.removeEventListener("abort", abortHandler);
@@ -426,8 +427,8 @@ export class AuthArmorInteractiveClient {
             abortController
         );
 
-        setTitle("We're making a QR code to register your device");
-        setStatusMessage("Please wait");
+        setTitle(this.tt.statusDialog.authenticator.register.title);
+        setStatusMessage(this.tt.statusDialog.authenticator.register.status.sending);
         setAlwaysShowQrCode(true);
 
         let qrResult: QrCodeResult<RegistrationResult>;
@@ -456,7 +457,7 @@ export class AuthArmorInteractiveClient {
             throw error;
         }
 
-        setStatusMessage(this.tt.statusDialog.authenticator.register.title);
+        setStatusMessage(this.tt.statusDialog.authenticator.register.status.pending);
         setAuthenticationUrl(qrResult.qrCodeUrl);
 
         let registrationResult: RegistrationResult;

@@ -3,11 +3,11 @@ import styles from "./AppLinkButton.module.css";
 import logo from "../assets/logo.png";
 
 export interface IAppLinkButtonProps {
-    link: string;
+    link: string | null;
     children: JSXElement;
     class?: string;
 
-    onClick?: () => boolean | void;
+    onClick?: (link: string) => boolean | void;
 }
 
 export function AppLinkButton(props: IAppLinkButtonProps) {
@@ -15,13 +15,20 @@ export function AppLinkButton(props: IAppLinkButtonProps) {
         `${styles.button}${props.class === undefined ? "" : ` ${props.class}`}`;
 
     const handleLinkClicked = (event: Event) => {
-        if (props.onClick?.() === false) {
+        const { link } = props;
+
+        if (link === null || props.onClick?.(link) === false) {
             event.preventDefault();
         }
     };
 
     return (
-        <a class={buttonClass()} href={props.link} target="_blank" onClick={handleLinkClicked}>
+        <a
+            class={buttonClass()}
+            href={props.link ?? undefined}
+            target="_blank"
+            onClick={handleLinkClicked}
+        >
             <img class={styles.logo} src={logo} alt="Auth Armor App" />
             <p class={styles.label}>{props.children}</p>
         </a>

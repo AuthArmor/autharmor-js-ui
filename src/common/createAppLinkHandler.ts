@@ -1,6 +1,8 @@
 import { Accessor, on, onCleanup } from "solid-js";
 
-export function createAppLinkHandler(appLinkAccessor: Accessor<string | null>): () => boolean | void {
+export function createAppLinkHandler(
+    appLinkAccessor: Accessor<string | null>
+): (appLink: string) => boolean | void {
     let existingWindow: Window | null = null;
 
     const tryCloseWindow = () => {
@@ -13,13 +15,7 @@ export function createAppLinkHandler(appLinkAccessor: Accessor<string | null>): 
     on(appLinkAccessor, tryCloseWindow);
     onCleanup(tryCloseWindow);
 
-    const appLinkHandler = (): boolean | void => {
-        const appLink = appLinkAccessor();
-
-        if (appLink === null) {
-            return;
-        }
-
+    const appLinkHandler = (appLink: string): boolean | void => {
         tryCloseWindow();
 
         existingWindow = window.open(appLink, "_blank");
@@ -29,7 +25,7 @@ export function createAppLinkHandler(appLinkAccessor: Accessor<string | null>): 
         }
 
         return false;
-    }
+    };
 
     return appLinkHandler;
 }

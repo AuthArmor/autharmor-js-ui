@@ -4,7 +4,7 @@ import {
     AuthenticationResult,
     ApiError
 } from "autharmor-sdk";
-import { Match, Show, Switch, createSignal, onCleanup, onMount } from "solid-js";
+import { Match, Show, Switch, createEffect, createSignal, on, onCleanup, onMount } from "solid-js";
 import { QrCode } from "./common/QrCode";
 import { useClient } from "./context/useClient";
 import styles from "./Form.module.css";
@@ -25,23 +25,11 @@ export default function QrSignIn(props: IQrSignInProps) {
     const abortController = new AbortController();
 
     const [signInUrl, setSignInUrl] = createSignal<string | null>(null);
-    // const [remainingTimeSeconds, setRemainingTimeSeconds] = createSignal<number | null>(null);
 
     const [isLoading, setIsLoading] = createSignal(false);
     const [error, setError] = createSignal<string | null>(null);
 
-    // let interval: unknown | null = null;
-
-    // const ensureIntervalIsCleared = () => {
-    //     if (interval !== null) {
-    //         clearInterval(interval as any);
-    //         interval = null;
-    //     }
-    // };
-
     const tryAuthentication = async () => {
-        // ensureIntervalIsCleared();
-
         setIsLoading(true);
         setError(null);
 
@@ -68,12 +56,7 @@ export default function QrSignIn(props: IQrSignInProps) {
         }
 
         setSignInUrl(qrResult.qrCodeUrl);
-        // setRemainingTimeSeconds(60);
         setIsLoading(false);
-
-        // interval = setInterval(() => {
-        //     setRemainingTimeSeconds((rts) => (rts === null ? null : rts - 1));
-        // }, 1000);
 
         let authenticationResult: AuthenticationResult;
 
@@ -94,10 +77,7 @@ export default function QrSignIn(props: IQrSignInProps) {
             return;
         }
 
-        // ensureIntervalIsCleared();
-
         setSignInUrl(null);
-        // setRemainingTimeSeconds(null);
 
         if (authenticationResult.succeeded) {
             handleAuthenticationSuccess(authenticationResult);
@@ -125,19 +105,42 @@ export default function QrSignIn(props: IQrSignInProps) {
         props.onLogIn(authenticationResult);
     };
 
+    let existingWindow: Window | null = null;
+
+    const tryCloseWindow = () => {
+        if (existingWindow !== null) {
+            existingWindow.close();
+            existingWindow = null;
+        }
+    };
+
+    const handleAppLinkClicked = (): boolean | void => {
+        const authenticationUrl = signInUrl();
+
+        if (authenticationUrl === null) {
+            return;
+        }
+
+        existingWindow = window.open(authenticationUrl, "_blank");
+
+        if (existingWindow === null) {
+            return;
+        }
+
+        return false;
+    };
+
+    createEffect(on(signInUrl, tryCloseWindow));
+
     onMount(() => {
         tryAuthentication();
     });
 
     onCleanup(() => {
-        // ensureIntervalIsCleared();
+        tryCloseWindow();
 
         abortController.abort();
     });
-
-    // const remainingTimeSecondsComponent = () => (remainingTimeSeconds() ?? 0) % 60;
-    // const remainingTimeMinutesComponent = () =>
-    //     ((remainingTimeSeconds() ?? 0) - remainingTimeSecondsComponent()) / 60;
 
     return (
         <section>
@@ -145,7 +148,7 @@ export default function QrSignIn(props: IQrSignInProps) {
                 <Show when={signInUrl() !== null}>
                     <Switch fallback={<QrCode class={styles.qrCode} data={signInUrl()!} />}>
                         <Match when={isMobile}>
-                            <AppLinkButton link={signInUrl()!}>
+                            <AppLinkButton link={signInUrl()!} onClick={handleAppLinkClicked}>
                                 {tt.form.logIn.authenticatorApp.appLink}
                             </AppLinkButton>
                         </Match>

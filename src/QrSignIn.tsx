@@ -12,6 +12,7 @@ import { LoadingSpinner } from "./common/LoadingSpinner";
 import { isMobile } from "./common/isMobile";
 import { AppLinkButton } from "./common/AppLinkButton";
 import { useTranslationTable } from "./context/useTranslationTable";
+import { useDocumentVisibility } from "./common/useDocumentVisibility";
 
 export interface IQrSignInProps {
     onLogIn: (authenticationResult: IAuthenticationSuccessResult) => void;
@@ -28,6 +29,17 @@ export default function QrSignIn(props: IQrSignInProps) {
 
     const [isLoading, setIsLoading] = createSignal(false);
     const [error, setError] = createSignal<string | null>(null);
+
+    const isDocumentVisible = useDocumentVisibility();
+
+    let retryPendingAfterVisibility = false;
+
+    on(isDocumentVisible, () => {
+        if (isDocumentVisible() && retryPendingAfterVisibility) {
+            retryPendingAfterVisibility = false;
+            tryAuthentication();
+        }
+    });
 
     const tryAuthentication = async () => {
         setIsLoading(true);
@@ -84,7 +96,12 @@ export default function QrSignIn(props: IQrSignInProps) {
         } else {
             switch (authenticationResult.failureReason) {
                 case "timedOut": {
-                    await tryAuthentication();
+                    if (isDocumentVisible()) {
+                        await tryAuthentication();
+                    } else {
+                        retryPendingAfterVisibility = true;
+                    }
+
                     break;
                 }
 

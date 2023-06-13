@@ -132,7 +132,7 @@
 
 .form .qrCodeContainer>.error>button,
 .form .mobileAppContainer>.error>button {
-    border-radius: var(--aa-border-radius);
+    border-radius: var(--aa-control-border-radius);
     padding: .25rem 1rem;
     background-color: var(--aa-button-background-color);
     color: var(--aa-button-foreground-color);

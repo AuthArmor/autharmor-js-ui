@@ -25,9 +25,11 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                     logInButton: "Log in",
                     errors: {
                         usernameNotProvided: "Username must be specified.",
+                        noMethodsAvailable: "No authentication methods are available",
                         declined: "Request declined",
                         timedOut: "Timed out",
                         aborted: "Aborted",
+                        internalFailed: "Communication error, please check console",
                         unknownFailed: "Failed"
                     }
                 }
@@ -41,6 +43,7 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                         usernameNotProvided: "Username must be specified.",
                         timedOut: "Timed out",
                         aborted: "Aborted",
+                        internalFailed: "Communication error, please check console",
                         unknownFailed: "Failed"
                     }
                 }

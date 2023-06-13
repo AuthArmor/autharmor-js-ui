@@ -15,6 +15,7 @@ import { createAuthStatusDialog } from "./dialogs/createAuthStatusDialog";
 import { selectAuthenticationMethod } from "./dialogs/selectAuthenticationMethod";
 import { IAuthArmorInteractiveClientConfiguration } from "./config/IAuthArmorInteractiveClientConfiguration";
 import { ITranslationTable, defaultTranslationTable } from "./i18n";
+import { NoAuthenticationMethodsAvailableError } from "./errors";
 
 /**
  * The client for interacting with AuthArmor's client-side SDK providing a user-facing interface.
@@ -82,13 +83,28 @@ export class AuthArmorInteractiveClient {
         username: string,
         abortSignal?: AbortSignal
     ): Promise<keyof IAvailableAuthenticationMethods> {
-        const methods: IAvailableAuthenticationMethods =
+        let methods: IAvailableAuthenticationMethods =
             await this.client.getAvailableLogInMethodsAsync(username);
+
+        if (this.configuration.permittedMethods !== undefined) {
+            const permittedMethods = {
+                authenticator: false,
+                emailMagicLink: false,
+                webAuthn: false,
+                ...this.configuration.permittedMethods
+            };
+
+            methods = {
+                authenticator: permittedMethods.authenticator && methods.authenticator,
+                emailMagicLink: permittedMethods.emailMagicLink && methods.emailMagicLink,
+                webAuthn: permittedMethods.webAuthn && methods.webAuthn
+            };
+        }
 
         const methodCount = Object.values(methods).filter((m) => m).length;
 
         if (methodCount === 0) {
-            throw new Error("No methods are available for this user.");
+            throw new NoAuthenticationMethodsAvailableError();
         }
 
         const selectedMethod =
@@ -384,9 +400,14 @@ export class AuthArmorInteractiveClient {
         abortSignal?: AbortSignal
     ): Promise<keyof IAvailableAuthenticationMethods> {
         const methods: IAvailableAuthenticationMethods = {
-            authenticator: true,
-            emailMagicLink: true,
-            webAuthn: true
+            authenticator: false,
+            emailMagicLink: false,
+            webAuthn: false,
+            ...(this.configuration.permittedMethods ?? {
+                authenticator: true,
+                emailMagicLink: true,
+                webAuthn: true
+            })
         };
 
         const selectedMethod = await selectAuthenticationMethod(

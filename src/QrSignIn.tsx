@@ -27,6 +27,7 @@ export default function QrSignIn(props: IQrSignInProps) {
     const abortController = new AbortController();
 
     const [signInUrl, setSignInUrl] = createSignal<string | null>(null);
+    const [verificationCode, setVerificationCode] = createSignal<string | null>(null);
 
     const [isLoading, setIsLoading] = createSignal(false);
     const [isAuthenticated, setIsAuthenticated] = createSignal(false);
@@ -54,7 +55,13 @@ export default function QrSignIn(props: IQrSignInProps) {
                 {
                     ...interactiveConfiguration().defaultLogInOptions,
                     ...interactiveConfiguration().defaultAuthenticatorLogInOptions,
-                    ...interactiveConfiguration().defaultAuthenticatorUsernamelessLogInOptions
+                    ...interactiveConfiguration().defaultAuthenticatorUsernamelessLogInOptions,
+                    ...(isMobile
+                        ? {
+                              // Visual verify serves no purpose on mobile and is more difficult for the user because they then need to remember the code.
+                              useVisualVerify: false
+                          }
+                        : {})
                 },
                 abortController.signal
             );
@@ -73,6 +80,7 @@ export default function QrSignIn(props: IQrSignInProps) {
         }
 
         setSignInUrl(qrResult.qrCodeUrl);
+        setVerificationCode(qrResult.verificationCode);
         setIsLoading(false);
 
         let authenticationResult: AuthenticationResult;
@@ -169,6 +177,13 @@ export default function QrSignIn(props: IQrSignInProps) {
                         <p class={styles.qrPrompt}>
                             {tt().form.logIn.authenticatorApp.qrCodePrompt}
                         </p>
+                        <Show when={verificationCode() !== null}>
+                            <p class={styles.verificationCodeMessage}>
+                                {tt().form.logIn.authenticatorApp.verificationCodeMessage(
+                                    verificationCode()!
+                                )}
+                            </p>
+                        </Show>
                     </>
                 }
             >

@@ -10,8 +10,7 @@ import {
     IWebAuthnRegisterOptions,
     IEmailMagicLinkRegisterOptions
 } from "autharmor-sdk";
-import { IUiOptions } from "../options";
-import { IInternationalizationOptions } from "../options/IInternationalizationOptions";
+import { IInternationalizationOptions, IUiOptions } from "../options";
 
 export interface IAuthArmorInteractiveClientConfiguration {
     permittedMethods?: Partial<IAvailableAuthenticationMethods>;

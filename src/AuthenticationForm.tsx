@@ -10,7 +10,7 @@ import QrSignIn from "./QrSignIn";
 import { RegistrationForm } from "./RegistrationForm";
 import styles from "./Form.module.css";
 import { IAuthArmorInteractiveClientConfiguration } from "./config";
-import { IFormUiOptions } from "./options";
+import { defaultUiOptions } from "./options";
 import { getUiOptionsStyle } from "./common/getUiOptionsStyle";
 import { TranslationTableProvider } from "./context/TranslationTableProvider";
 import { defaultTranslationTable } from "./i18n";
@@ -31,36 +31,6 @@ export interface IAuthenticationFormProps {
     onLogIn: (authenticationResult: IAuthenticationSuccessResult) => void;
     onRegister: (registrationResult: IRegistrationSuccessResult) => void;
 }
-
-const defaultFormUiOptions: IFormUiOptions = {
-    borderRadius: ".625rem",
-    controlBorderRadius: ".375rem",
-    fontFamily: "'Segoe UI', 'Helvetica Neue', 'Open Sans', sans-serif",
-    backgroundColor: "#2a2d35",
-    methodPromptForegroundColor: "#eeeeee",
-    methodInstructionsForegroundColor: "#dddddd",
-    methodSeparatorForegroundColor: "#bbbbbb",
-    errorForegroundColor: "#e00000",
-    tabBackgroundColor: "#363a46",
-    tabForegroundColor: "#ffffff",
-    tabHoverBackgroundColor: "#535867",
-    tabHoverForegroundColor: "#ffffff",
-    tabActiveBackgroundColor: "#434857",
-    tabActiveForegroundColor: "#ffffff",
-    qrCodeBackgroundColor: "#202020",
-    qrCodeForegroundColor: "#2cb2b5",
-    qrCodeSuccessForegroundColor: "#40e070",
-    qrCodeErrorForegroundColor: "#e00000",
-    inputBackgroundColor: "#212329",
-    inputForegroundColor: "#ffffff",
-    buttonBackgroundColor: "#0bdbdb",
-    buttonForegroundColor: "#eeeeee",
-    buttonHoverBackgroundColor: "#21f1f1",
-    buttonHoverForegroundColor: "#f7f7f7",
-    appButtonBackgroundColor: "#121319",
-    appButtonForegroundColor: "#b0b0b0",
-    appButtonIconBackgroundColor: "#242426"
-};
 
 export function AuthenticationForm(props: IAuthenticationFormProps): JSXElement {
     const [authenticationMode, setAuthenticationMode] = createSignal<AuthenticationMode>(
@@ -84,7 +54,7 @@ export function AuthenticationForm(props: IAuthenticationFormProps): JSXElement 
     };
 
     const uiOptionsStyle = createMemo(() =>
-        getUiOptionsStyle(defaultFormUiOptions, props.interactiveConfig.uiOptions?.form)
+        getUiOptionsStyle(defaultUiOptions.form!, props.interactiveConfig.uiOptions?.form)
     );
 
     const tt = () =>

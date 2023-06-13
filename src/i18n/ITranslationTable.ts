@@ -7,6 +7,7 @@ export interface ITranslationTable {
                 appLink: string;
                 appLinkLoading: string;
                 qrCodePrompt: string;
+                verificationCodeMessage: (verificationCode: string) => string;
                 successMessage: string;
                 retryButton: string;
                 errors: {

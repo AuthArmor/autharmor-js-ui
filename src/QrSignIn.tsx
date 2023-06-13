@@ -4,7 +4,7 @@ import {
     AuthenticationResult,
     ApiError
 } from "autharmor-sdk";
-import { Match, Show, Switch, createSignal, on, onCleanup, onMount } from "solid-js";
+import { Match, Show, Switch, createEffect, createSignal, on, onCleanup, onMount } from "solid-js";
 import { QrCode } from "./common/QrCode";
 import { useClient } from "./context/useClient";
 import styles from "./Form.module.css";
@@ -37,12 +37,12 @@ export default function QrSignIn(props: IQrSignInProps) {
 
     let retryPendingAfterVisibility = false;
 
-    on(isDocumentVisible, () => {
+    createEffect(on(isDocumentVisible, () => {
         if (isDocumentVisible() && retryPendingAfterVisibility) {
             retryPendingAfterVisibility = false;
             tryAuthentication();
         }
-    });
+    }));
 
     const tryAuthentication = async () => {
         setIsLoading(true);

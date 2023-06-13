@@ -3,7 +3,7 @@ import {
     QrCodeResult,
     AuthenticationResult,
     ApiError
-} from "autharmor-sdk";
+} from "@autharmor/sdk";
 import { Match, Show, Switch, createEffect, createSignal, on, onCleanup, onMount } from "solid-js";
 import { QrCode } from "./common/QrCode";
 import { useClient } from "./context/useClient";

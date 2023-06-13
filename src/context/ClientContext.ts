@@ -1,4 +1,4 @@
-import { AuthArmorClient } from "autharmor-sdk";
+import { AuthArmorClient } from "@autharmor/sdk";
 import { Accessor, createContext } from "solid-js";
 import { IAuthArmorInteractiveClientConfiguration } from "../config";
 import { AuthArmorInteractiveClient } from "../AuthArmorInteractiveClient";

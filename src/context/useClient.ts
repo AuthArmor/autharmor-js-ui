@@ -1,4 +1,4 @@
-import { AuthArmorClient } from "autharmor-sdk";
+import { AuthArmorClient } from "@autharmor/sdk";
 import { Accessor, useContext } from "solid-js";
 import {
     ClientContext,

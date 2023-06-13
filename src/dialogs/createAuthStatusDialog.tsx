@@ -19,6 +19,7 @@ export function createAuthStatusDialog(
         setStatusType: Setter<DialogStatusType>;
         setAuthenticationUrl: Setter<string | null>;
         setAlwaysShowQrCode: Setter<boolean>;
+        setVerificationCode: Setter<string | null>;
     }
 ] {
     abortSignal?.throwIfAborted();
@@ -47,6 +48,7 @@ export function createAuthStatusDialog(
     const [statusType, setStatusType] = createSignal<DialogStatusType>("waiting");
     const [authenticationUrl, setAuthenticationUrl] = createSignal<string | null>(null);
     const [alwaysShowQrCode, setAlwaysShowQrCode] = createSignal<boolean>(false);
+    const [verificationCode, setVerificationCode] = createSignal<string | null>(null);
 
     const dispose = render(
         () => (
@@ -56,6 +58,7 @@ export function createAuthStatusDialog(
                 statusType={statusType()}
                 authenticationUrl={authenticationUrl()}
                 alwaysShowQrCode={alwaysShowQrCode()}
+                verificationCode={verificationCode()}
                 translationTable={translationTable}
                 uiOptions={uiOptions}
                 onClose={handleDismissed}
@@ -66,6 +69,13 @@ export function createAuthStatusDialog(
 
     return [
         {},
-        { setTitle, setStatusMessage, setStatusType, setAuthenticationUrl, setAlwaysShowQrCode }
+        {
+            setTitle,
+            setStatusMessage,
+            setStatusType,
+            setAuthenticationUrl,
+            setAlwaysShowQrCode,
+            setVerificationCode
+        }
     ];
 }

@@ -20,6 +20,8 @@ export interface IStatusDialogProps {
     authenticationUrl: string | null;
     alwaysShowQrCode?: boolean;
 
+    verificationCode: string | null;
+
     translationTable: ITranslationTable;
     uiOptions: IDialogUiOptions;
 
@@ -89,6 +91,13 @@ export function StatusDialog(props: IStatusDialogProps) {
                         <p class={styles.appLinkPrompt}>{tt().statusDialog.common.appLinkPrompt}</p>
                     </Match>
                 </Switch>
+            </Show>
+
+            <Show when={props.verificationCode !== null}>
+                <div class={styles.verificationCodeContainer}>
+                    <p class={styles.verificationCode}>{props.verificationCode}</p>
+                    <p class={styles.verificationCodePrompt}>Use this code to verify the request</p>
+                </div>
             </Show>
 
             <div class={statusMessageClass()}>

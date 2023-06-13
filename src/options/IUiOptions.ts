@@ -54,6 +54,9 @@ export interface IDialogUiOptions {
     appButtonIconBackgroundColor?: string;
     methodSelectorTitleForegroundColor?: string;
     statusTitleForegroundColor?: string;
+    verificationCodeBackgroundColor?: string;
+    verificationCodeForegroundColor?: string;
+    verificationCodePromptForegroundColor?: string;
     statusMessageWaitingBackgroundColor?: string;
     statusMessageWaitingForegroundColor?: string;
     statusMessageSuccessBackgroundColor?: string;

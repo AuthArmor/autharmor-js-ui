@@ -140,13 +140,15 @@ export class AuthArmorInteractiveClient {
         const abortHandler = (reason: any) => abortController.abort(reason);
         abortSignal?.addEventListener("abort", abortHandler);
 
-        const [_, { setTitle, setStatusMessage, setStatusType, setAuthenticationUrl }] =
-            createAuthStatusDialog(
-                this.tt,
-                this.configuration.uiOptions?.dialog,
-                abortController.signal,
-                abortController
-            );
+        const [
+            _,
+            { setTitle, setStatusMessage, setStatusType, setAuthenticationUrl, setVerificationCode }
+        ] = createAuthStatusDialog(
+            this.tt,
+            this.configuration.uiOptions?.dialog,
+            abortController.signal,
+            abortController
+        );
 
         setTitle(this.tt.statusDialog.authenticator.logIn.title);
         setStatusMessage(this.tt.statusDialog.authenticator.logIn.status.sending);
@@ -159,6 +161,7 @@ export class AuthArmorInteractiveClient {
                 {
                     ...this.configuration.defaultLogInOptions,
                     ...this.configuration.defaultAuthenticatorLogInOptions,
+                    ...this.configuration.defaultAuthenticatorUserSpecificLogInOptions,
                     ...options
                 },
                 abortController.signal
@@ -179,6 +182,7 @@ export class AuthArmorInteractiveClient {
 
         setStatusMessage(this.tt.statusDialog.authenticator.logIn.status.pending);
         setAuthenticationUrl(qrResult.qrCodeUrl);
+        setVerificationCode(qrResult.verificationCode);
 
         let authenticationResult: AuthenticationResult;
 
@@ -189,6 +193,7 @@ export class AuthArmorInteractiveClient {
 
             setStatusType("error");
             setAuthenticationUrl(null);
+            setVerificationCode(null);
 
             if (error instanceof ApiError) {
                 setStatusMessage(error.message);
@@ -215,6 +220,7 @@ export class AuthArmorInteractiveClient {
             setStatusMessage(failureMessage);
             setStatusType("error");
             setAuthenticationUrl(null);
+            setVerificationCode(null);
         }
 
         abortSignal?.removeEventListener("abort", abortHandler);
@@ -440,7 +446,14 @@ export class AuthArmorInteractiveClient {
 
         const [
             _,
-            { setTitle, setStatusMessage, setStatusType, setAuthenticationUrl, setAlwaysShowQrCode }
+            {
+                setTitle,
+                setStatusMessage,
+                setStatusType,
+                setAuthenticationUrl,
+                setAlwaysShowQrCode,
+                setVerificationCode
+            }
         ] = createAuthStatusDialog(
             this.tt,
             this.configuration.uiOptions?.dialog,
@@ -480,6 +493,7 @@ export class AuthArmorInteractiveClient {
 
         setStatusMessage(this.tt.statusDialog.authenticator.register.status.pending);
         setAuthenticationUrl(qrResult.qrCodeUrl);
+        setVerificationCode(qrResult.verificationCode);
 
         let registrationResult: RegistrationResult;
 
@@ -490,6 +504,7 @@ export class AuthArmorInteractiveClient {
 
             setStatusType("error");
             setAuthenticationUrl(null);
+            setVerificationCode(null);
 
             if (error instanceof ApiError) {
                 setStatusMessage(error.message);
@@ -514,6 +529,8 @@ export class AuthArmorInteractiveClient {
 
             setStatusMessage(failureMessage);
             setStatusType("error");
+            setAuthenticationUrl(null);
+            setVerificationCode(null);
         }
 
         abortSignal?.removeEventListener("abort", abortHandler);

@@ -43,6 +43,31 @@
     margin-block-start: 1.5rem;
 }
 
+.verificationCodeContainer {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    padding: 1.5rem 2.5rem;
+}
+
+.verificationCode {
+    display: inline-block;
+    border-radius: var(--aa-control-border-radius);
+    padding: .25rem .5rem;
+    background-color: var(--aa-verification-code-background-color);
+    color: var(--aa-verification-code-foreground-color);
+    font-size: .875rem;
+    font-weight: 800;
+}
+
+.verificationCodePrompt {
+    color: var(--aa-verification-code-prompt-foreground-color);
+    font-size: .875rem;
+    font-weight: 600;
+}
+
 .statusMessage {
     align-self: stretch;
     display: flex;

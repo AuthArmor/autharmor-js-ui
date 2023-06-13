@@ -1,4 +1,4 @@
-import { IAuthenticationSuccessResult } from "autharmor-sdk";
+import { IAuthenticationSuccessResult } from "@autharmor/sdk";
 
 export class LogInEvent extends Event {
     constructor(public readonly authenticationResult: IAuthenticationSuccessResult) {

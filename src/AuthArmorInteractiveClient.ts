@@ -10,7 +10,7 @@ import {
     IAuthenticatorRegisterOptions,
     IWebAuthnRegisterOptions,
     IEmailMagicLinkRegisterOptions
-} from "autharmor-sdk";
+} from "@autharmor/sdk";
 import { createAuthStatusDialog } from "./dialogs/createAuthStatusDialog";
 import { selectAuthenticationMethod } from "./dialogs/selectAuthenticationMethod";
 import { IAuthArmorInteractiveClientConfiguration } from "./config/IAuthArmorInteractiveClientConfiguration";

@@ -2,7 +2,7 @@ import {
     AuthArmorClient,
     IAuthenticationSuccessResult,
     IRegistrationSuccessResult
-} from "autharmor-sdk";
+} from "@autharmor/sdk";
 import { customElement, noShadowDOM } from "solid-element";
 import { LogInEvent } from "./events/LogInEvent";
 import { RegisterEvent } from "./events/RegisterEvent";

@@ -21,10 +21,10 @@ export function ClientProvider(props: IClientProviderProps): JSXElement {
     );
 
     return (
-        <ClientContext.Provider value={props.client}>
-            <InteractiveClientContext.Provider value={interactiveClient()}>
+        <ClientContext.Provider value={() => props.client}>
+            <InteractiveClientContext.Provider value={interactiveClient}>
                 <InteractiveConfigurationContext.Provider
-                    value={props.interactiveConfiguration}
+                    value={() => props.interactiveConfiguration}
                 >
                     {props.children}
                 </InteractiveConfigurationContext.Provider>

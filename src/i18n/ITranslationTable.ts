@@ -7,9 +7,11 @@ export interface ITranslationTable {
                 appLink: string;
                 appLinkLoading: string;
                 qrCodePrompt: string;
+                successMessage: string;
                 retryButton: string;
                 errors: {
                     declined: string;
+                    internalFailed: string;
                     unknownFailed: string;
                 };
             };

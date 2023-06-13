@@ -1,9 +1,9 @@
-import { JSXElement } from "solid-js";
+import { Accessor, JSXElement } from "solid-js";
 import { TranslationTableContext } from "./TranslationTableContext";
 import { ITranslationTable } from "../i18n";
 
 export interface TranslationTableProviderProps {
-    translationTable: ITranslationTable;
+    translationTable: Accessor<ITranslationTable>;
     children: JSXElement;
 }
 

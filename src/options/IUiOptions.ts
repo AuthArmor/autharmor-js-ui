@@ -20,6 +20,8 @@ export interface IFormUiOptions {
     tabActiveForegroundColor?: string;
     qrCodeBackgroundColor?: string;
     qrCodeForegroundColor?: string;
+    qrCodeSuccessForegroundColor?: string;
+    qrCodeErrorForegroundColor?: string;
     inputBackgroundColor?: string;
     inputForegroundColor?: string;
     buttonBackgroundColor?: string;

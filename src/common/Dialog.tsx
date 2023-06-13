@@ -75,7 +75,7 @@ export function Dialog(props: IDialogProps) {
     };
 
     return (
-        <TranslationTableProvider translationTable={props.translationTable}>
+        <TranslationTableProvider translationTable={() => props.translationTable}>
             <div
                 class={styles.dialogBackdrop}
                 style={uiOptionsStyle()}

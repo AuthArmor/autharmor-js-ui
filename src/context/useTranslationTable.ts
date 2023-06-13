@@ -1,8 +1,8 @@
-import { useContext } from "solid-js";
+import { Accessor, useContext } from "solid-js";
 import { TranslationTableContext } from "./TranslationTableContext";
 import { ITranslationTable } from "../i18n";
 
-export function useTranslationTable(): ITranslationTable {
+export function useTranslationTable(): Accessor<ITranslationTable> {
     const translationTable = useContext(TranslationTableContext);
 
     if (translationTable === undefined)

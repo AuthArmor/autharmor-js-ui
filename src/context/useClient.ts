@@ -1,5 +1,5 @@
 import { AuthArmorClient } from "autharmor-sdk";
-import { useContext } from "solid-js";
+import { Accessor, useContext } from "solid-js";
 import {
     ClientContext,
     InteractiveClientContext,
@@ -10,9 +10,9 @@ import { IAuthArmorInteractiveClientConfiguration } from "../config";
 
 export function useClient(): [
     {
-        client: AuthArmorClient;
-        interactiveClient: AuthArmorInteractiveClient;
-        interactiveConfiguration: IAuthArmorInteractiveClientConfiguration;
+        client: Accessor<AuthArmorClient>;
+        interactiveClient: Accessor<AuthArmorInteractiveClient>;
+        interactiveConfiguration: Accessor<IAuthArmorInteractiveClientConfiguration>;
     }
 ] {
     const client = useContext(ClientContext);

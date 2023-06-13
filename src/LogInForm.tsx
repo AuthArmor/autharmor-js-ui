@@ -30,7 +30,7 @@ export function LogInForm(props: ILogInFormProps) {
         const username = usernameTextbox.value;
 
         if (username === "") {
-            setError(tt.form.logIn.username.errors.usernameNotProvided);
+            setError(tt().form.logIn.username.errors.usernameNotProvided);
             return;
         }
 
@@ -40,7 +40,7 @@ export function LogInForm(props: ILogInFormProps) {
         let result: AuthenticationResult | null;
 
         try {
-            result = await interactiveClient.logInAsync(username, abortSignal);
+            result = await interactiveClient().logInAsync(username, abortSignal);
         } catch (error: unknown) {
             if (!(error instanceof ApiError)) {
                 throw error;
@@ -55,10 +55,10 @@ export function LogInForm(props: ILogInFormProps) {
         if (result !== null) {
             if (!result.succeeded) {
                 const failureMessage = {
-                    timedOut: tt.statusDialog.authenticator.logIn.status.timedOut,
-                    declined: tt.statusDialog.authenticator.logIn.status.declined,
-                    aborted: tt.statusDialog.authenticator.logIn.status.aborted,
-                    unknown: tt.statusDialog.authenticator.logIn.status.unknownFailed
+                    timedOut: tt().statusDialog.authenticator.logIn.status.timedOut,
+                    declined: tt().statusDialog.authenticator.logIn.status.declined,
+                    aborted: tt().statusDialog.authenticator.logIn.status.aborted,
+                    unknown: tt().statusDialog.authenticator.logIn.status.unknownFailed
                 }[result.failureReason];
 
                 setError(failureMessage);
@@ -79,7 +79,7 @@ export function LogInForm(props: ILogInFormProps) {
             <Show when={error() !== null}>
                 <p class={styles.error}>{error()}</p>
             </Show>
-            <button type="submit">{tt.form.logIn.username.logInButton}</button>
+            <button type="submit">{tt().form.logIn.username.logInButton}</button>
         </form>
     );
 }

@@ -93,6 +93,7 @@ export default function QrSignIn(props: IQrSignInProps) {
             }
 
             setSignInUrl(null);
+            setVerificationCode(null);
             setError(error.message);
 
             return;
@@ -103,6 +104,7 @@ export default function QrSignIn(props: IQrSignInProps) {
         }
 
         setSignInUrl(null);
+        setVerificationCode(null);
 
         if (authenticationResult.succeeded) {
             handleAuthenticationSuccess(authenticationResult);

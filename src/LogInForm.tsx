@@ -4,6 +4,7 @@ import { useClient } from "./context/useClient";
 import { RequestDismissedError } from "./errors/RequestDismissedError";
 import styles from "./Form.module.css";
 import { useTranslationTable } from "./context/useTranslationTable";
+import { NoAuthenticationMethodsAvailableError } from "./errors";
 
 export interface ILogInFormProps {
     onLogIn: (authenticationResult: IAuthenticationSuccessResult) => void;
@@ -42,11 +43,16 @@ export function LogInForm(props: ILogInFormProps) {
         try {
             result = await interactiveClient().logInAsync(username, abortSignal);
         } catch (error: unknown) {
-            if (!(error instanceof ApiError)) {
+            if (error instanceof NoAuthenticationMethodsAvailableError) {
+                setError(tt().form.logIn.username.errors.noMethodsAvailable);
+            } else if (error instanceof ApiError) {
+                setError(error.message);
+            } else {
+                setError(tt().form.logIn.username.errors.internalFailed);
+
+                currentRequestAbortController = null;
                 throw error;
             }
-
-            setError(error.message);
 
             currentRequestAbortController = null;
             return;

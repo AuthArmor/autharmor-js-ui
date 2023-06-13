@@ -42,11 +42,14 @@ export function RegistrationForm(props: IRegistrationFormProps) {
         try {
             result = await interactiveClient().registerAsync(username, abortSignal);
         } catch (error: unknown) {
-            if (!(error instanceof ApiError)) {
+            if (error instanceof ApiError) {
+                setError(error.message);
+            } else {
+                setError(tt().form.register.username.errors.internalFailed);
+
+                currentRequestAbortController = null;
                 throw error;
             }
-
-            setError(error.message);
 
             currentRequestAbortController = null;
             return;

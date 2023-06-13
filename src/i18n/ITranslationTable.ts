@@ -20,9 +20,11 @@ export interface ITranslationTable {
                 logInButton: string;
                 errors: {
                     usernameNotProvided: string;
+                    noMethodsAvailable: string;
                     declined: string;
                     timedOut: string;
                     aborted: string;
+                    internalFailed: string;
                     unknownFailed: string;
                 };
             };
@@ -36,6 +38,7 @@ export interface ITranslationTable {
                     usernameNotProvided: string;
                     timedOut: string;
                     aborted: string;
+                    internalFailed: string;
                     unknownFailed: string;
                 };
             };

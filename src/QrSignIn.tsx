@@ -29,6 +29,7 @@ export default function QrSignIn(props: IQrSignInProps) {
     const [signInUrl, setSignInUrl] = createSignal<string | null>(null);
 
     const [isLoading, setIsLoading] = createSignal(false);
+    const [isAuthenticated, setIsAuthenticated] = createSignal(false);
     const [error, setError] = createSignal<string | null>(null);
 
     const isDocumentVisible = useDocumentVisibility();
@@ -49,20 +50,23 @@ export default function QrSignIn(props: IQrSignInProps) {
         let qrResult: QrCodeResult<AuthenticationResult>;
 
         try {
-            qrResult = await client.logInWithAuthenticatorUsernamelessAsync(
+            qrResult = await client().logInWithAuthenticatorUsernamelessAsync(
                 {
-                    ...interactiveConfiguration.defaultLogInOptions,
-                    ...interactiveConfiguration.defaultAuthenticatorLogInOptions,
-                    ...interactiveConfiguration.defaultAuthenticatorUsernamelessLogInOptions
+                    ...interactiveConfiguration().defaultLogInOptions,
+                    ...interactiveConfiguration().defaultAuthenticatorLogInOptions,
+                    ...interactiveConfiguration().defaultAuthenticatorUsernamelessLogInOptions
                 },
                 abortController.signal
             );
         } catch (error: unknown) {
+            setIsLoading(false);
+
             if (!(error instanceof ApiError)) {
+                setError(tt().form.logIn.authenticatorApp.errors.internalFailed);
+
                 throw error;
             }
 
-            setIsLoading(false);
             setError(error.message);
 
             return;
@@ -107,12 +111,12 @@ export default function QrSignIn(props: IQrSignInProps) {
                 }
 
                 case "declined": {
-                    setError(tt.form.logIn.authenticatorApp.errors.declined);
+                    setError(tt().form.logIn.authenticatorApp.errors.declined);
                     break;
                 }
 
                 case "unknown": {
-                    setError(tt.form.logIn.authenticatorApp.errors.unknownFailed);
+                    setError(tt().form.logIn.authenticatorApp.errors.unknownFailed);
                     break;
                 }
             }
@@ -120,6 +124,8 @@ export default function QrSignIn(props: IQrSignInProps) {
     };
 
     const handleAuthenticationSuccess = (authenticationResult: IAuthenticationSuccessResult) => {
+        setIsAuthenticated(true);
+
         props.onLogIn(authenticationResult);
     };
 
@@ -140,45 +146,59 @@ export default function QrSignIn(props: IQrSignInProps) {
                 fallback={
                     <>
                         <div class={styles.qrCodeContainer}>
-                            <Show when={signInUrl() !== null}>
-                                <QrCode class={styles.qrCode} data={signInUrl()!} />
-                            </Show>
-                            <Show when={isLoading()}>
-                                <LoadingSpinner class={styles.qrCodeSpinner} />
-                            </Show>
-                            <Show when={error() !== null}>
-                                <div class={styles.error}>
-                                    <p>{error()!}</p>
-                                    <button onClick={tryAuthentication}>
-                                        {tt.form.logIn.authenticatorApp.retryButton}
-                                    </button>
-                                </div>
-                            </Show>
+                            <Switch>
+                                <Match when={isAuthenticated()}>
+                                    <LoadingSpinner class={styles.qrCodeSuccessSpinner} />
+                                </Match>
+                                <Match when={isLoading()}>
+                                    <LoadingSpinner class={styles.qrCodeSpinner} />
+                                </Match>
+                                <Match when={error() !== null}>
+                                    <div class={styles.error}>
+                                        <p>{error()!}</p>
+                                        <button onClick={tryAuthentication}>
+                                            {tt().form.logIn.authenticatorApp.retryButton}
+                                        </button>
+                                    </div>
+                                </Match>
+                                <Match when={signInUrl() !== null}>
+                                    <QrCode class={styles.qrCode} data={signInUrl()!} />
+                                </Match>
+                            </Switch>
                         </div>
-                        <p class={styles.qrPrompt}>{tt.form.logIn.authenticatorApp.qrCodePrompt}</p>
+                        <p class={styles.qrPrompt}>
+                            {tt().form.logIn.authenticatorApp.qrCodePrompt}
+                        </p>
                     </>
                 }
             >
-                <Switch>
-                    <Match when={isLoading()}>
-                        <AppLinkButton link={null}>
-                            {tt.form.logIn.authenticatorApp.appLinkLoading}
-                        </AppLinkButton>
-                    </Match>
-                    <Match when={error() !== null}>
-                        <p class={styles.mobileError}>
-                            {error()}{" "}
-                            <button class={styles.mobileRetryButton} onClick={tryAuthentication}>
-                                {tt.form.logIn.authenticatorApp.retryButton}
-                            </button>
-                        </p>
-                    </Match>
-                    <Match when={signInUrl() !== null}>
-                        <AppLinkButton link={signInUrl()} onClick={handleAppLinkClicked}>
-                            {tt.form.logIn.authenticatorApp.appLink}
-                        </AppLinkButton>
-                    </Match>
-                </Switch>
+                <div class={styles.mobileAppContainer}>
+                    <Switch>
+                        <Match when={isAuthenticated()}>
+                            <AppLinkButton link={null}>
+                                {tt().form.logIn.authenticatorApp.successMessage}
+                            </AppLinkButton>
+                        </Match>
+                        <Match when={isLoading()}>
+                            <AppLinkButton link={null}>
+                                {tt().form.logIn.authenticatorApp.appLinkLoading}
+                            </AppLinkButton>
+                        </Match>
+                        <Match when={error() !== null}>
+                            <div class={styles.error}>
+                                <p>{error()}</p>
+                                <button onClick={tryAuthentication}>
+                                    {tt().form.logIn.authenticatorApp.retryButton}
+                                </button>
+                            </div>
+                        </Match>
+                        <Match when={signInUrl() !== null}>
+                            <AppLinkButton link={signInUrl()} onClick={handleAppLinkClicked}>
+                                {tt().form.logIn.authenticatorApp.appLink}
+                            </AppLinkButton>
+                        </Match>
+                    </Switch>
+                </div>
             </Show>
         </section>
     );

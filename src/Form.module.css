@@ -42,7 +42,8 @@
     color: var(--aa-tab-active-foreground-color);
 }
 
-.form>nav>button:hover, .form>nav>button:focus-visible {
+.form>nav>button:hover,
+.form>nav>button:focus-visible {
     outline: transparent;
     background-color: var(--aa-tab-hover-background-color);
     color: var(--aa-tab-hover-foreground-color);
@@ -109,11 +110,56 @@
     color: var(--aa-qr-code-foreground-color);
 }
 
+.form .qrCodeContainer>.qrCodeSuccessSpinner {
+    padding: 4rem;
+    color: var(--aa-qr-code-success-foreground-color);
+}
+
+.form .qrCodeContainer>.error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: #ffffff;
+}
+
+.form .qrCodeContainer>.error>p {
+    font-size: .875rem;
+    font-weight: 500;
+    color: var(--aa-qr-code-error-foreground-color);
+}
+
+.form .qrCodeContainer>.error>button,
+.form .mobileAppContainer>.error>button {
+    border-radius: var(--aa-border-radius);
+    padding: .25rem 1rem;
+    background-color: var(--aa-button-background-color);
+    color: var(--aa-button-foreground-color);
+    font-size: .875rem;
+    font-weight: 700;
+    transition: background-color .2s ease-out, color .2s ease-out;
+}
+
+.form .qrCodeContainer>.error>button:hover {
+    background-color: var(--aa-button-hover-background-color);
+    color: var(--aa-button-hover-foreground-color);
+}
+
 .form .qrPrompt {
     margin-block-start: 1rem;
     color: var(--aa-method-instructions-foreground-color);
     font-size: .875rem;
     font-weight: 500;
+}
+
+.form .mobileAppContainer>.error>p {
+    color: var(--aa-error-foreground-color);
+    font-size: 1rem;
+}
+
+.form .mobileAppContainer>.error>button {
+    margin-block-start: .75rem;
 }
 
 .form .usernameCaptureForm {

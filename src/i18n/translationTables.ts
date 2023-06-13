@@ -12,9 +12,11 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                     appLink: "Log in with app",
                     appLinkLoading: "Please wait",
                     qrCodePrompt: "Scan this QR code using the app to sign in",
+                    successMessage: "Approved",
                     retryButton: "Try again",
                     errors: {
                         declined: "Request declined",
+                        internalFailed: "Communication error, please check console",
                         unknownFailed: "Failed"
                     }
                 },

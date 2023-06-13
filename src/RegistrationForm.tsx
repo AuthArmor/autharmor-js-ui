@@ -30,7 +30,7 @@ export function RegistrationForm(props: IRegistrationFormProps) {
         const username = usernameTextbox.value;
 
         if (username === "") {
-            setError(tt.form.register.username.errors.usernameNotProvided);
+            setError(tt().form.register.username.errors.usernameNotProvided);
             return;
         }
 
@@ -40,7 +40,7 @@ export function RegistrationForm(props: IRegistrationFormProps) {
         let result: RegistrationResult | null;
 
         try {
-            result = await interactiveClient.registerAsync(username, abortSignal);
+            result = await interactiveClient().registerAsync(username, abortSignal);
         } catch (error: unknown) {
             if (!(error instanceof ApiError)) {
                 throw error;
@@ -55,9 +55,9 @@ export function RegistrationForm(props: IRegistrationFormProps) {
         if (result !== null) {
             if (!result.succeeded) {
                 const failureMessage = {
-                    timedOut: tt.statusDialog.authenticator.logIn.status.timedOut,
-                    aborted: tt.statusDialog.authenticator.logIn.status.aborted,
-                    unknown: tt.statusDialog.authenticator.logIn.status.unknownFailed
+                    timedOut: tt().statusDialog.authenticator.logIn.status.timedOut,
+                    aborted: tt().statusDialog.authenticator.logIn.status.aborted,
+                    unknown: tt().statusDialog.authenticator.logIn.status.unknownFailed
                 }[result.failureReason];
 
                 setError(failureMessage);
@@ -78,7 +78,7 @@ export function RegistrationForm(props: IRegistrationFormProps) {
             <Show when={error() !== null}>
                 <p class={styles.error}>{error()}</p>
             </Show>
-            <button type="submit">{tt.form.register.username.registerButton}</button>
+            <button type="submit">{tt().form.register.username.registerButton}</button>
         </form>
     );
 }

@@ -49,6 +49,8 @@ const defaultFormUiOptions: IFormUiOptions = {
     tabActiveForegroundColor: "#ffffff",
     qrCodeBackgroundColor: "#202020",
     qrCodeForegroundColor: "#2cb2b5",
+    qrCodeSuccessForegroundColor: "#40e070",
+    qrCodeErrorForegroundColor: "#e00000",
     inputBackgroundColor: "#212329",
     inputForegroundColor: "#ffffff",
     buttonBackgroundColor: "#0bdbdb",
@@ -91,7 +93,7 @@ export function AuthenticationForm(props: IAuthenticationFormProps): JSXElement 
 
     return (
         <ClientProvider client={props.client} interactiveConfiguration={props.interactiveConfig}>
-            <TranslationTableProvider translationTable={tt()}>
+            <TranslationTableProvider translationTable={tt}>
                 <div class={styles.form} style={uiOptionsStyle()}>
                     <nav>
                         <Show when={props.enableLogIn}>

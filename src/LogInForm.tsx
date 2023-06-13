@@ -43,7 +43,8 @@ export function LogInForm(props: ILogInFormProps) {
         try {
             result = await interactiveClient().logInAsync(username, abortSignal);
         } catch (error: unknown) {
-            if (error instanceof NoAuthenticationMethodsAvailableError) {
+            if (error instanceof RequestDismissedError) {
+            } else if (error instanceof NoAuthenticationMethodsAvailableError) {
                 setError(tt().form.logIn.username.errors.noMethodsAvailable);
             } else if (error instanceof ApiError) {
                 setError(error.message);

@@ -42,7 +42,8 @@ export function RegistrationForm(props: IRegistrationFormProps) {
         try {
             result = await interactiveClient().registerAsync(username, abortSignal);
         } catch (error: unknown) {
-            if (error instanceof ApiError) {
+            if (error instanceof RequestDismissedError) {
+            } else if (error instanceof ApiError) {
                 setError(error.message);
             } else {
                 setError(tt().form.register.username.errors.internalFailed);

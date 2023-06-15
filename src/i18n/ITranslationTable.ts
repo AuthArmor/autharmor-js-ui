@@ -108,7 +108,7 @@ export interface ITranslationTable {
                 };
             };
         };
-        emailMagicLink: {
+        magicLinkEmail: {
             logIn: {
                 title: string;
                 status: {

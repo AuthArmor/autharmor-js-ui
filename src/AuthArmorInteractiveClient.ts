@@ -4,11 +4,11 @@ import {
     IAuthenticatorUserSpecificLogInOptions,
     QrCodeResult,
     ApiError,
-    IEmailMagicLinkLogInOptions,
+    IMagicLinkEmailLogInOptions,
     RegistrationResult,
     IAuthenticatorRegisterOptions,
     IWebAuthnRegisterOptions,
-    IEmailMagicLinkRegisterOptions,
+    IMagicLinkEmailRegisterOptions,
     AuthenticationMethod,
     AvailableAuthenticationMethods
 } from "@autharmor/sdk";
@@ -65,8 +65,8 @@ export class AuthArmorInteractiveClient {
                 return await this.logInWithWebAuthnAsync(username, abortSignal);
             }
 
-            case "emailMagicLink": {
-                await this.logInWithEmailMagicLinkAsync(username, undefined, {}, abortSignal);
+            case "magicLinkEmail": {
+                await this.logInWithMagicLinkEmailAsync(username, undefined, {}, abortSignal);
                 return null;
             }
         }
@@ -88,16 +88,16 @@ export class AuthArmorInteractiveClient {
             await this.client.getAvailableLogInMethodsAsync(username);
 
         if (this.configuration.permittedMethods !== undefined) {
-            const permittedMethods = {
+            const permittedMethods: AvailableAuthenticationMethods = {
                 authenticator: false,
-                emailMagicLink: false,
+                magicLinkEmail: false,
                 webAuthn: false,
                 ...this.configuration.permittedMethods
             };
 
             methods = {
                 authenticator: permittedMethods.authenticator && methods.authenticator,
-                emailMagicLink: permittedMethods.emailMagicLink && methods.emailMagicLink,
+                magicLinkEmail: permittedMethods.magicLinkEmail && methods.magicLinkEmail,
                 webAuthn: permittedMethods.webAuthn && methods.webAuthn
             };
         }
@@ -306,10 +306,10 @@ export class AuthArmorInteractiveClient {
      *
      * @returns A promise that resolves once the email was sent.
      */
-    public async logInWithEmailMagicLinkAsync(
+    public async logInWithMagicLinkEmailAsync(
         emailAddress: string,
         redirectUrl?: string,
-        options: Partial<IEmailMagicLinkLogInOptions> = {},
+        options: Partial<IMagicLinkEmailLogInOptions> = {},
         abortSignal?: AbortSignal
     ): Promise<void> {
         const abortController = new AbortController();
@@ -323,21 +323,21 @@ export class AuthArmorInteractiveClient {
             abortController
         );
 
-        setTitle(this.tt.statusDialog.emailMagicLink.logIn.title);
-        setStatusMessage(this.tt.statusDialog.emailMagicLink.logIn.status.sending);
+        setTitle(this.tt.statusDialog.magicLinkEmail.logIn.title);
+        setStatusMessage(this.tt.statusDialog.magicLinkEmail.logIn.status.sending);
 
         const finalRedirectUrl =
             redirectUrl ?? this.configuration.defaultEmailMagicLinkLogInRedirectUrl;
 
         if (finalRedirectUrl === undefined) {
-            setStatusMessage(this.tt.statusDialog.emailMagicLink.logIn.status.unknownFailed);
+            setStatusMessage(this.tt.statusDialog.magicLinkEmail.logIn.status.unknownFailed);
             setStatusType("error");
 
             throw new Error("Redirect link not specified.");
         }
 
         try {
-            await this.client.sendLoginMagicLinkAsync(emailAddress, finalRedirectUrl, {
+            await this.client.sendLoginMagicLinkEmailAsync(emailAddress, finalRedirectUrl, {
                 ...this.configuration.defaultLogInOptions,
                 ...this.configuration.defaultEmailMagicLinkLogInOptions,
                 ...options
@@ -350,13 +350,13 @@ export class AuthArmorInteractiveClient {
             if (error instanceof ApiError) {
                 setStatusMessage(error.message);
             } else {
-                setStatusMessage(this.tt.statusDialog.emailMagicLink.logIn.status.unknownFailed);
+                setStatusMessage(this.tt.statusDialog.magicLinkEmail.logIn.status.unknownFailed);
             }
 
             throw error;
         }
 
-        setStatusMessage(this.tt.statusDialog.emailMagicLink.logIn.status.pending);
+        setStatusMessage(this.tt.statusDialog.magicLinkEmail.logIn.status.pending);
 
         abortSignal?.removeEventListener("abort", abortHandler);
     }
@@ -386,8 +386,8 @@ export class AuthArmorInteractiveClient {
                 return await this.registerWithWebAuthnAsync(username, {}, abortSignal);
             }
 
-            case "emailMagicLink": {
-                await this.registerWithEmailMagicLinkAsync(username, undefined, {}, abortSignal);
+            case "magicLinkEmail": {
+                await this.registerWithMagicLinkEmailAsync(username, undefined, {}, abortSignal);
                 return null;
             }
         }
@@ -406,11 +406,11 @@ export class AuthArmorInteractiveClient {
     ): Promise<AuthenticationMethod> {
         const methods: AvailableAuthenticationMethods = {
             authenticator: false,
-            emailMagicLink: false,
+            magicLinkEmail: false,
             webAuthn: false,
             ...(this.configuration.permittedMethods ?? {
                 authenticator: true,
-                emailMagicLink: true,
+                magicLinkEmail: true,
                 webAuthn: true
             })
         };
@@ -630,10 +630,10 @@ export class AuthArmorInteractiveClient {
      *
      * @returns A promise that resolves once the email was sent.
      */
-    public async registerWithEmailMagicLinkAsync(
+    public async registerWithMagicLinkEmailAsync(
         emailAddress: string,
         redirectUrl?: string,
-        options: Partial<IEmailMagicLinkRegisterOptions> = {},
+        options: Partial<IMagicLinkEmailRegisterOptions> = {},
         abortSignal?: AbortSignal
     ): Promise<void> {
         const abortController = new AbortController();
@@ -647,21 +647,21 @@ export class AuthArmorInteractiveClient {
             abortController
         );
 
-        setTitle(this.tt.statusDialog.emailMagicLink.register.title);
-        setStatusMessage(this.tt.statusDialog.emailMagicLink.register.status.sending);
+        setTitle(this.tt.statusDialog.magicLinkEmail.register.title);
+        setStatusMessage(this.tt.statusDialog.magicLinkEmail.register.status.sending);
 
         const finalRedirectUrl =
             redirectUrl ?? this.configuration.defaultEmailMagicLinkRegisterRedirectUrl;
 
         if (finalRedirectUrl === undefined) {
-            setStatusMessage(this.tt.statusDialog.emailMagicLink.register.status.unknownFailed);
+            setStatusMessage(this.tt.statusDialog.magicLinkEmail.register.status.unknownFailed);
             setStatusType("error");
 
             throw new Error("Redirect link not specified.");
         }
 
         try {
-            await this.client.sendRegisterMagicLinkAsync(emailAddress, finalRedirectUrl, {
+            await this.client.sendRegisterMagicLinkEmailAsync(emailAddress, finalRedirectUrl, {
                 ...this.configuration.defaultRegisterOptions,
                 ...this.configuration.defaultEmailMagicLinkRegisterOptions,
                 ...options
@@ -674,13 +674,13 @@ export class AuthArmorInteractiveClient {
             if (error instanceof ApiError) {
                 setStatusMessage(error.message);
             } else {
-                setStatusMessage(this.tt.statusDialog.emailMagicLink.register.status.unknownFailed);
+                setStatusMessage(this.tt.statusDialog.magicLinkEmail.register.status.unknownFailed);
             }
 
             throw error;
         }
 
-        setStatusMessage(this.tt.statusDialog.emailMagicLink.register.status.pending);
+        setStatusMessage(this.tt.statusDialog.magicLinkEmail.register.status.pending);
 
         abortSignal?.removeEventListener("abort", abortHandler);
     }

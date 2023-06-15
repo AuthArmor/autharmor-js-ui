@@ -4,11 +4,11 @@ import {
     IAuthenticatorLogInOptions,
     IAuthenticatorUserSpecificLogInOptions,
     IAuthenticatorUsernamelessLogInOptions,
-    IEmailMagicLinkLogInOptions,
+    IMagicLinkEmailLogInOptions,
     IRegisterOptions,
     IAuthenticatorRegisterOptions,
     IWebAuthnRegisterOptions,
-    IEmailMagicLinkRegisterOptions
+    IMagicLinkEmailRegisterOptions
 } from "@autharmor/sdk";
 import { IInternationalizationOptions, IUiOptions } from "../options";
 
@@ -19,11 +19,11 @@ export interface IAuthArmorInteractiveClientConfiguration {
     defaultAuthenticatorLogInOptions?: Partial<IAuthenticatorLogInOptions>;
     defaultAuthenticatorUserSpecificLogInOptions?: Partial<IAuthenticatorUserSpecificLogInOptions>;
     defaultAuthenticatorUsernamelessLogInOptions?: Partial<IAuthenticatorUsernamelessLogInOptions>;
-    defaultEmailMagicLinkLogInOptions?: Partial<IEmailMagicLinkLogInOptions>;
+    defaultEmailMagicLinkLogInOptions?: Partial<IMagicLinkEmailLogInOptions>;
     defaultRegisterOptions?: Partial<IRegisterOptions>;
     defaultAuthenticatorRegisterOptions?: Partial<IAuthenticatorRegisterOptions>;
     defaultWebAuthnRegisterOptions?: Partial<IWebAuthnRegisterOptions>;
-    defaultEmailMagicLinkRegisterOptions?: Partial<IEmailMagicLinkRegisterOptions>;
+    defaultEmailMagicLinkRegisterOptions?: Partial<IMagicLinkEmailRegisterOptions>;
 
     defaultEmailMagicLinkLogInRedirectUrl?: string;
     defaultEmailMagicLinkRegisterRedirectUrl?: string;

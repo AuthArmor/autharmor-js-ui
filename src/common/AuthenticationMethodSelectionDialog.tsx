@@ -32,8 +32,8 @@ export function AuthenticationMethodSelectionDialog(
         props.onAuthenticationMethodSelect("webAuthn");
     };
 
-    const handleEmailMagicLinkPicked = () => {
-        props.onAuthenticationMethodSelect("emailMagicLink");
+    const handleMagicLinkEmailPicked = () => {
+        props.onAuthenticationMethodSelect("magicLinkEmail");
     };
 
     const handleDismissed = () => {
@@ -67,8 +67,8 @@ export function AuthenticationMethodSelectionDialog(
                         </p>
                     </button>
                 </Show>
-                <Show when={props.availableAuthenticationMethods.emailMagicLink}>
-                    <button onClick={handleEmailMagicLinkPicked}>
+                <Show when={props.availableAuthenticationMethods.magicLinkEmail}>
+                    <button onClick={handleMagicLinkEmailPicked}>
                         <img src={emailIcon} alt={tt().methodSelectorDialog.methods.email.button} />
                         <p>{tt().methodSelectorDialog.methods.email.text}</p>
                         <p>

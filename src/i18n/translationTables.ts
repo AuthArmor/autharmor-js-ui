@@ -114,7 +114,7 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                     }
                 }
             },
-            emailMagicLink: {
+            magicLinkEmail: {
                 logIn: {
                     title: "We've sent you an email magic link to log you in",
                     status: {

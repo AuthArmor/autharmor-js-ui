@@ -1,4 +1,4 @@
-import { IAvailableAuthenticationMethods } from "@autharmor/sdk";
+import { AuthenticationMethod, AvailableAuthenticationMethods } from "@autharmor/sdk";
 import { Show } from "solid-js";
 import { Dialog } from "./Dialog";
 import styles from "./AuthenticationMethodSelectionDialog.module.css";
@@ -9,15 +9,13 @@ import { IDialogUiOptions } from "../options";
 import { ITranslationTable } from "../i18n/ITranslationTable";
 
 export interface IAuthenticationMethodSelectionDialogProps {
-    authenticationMethods: IAvailableAuthenticationMethods;
+    availableAuthenticationMethods: AvailableAuthenticationMethods;
     registering?: boolean;
 
     translationTable: ITranslationTable;
     uiOptions: IDialogUiOptions;
 
-    onAuthenticationMethodSelect: (
-        authenticationMethod: keyof IAvailableAuthenticationMethods
-    ) => void;
+    onAuthenticationMethodSelect: (authenticationMethod: AuthenticationMethod) => void;
     onDismiss?: () => void;
 }
 
@@ -55,7 +53,7 @@ export function AuthenticationMethodSelectionDialog(
                     : tt().methodSelectorDialog.prompt.logIn}
             </p>
             <div class={styles.methods}>
-                <Show when={props.authenticationMethods.authenticator}>
+                <Show when={props.availableAuthenticationMethods.authenticator}>
                     <button onClick={handleAuthenticatorPicked}>
                         <img
                             src={authenticatorIcon}
@@ -69,7 +67,7 @@ export function AuthenticationMethodSelectionDialog(
                         </p>
                     </button>
                 </Show>
-                <Show when={props.authenticationMethods.emailMagicLink}>
+                <Show when={props.availableAuthenticationMethods.emailMagicLink}>
                     <button onClick={handleEmailMagicLinkPicked}>
                         <img src={emailIcon} alt={tt().methodSelectorDialog.methods.email.button} />
                         <p>{tt().methodSelectorDialog.methods.email.text}</p>
@@ -80,7 +78,7 @@ export function AuthenticationMethodSelectionDialog(
                         </p>
                     </button>
                 </Show>
-                <Show when={props.authenticationMethods.webAuthn}>
+                <Show when={props.availableAuthenticationMethods.webAuthn}>
                     <button onClick={handleWebAuthnPicked}>
                         <img
                             src={webAuthnIcon}

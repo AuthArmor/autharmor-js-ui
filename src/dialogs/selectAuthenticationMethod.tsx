@@ -1,4 +1,4 @@
-import { IAvailableAuthenticationMethods } from "@autharmor/sdk";
+import { AuthenticationMethod, AvailableAuthenticationMethods } from "@autharmor/sdk";
 import { AuthenticationMethodSelectionDialog } from "../common/AuthenticationMethodSelectionDialog";
 import { ITranslationTable } from "../i18n/ITranslationTable";
 import { defaultTranslationTable } from "../i18n/translationTables";
@@ -6,15 +6,15 @@ import { IDialogUiOptions } from "../options";
 import { renderDialog } from "./renderDialog";
 
 export async function selectAuthenticationMethod(
-    authenticationMethods: IAvailableAuthenticationMethods,
+    availableAuthenticationMethods: AvailableAuthenticationMethods,
     translationTable: ITranslationTable = defaultTranslationTable,
     uiOptions: IDialogUiOptions = {},
     abortSignal?: AbortSignal
-): Promise<keyof IAvailableAuthenticationMethods> {
-    const authenticationMethod = await renderDialog<keyof IAvailableAuthenticationMethods>(
+): Promise<AuthenticationMethod> {
+    const authenticationMethod = await renderDialog<AuthenticationMethod>(
         (resolve, dismiss) => (
             <AuthenticationMethodSelectionDialog
-                authenticationMethods={authenticationMethods}
+                availableAuthenticationMethods={availableAuthenticationMethods}
                 translationTable={translationTable}
                 uiOptions={uiOptions}
                 onAuthenticationMethodSelect={resolve}

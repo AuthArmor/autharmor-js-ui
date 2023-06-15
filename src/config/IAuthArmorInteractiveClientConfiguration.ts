@@ -1,5 +1,5 @@
 import {
-    IAvailableAuthenticationMethods,
+    AvailableAuthenticationMethods,
     ILogInOptions,
     IAuthenticatorLogInOptions,
     IAuthenticatorUserSpecificLogInOptions,
@@ -13,7 +13,7 @@ import {
 import { IInternationalizationOptions, IUiOptions } from "../options";
 
 export interface IAuthArmorInteractiveClientConfiguration {
-    permittedMethods?: Partial<IAvailableAuthenticationMethods>;
+    permittedMethods?: Partial<AvailableAuthenticationMethods>;
 
     defaultLogInOptions?: Partial<ILogInOptions>;
     defaultAuthenticatorLogInOptions?: Partial<IAuthenticatorLogInOptions>;

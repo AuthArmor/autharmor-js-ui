@@ -1,7 +1,6 @@
 import {
     AuthArmorClient,
     AuthenticationResult,
-    IAvailableAuthenticationMethods,
     IAuthenticatorUserSpecificLogInOptions,
     QrCodeResult,
     ApiError,
@@ -9,7 +8,9 @@ import {
     RegistrationResult,
     IAuthenticatorRegisterOptions,
     IWebAuthnRegisterOptions,
-    IEmailMagicLinkRegisterOptions
+    IEmailMagicLinkRegisterOptions,
+    AuthenticationMethod,
+    AvailableAuthenticationMethods
 } from "@autharmor/sdk";
 import { createAuthStatusDialog } from "./dialogs/createAuthStatusDialog";
 import { selectAuthenticationMethod } from "./dialogs/selectAuthenticationMethod";
@@ -82,8 +83,8 @@ export class AuthArmorInteractiveClient {
     public async selectLogInMethodAsync(
         username: string,
         abortSignal?: AbortSignal
-    ): Promise<keyof IAvailableAuthenticationMethods> {
-        let methods: IAvailableAuthenticationMethods =
+    ): Promise<AuthenticationMethod> {
+        let methods: AvailableAuthenticationMethods =
             await this.client.getAvailableLogInMethodsAsync(username);
 
         if (this.configuration.permittedMethods !== undefined) {
@@ -115,9 +116,7 @@ export class AuthArmorInteractiveClient {
                       this.configuration.uiOptions?.dialog,
                       abortSignal
                   )
-                : (Object.keys(methods) as (keyof IAvailableAuthenticationMethods)[]).find(
-                      (m) => methods[m]
-                  )!;
+                : (Object.keys(methods) as AuthenticationMethod[]).find((m) => methods[m])!;
 
         return selectedMethod;
     }
@@ -404,8 +403,8 @@ export class AuthArmorInteractiveClient {
      */
     public async selectRegistrationMethodAsync(
         abortSignal?: AbortSignal
-    ): Promise<keyof IAvailableAuthenticationMethods> {
-        const methods: IAvailableAuthenticationMethods = {
+    ): Promise<AuthenticationMethod> {
+        const methods: AvailableAuthenticationMethods = {
             authenticator: false,
             emailMagicLink: false,
             webAuthn: false,
@@ -416,12 +415,21 @@ export class AuthArmorInteractiveClient {
             })
         };
 
-        const selectedMethod = await selectAuthenticationMethod(
-            methods,
-            this.tt,
-            this.configuration.uiOptions?.dialog,
-            abortSignal
-        );
+        const methodCount = Object.values(methods).filter((m) => m).length;
+
+        if (methodCount === 0) {
+            throw new NoAuthenticationMethodsAvailableError();
+        }
+
+        const selectedMethod =
+            methodCount > 1
+                ? await selectAuthenticationMethod(
+                      methods,
+                      this.tt,
+                      this.configuration.uiOptions?.dialog,
+                      abortSignal
+                  )
+                : (Object.keys(methods) as AuthenticationMethod[]).find((m) => methods[m])!;
 
         return selectedMethod;
     }

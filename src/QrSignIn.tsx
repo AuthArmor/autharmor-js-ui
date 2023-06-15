@@ -24,7 +24,7 @@ export default function QrSignIn(props: IQrSignInProps) {
 
     const tt = useTranslationTable();
 
-    const abortController = new AbortController();
+    let abortController: AbortController | null;
 
     const [signInUrl, setSignInUrl] = createSignal<string | null>(null);
     const [verificationCode, setVerificationCode] = createSignal<string | null>(null);
@@ -34,6 +34,11 @@ export default function QrSignIn(props: IQrSignInProps) {
     const [error, setError] = createSignal<string | null>(null);
 
     const isDocumentVisible = useDocumentVisibility();
+
+    createEffect(on(interactiveConfiguration, () => {
+        abortController?.abort();
+        tryAuthentication();
+    }));
 
     let retryPendingAfterVisibility = false;
 
@@ -45,6 +50,9 @@ export default function QrSignIn(props: IQrSignInProps) {
     }));
 
     const tryAuthentication = async () => {
+        abortController = new AbortController();
+        const abortSignal = abortController.signal;
+
         setIsLoading(true);
         setError(null);
 
@@ -63,7 +71,7 @@ export default function QrSignIn(props: IQrSignInProps) {
                           }
                         : {})
                 },
-                abortController.signal
+                abortSignal
             );
         } catch (error: unknown) {
             setIsLoading(false);
@@ -99,7 +107,7 @@ export default function QrSignIn(props: IQrSignInProps) {
             return;
         }
 
-        if (abortController.signal.aborted) {
+        if (abortSignal.aborted) {
             return;
         }
 
@@ -146,7 +154,7 @@ export default function QrSignIn(props: IQrSignInProps) {
     });
 
     onCleanup(() => {
-        abortController.abort();
+        abortController?.abort();
     });
 
     return (

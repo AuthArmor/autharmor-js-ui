@@ -35,7 +35,7 @@ This package provides the `AuthArmorInteractiveClient` class to imperatively cre
 
 ### Creating an Interactive Client
 
-To create an `AuthArmorInteractiveClient`, pass it your `AuthArmorClient` as the first parameter, and, optionally, an `IInteractiveClientConfiguration` object as the second parameter:
+To create an `AuthArmorInteractiveClient`, pass it your `AuthArmorClient` as the first parameter, and, optionally, an [`IInteractiveClientConfiguration`](./src/config/IAuthArmorInteractiveClientConfiguration.ts) object as the second parameter:
 
 ```ts
 const authArmorInteractiveClient = new AuthArmorInteractiveClient(authArmorClient, {});
@@ -106,11 +106,37 @@ Once you set this property, the form will be rendered.
 
 ### Providing a Configuration Object
 
-You can optionally provide an `IInteractiveClientConfiguration` object with the `interactiveConfig` property
+You can optionally provide an [`IInteractiveClientConfiguration`](./src/config/IAuthArmorInteractiveClientConfiguration.ts) object with the `interactiveConfig` property
 
 ```ts
 authArmorForm.interactiveConfig = {};
 ```
+
+For example, to customize the UI, you can specify the `uiOptions` object. For example, you can change the form's background color to `#000510` like this:
+
+```ts
+authArmorForm.interactiveConfig = {
+    uiOptions: {
+        form: {
+            backgroundColor: "#000510"
+        }
+    }
+};
+```
+
+For a list of all properties you can define within the `uiOptions` property, see [IUiOptions.ts](./src/options/IUiOptions.ts).
+
+Similarly, you can customize all the strings that are displayed in the UI by providing an [`ITranslationTable`](./src/i18n/ITranslationTable.ts) object as the `internationalizationOptions.translationTable` property:
+
+```ts
+authArmorForm.interactiveConfig = {
+    internationalizationOptions: {
+        translationTable: { ... }
+    }
+};
+```
+
+For an example translation table, see [`defaultTranslationTable`](./src/i18n/translationTables.ts).
 
 ### Properties and Attributes
 

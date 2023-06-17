@@ -47,7 +47,7 @@
         "@rollup/plugin-commonjs": "^25.0.0",
         "@rollup/plugin-image": "^3.0.2",
         "@rollup/plugin-node-resolve": "^15.0.2",
-        "autharmor-sdk": "link:..\\autharmor-jsclient-sdk",
+        "@autharmor/sdk": "link:..\\autharmor-jsclient-sdk",
         "babel-preset-solid": "^1.7.4",
         "postcss": "^8.4.23",
         "prettier": "^2.8.7",

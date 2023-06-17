@@ -58,6 +58,6 @@
         "typescript": "^5.0.3"
     },
     "peerDependencies": {
-        "@autharmor/sdk": "link:..\\autharmor-jsclient-sdk"
+        "@autharmor/sdk": ">=4.0.0-alpha.2 <4.0.0-alpha.3"
     }
 }

@@ -1,10 +1,10 @@
 import {
     AvailableAuthenticationMethods,
-    ILogInOptions,
-    IAuthenticatorLogInOptions,
-    IAuthenticatorUserSpecificLogInOptions,
-    IAuthenticatorUsernamelessLogInOptions,
-    IMagicLinkEmailLogInOptions,
+    IAuthenticateOptions,
+    IAuthenticatorAuthenticateOptions,
+    IAuthenticatorUserSpecificAuthenticateOptions,
+    IAuthenticatorUsernamelessAuthenticateOptions,
+    IMagicLinkEmailAuthenticateOptions,
     IRegisterOptions,
     IAuthenticatorRegisterOptions,
     IWebAuthnRegisterOptions,
@@ -15,11 +15,11 @@ import { IInternationalizationOptions, IUiOptions } from "../options";
 export interface IAuthArmorInteractiveClientConfiguration {
     permittedMethods?: Partial<AvailableAuthenticationMethods>;
 
-    defaultLogInOptions?: Partial<ILogInOptions>;
-    defaultAuthenticatorLogInOptions?: Partial<IAuthenticatorLogInOptions>;
-    defaultAuthenticatorUserSpecificLogInOptions?: Partial<IAuthenticatorUserSpecificLogInOptions>;
-    defaultAuthenticatorUsernamelessLogInOptions?: Partial<IAuthenticatorUsernamelessLogInOptions>;
-    defaultEmailMagicLinkLogInOptions?: Partial<IMagicLinkEmailLogInOptions>;
+    defaultAuthenticateOptions?: Partial<IAuthenticateOptions>;
+    defaultAuthenticatorAuthenticateOptions?: Partial<IAuthenticatorAuthenticateOptions>;
+    defaultAuthenticatorUserSpecificAuthenticateOptions?: Partial<IAuthenticatorUserSpecificAuthenticateOptions>;
+    defaultAuthenticatorUsernamelessAuthenticateOptions?: Partial<IAuthenticatorUsernamelessAuthenticateOptions>;
+    defaultEmailMagicLinkAuthenticateOptions?: Partial<IMagicLinkEmailAuthenticateOptions>;
     defaultRegisterOptions?: Partial<IRegisterOptions>;
     defaultAuthenticatorRegisterOptions?: Partial<IAuthenticatorRegisterOptions>;
     defaultWebAuthnRegisterOptions?: Partial<IWebAuthnRegisterOptions>;

@@ -35,19 +35,23 @@ export default function QrSignIn(props: IQrSignInProps) {
 
     const isDocumentVisible = useDocumentVisibility();
 
-    createEffect(on(interactiveConfiguration, () => {
-        abortController?.abort();
-        tryAuthentication();
-    }));
+    createEffect(
+        on(interactiveConfiguration, () => {
+            abortController?.abort();
+            tryAuthentication();
+        })
+    );
 
     let retryPendingAfterVisibility = false;
 
-    createEffect(on(isDocumentVisible, () => {
-        if (isDocumentVisible() && retryPendingAfterVisibility) {
-            retryPendingAfterVisibility = false;
-            tryAuthentication();
-        }
-    }));
+    createEffect(
+        on(isDocumentVisible, () => {
+            if (isDocumentVisible() && retryPendingAfterVisibility) {
+                retryPendingAfterVisibility = false;
+                tryAuthentication();
+            }
+        })
+    );
 
     const tryAuthentication = async () => {
         abortController = new AbortController();
@@ -59,11 +63,12 @@ export default function QrSignIn(props: IQrSignInProps) {
         let qrResult: QrCodeResult<AuthenticationResult>;
 
         try {
-            qrResult = await client().logInWithAuthenticatorUsernamelessAsync(
+            qrResult = await client().authenticateWithAuthenticatorUsernamelessAsync(
                 {
-                    ...interactiveConfiguration().defaultLogInOptions,
-                    ...interactiveConfiguration().defaultAuthenticatorLogInOptions,
-                    ...interactiveConfiguration().defaultAuthenticatorUsernamelessLogInOptions,
+                    ...interactiveConfiguration().defaultAuthenticateOptions,
+                    ...interactiveConfiguration().defaultAuthenticatorAuthenticateOptions,
+                    ...interactiveConfiguration()
+                        .defaultAuthenticatorUsernamelessAuthenticateOptions,
                     ...(isMobile
                         ? {
                               // Visual verify serves no purpose on mobile and is more difficult for the user because they then need to remember the code.

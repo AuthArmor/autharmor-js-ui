@@ -22,28 +22,28 @@
     cursor: pointer;
 }
 
-.form>nav {
+.form > nav {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
 }
 
-.form>nav>button {
-    padding: .875rem;
+.form > nav > button {
+    padding: 0.875rem;
     background-color: var(--aa-tab-background-color);
     color: var(--aa-tab-foreground-color);
     font-size: 1rem;
     font-weight: 800;
-    transition: background-color .2s ease-out, color .2s ease-out;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out;
 }
 
-.form>nav>button[aria-current] {
+.form > nav > button[aria-current] {
     background-color: var(--aa-tab-active-background-color);
     color: var(--aa-tab-active-foreground-color);
 }
 
-.form>nav>button:hover,
-.form>nav>button:focus-visible {
+.form > nav > button:hover,
+.form > nav > button:focus-visible {
     outline: transparent;
     background-color: var(--aa-tab-hover-background-color);
     color: var(--aa-tab-hover-foreground-color);
@@ -53,37 +53,37 @@
     padding-inline: 1rem;
 }
 
-.form .methods>.method {
+.form .methods > .method {
     padding-block: 1rem;
 }
 
-.form .methods>.separator {
+.form .methods > .separator {
     content: "Or";
     display: flex;
     align-items: center;
     gap: 1ch;
-    margin-block-end: .5rem;
+    margin-block-end: 0.5rem;
     color: var(--aa-method-separator-foreground-color);
     text-transform: uppercase;
     font-size: 1rem;
     font-weight: 600;
 }
 
-.form .methods>.separator::before,
-.form .methods>.separator::after {
+.form .methods > .separator::before,
+.form .methods > .separator::after {
     content: "";
     width: 100%;
     height: 1px;
     background-color: var(--aa-method-separator-foreground-color);
 }
 
-.form .methods>.method>.methodPrompt {
+.form .methods > .method > .methodPrompt {
     color: var(--aa-method-prompt-foreground-color);
     font-size: 1rem;
     font-weight: 600;
 }
 
-.form .methods>.method>*:not(:first-child) {
+.form .methods > .method > *:not(:first-child) {
     padding-block: 1rem;
 }
 
@@ -96,26 +96,26 @@
     background-color: var(--aa-qr-code-background-color);
 }
 
-.form .qrCodeContainer>* {
+.form .qrCodeContainer > * {
     position: absolute;
     inset: 1rem;
 }
 
-.form .qrCodeContainer>.qrCode {
+.form .qrCodeContainer > .qrCode {
     color: var(--aa-qr-code-foreground-color);
 }
 
-.form .qrCodeContainer>.qrCodeSpinner {
+.form .qrCodeContainer > .qrCodeSpinner {
     padding: 4rem;
     color: var(--aa-qr-code-foreground-color);
 }
 
-.form .qrCodeContainer>.qrCodeSuccessSpinner {
+.form .qrCodeContainer > .qrCodeSuccessSpinner {
     padding: 4rem;
     color: var(--aa-qr-code-success-foreground-color);
 }
 
-.form .qrCodeContainer>.error {
+.form .qrCodeContainer > .error {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -124,24 +124,24 @@
     color: #ffffff;
 }
 
-.form .qrCodeContainer>.error>p {
-    font-size: .875rem;
+.form .qrCodeContainer > .error > p {
+    font-size: 0.875rem;
     font-weight: 500;
     color: var(--aa-qr-code-error-foreground-color);
 }
 
-.form .qrCodeContainer>.error>button,
-.form .mobileAppContainer>.error>button {
+.form .qrCodeContainer > .error > button,
+.form .mobileAppContainer > .error > button {
     border-radius: var(--aa-control-border-radius);
-    padding: .25rem 1rem;
+    padding: 0.25rem 1rem;
     background-color: var(--aa-button-background-color);
     color: var(--aa-button-foreground-color);
-    font-size: .875rem;
+    font-size: 0.875rem;
     font-weight: 700;
-    transition: background-color .2s ease-out, color .2s ease-out;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out;
 }
 
-.form .qrCodeContainer>.error>button:hover {
+.form .qrCodeContainer > .error > button:hover {
     background-color: var(--aa-button-hover-background-color);
     color: var(--aa-button-hover-foreground-color);
 }
@@ -149,24 +149,24 @@
 .form .qrPrompt {
     margin-block-start: 1rem;
     color: var(--aa-method-instructions-foreground-color);
-    font-size: .875rem;
+    font-size: 0.875rem;
     font-weight: 500;
 }
 
 .form .verificationCodeMessage {
-    margin-block-start: .5rem;
+    margin-block-start: 0.5rem;
     color: var(--aa-method-instructions-foreground-color);
-    font-size: .875rem;
+    font-size: 0.875rem;
     font-weight: 500;
 }
 
-.form .mobileAppContainer>.error>p {
+.form .mobileAppContainer > .error > p {
     color: var(--aa-error-foreground-color);
     font-size: 1rem;
 }
 
-.form .mobileAppContainer>.error>button {
-    margin-block-start: .75rem;
+.form .mobileAppContainer > .error > button {
+    margin-block-start: 0.75rem;
 }
 
 .form .usernameCaptureForm {
@@ -175,35 +175,35 @@
     align-items: center;
 }
 
-.form .usernameCaptureForm>input {
+.form .usernameCaptureForm > input {
     align-self: stretch;
     border-radius: var(--aa-control-border-radius);
-    padding: .5rem .875rem;
+    padding: 0.5rem 0.875rem;
     background-color: var(--aa-input-background-color);
     color: var(--aa-input-foreground-color);
-    font-size: .875rem;
+    font-size: 0.875rem;
     font-weight: 400;
 }
 
-.form .usernameCaptureForm>.error {
-    margin-block-start: .5rem;
+.form .usernameCaptureForm > .error {
+    margin-block-start: 0.5rem;
     color: var(--aa-error-foreground-color);
-    font-size: .875rem;
+    font-size: 0.875rem;
 }
 
-.form .usernameCaptureForm>button[type=submit] {
+.form .usernameCaptureForm > button[type="submit"] {
     align-self: stretch;
     margin: 1rem -1rem -2rem;
-    padding: .75rem;
+    padding: 0.75rem;
     background-color: var(--aa-button-background-color);
     color: var(--aa-button-foreground-color);
     font-size: 1rem;
     font-weight: 700;
-    transition: background-color .2s ease-out, color .2s ease-out;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out;
 }
 
-.form .usernameCaptureForm>button[type=submit]:hover,
-.form .usernameCaptureForm>button[type=submit]:focus-visible {
+.form .usernameCaptureForm > button[type="submit"]:hover,
+.form .usernameCaptureForm > button[type="submit"]:focus-visible {
     outline: transparent;
     background-color: var(--aa-button-hover-background-color);
     color: var(--aa-button-hover-foreground-color);

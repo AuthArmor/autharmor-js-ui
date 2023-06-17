@@ -28,7 +28,7 @@
     position: relative;
 }
 
-.dialogContainer>.closeButton {
+.dialogContainer > .closeButton {
     position: absolute;
     inset-block-start: 0;
     inset-inline-end: 0;
@@ -41,16 +41,17 @@
     border-radius: 2ch;
     background-color: var(--aa-close-button-background-color);
     color: var(--aa-close-button-foreground-color);
-    transition: background-color .2s ease-out, color .2s ease-out;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out;
 }
 
-.dialogContainer>.closeButton:hover, .dialogContainer>.closeButton:focus-visible {
+.dialogContainer > .closeButton:hover,
+.dialogContainer > .closeButton:focus-visible {
     outline: transparent;
     background-color: var(--aa-close-button-hover-background-color);
     color: var(--aa-close-button-hover-foreground-color);
 }
 
-.dialogContainer>.closeButton>img {
+.dialogContainer > .closeButton > img {
     width: 1.5ch;
 }
 

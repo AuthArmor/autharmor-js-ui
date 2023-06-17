@@ -25,7 +25,7 @@ export function renderDialog<T>(
             cleanup();
             resolve(value);
         };
-        
+
         const handleDismissed = () => {
             cleanup();
             reject(new RequestDismissedError());

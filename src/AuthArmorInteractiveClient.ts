@@ -1,10 +1,10 @@
 import {
     AuthArmorClient,
     AuthenticationResult,
-    IAuthenticatorUserSpecificLogInOptions,
+    IAuthenticatorUserSpecificAuthenticateOptions,
     QrCodeResult,
     ApiError,
-    IMagicLinkEmailLogInOptions,
+    IMagicLinkEmailAuthenticateOptions,
     RegistrationResult,
     IAuthenticatorRegisterOptions,
     IWebAuthnRegisterOptions,
@@ -41,7 +41,7 @@ export class AuthArmorInteractiveClient {
     }
 
     /**
-     * Logs a user in, prompting them for the authentication method if necessary.
+     * Authenticates, prompting them for the authentication method if necessary.
      *
      * @param username The username of the user.
      * @param abortSignal The abort signal to use for this request.
@@ -50,23 +50,28 @@ export class AuthArmorInteractiveClient {
      *  A promise that resolves with the authentication result, or null if the authentication result is not available
      *  (e.g. the user has used an email magic link).
      */
-    public async logInAsync(
+    public async authenticateAsync(
         username: string,
         abortSignal?: AbortSignal
     ): Promise<AuthenticationResult | null> {
-        const selectedMethod = await this.selectLogInMethodAsync(username, abortSignal);
+        const selectedMethod = await this.selectAuthenticationMethodAsync(username, abortSignal);
 
         switch (selectedMethod) {
             case "authenticator": {
-                return await this.logInWithAuthenticatorAsync(username, {}, abortSignal);
+                return await this.authenticateWithAuthenticatorAsync(username, {}, abortSignal);
             }
 
             case "webAuthn": {
-                return await this.logInWithWebAuthnAsync(username, abortSignal);
+                return await this.authenticateWithWebAuthnAsync(username, abortSignal);
             }
 
             case "magicLinkEmail": {
-                await this.logInWithMagicLinkEmailAsync(username, undefined, {}, abortSignal);
+                await this.authenticateWithMagicLinkEmailAsync(
+                    username,
+                    undefined,
+                    {},
+                    abortSignal
+                );
                 return null;
             }
         }
@@ -80,12 +85,12 @@ export class AuthArmorInteractiveClient {
      *
      * @returns A promise that resolves with the authentication method.
      */
-    public async selectLogInMethodAsync(
+    public async selectAuthenticationMethodAsync(
         username: string,
         abortSignal?: AbortSignal
     ): Promise<AuthenticationMethod> {
         let methods: AvailableAuthenticationMethods =
-            await this.client.getAvailableLogInMethodsAsync(username);
+            await this.client.getAvailableAuthenticationMethodsAsync(username);
 
         if (this.configuration.permittedMethods !== undefined) {
             const permittedMethods: AvailableAuthenticationMethods = {
@@ -130,9 +135,9 @@ export class AuthArmorInteractiveClient {
      *
      * @returns A promise that resolves with the authentication result.
      */
-    public async logInWithAuthenticatorAsync(
+    public async authenticateWithAuthenticatorAsync(
         username: string,
-        options: Partial<IAuthenticatorUserSpecificLogInOptions> = {},
+        options: Partial<IAuthenticatorUserSpecificAuthenticateOptions> = {},
         abortSignal?: AbortSignal
     ): Promise<AuthenticationResult> {
         const abortController = new AbortController();
@@ -155,12 +160,12 @@ export class AuthArmorInteractiveClient {
         let qrResult: QrCodeResult<AuthenticationResult>;
 
         try {
-            qrResult = await this.client.logInWithAuthenticatorAsync(
+            qrResult = await this.client.authenticateWithAuthenticatorAsync(
                 username,
                 {
-                    ...this.configuration.defaultLogInOptions,
-                    ...this.configuration.defaultAuthenticatorLogInOptions,
-                    ...this.configuration.defaultAuthenticatorUserSpecificLogInOptions,
+                    ...this.configuration.defaultAuthenticateOptions,
+                    ...this.configuration.defaultAuthenticatorAuthenticateOptions,
+                    ...this.configuration.defaultAuthenticatorUserSpecificAuthenticateOptions,
                     ...options
                 },
                 abortController.signal
@@ -235,7 +240,7 @@ export class AuthArmorInteractiveClient {
      *
      * @returns A promise that resolves with the authentication result.
      */
-    public async logInWithWebAuthnAsync(
+    public async authenticateWithWebAuthnAsync(
         username: string,
         abortSignal?: AbortSignal
     ): Promise<AuthenticationResult> {
@@ -256,7 +261,7 @@ export class AuthArmorInteractiveClient {
         let authenticationResult: AuthenticationResult;
 
         try {
-            authenticationResult = await this.client.logInWithWebAuthnAsync(username);
+            authenticationResult = await this.client.authenticateWithWebAuthnAsync(username);
         } catch (error: unknown) {
             abortController.signal.throwIfAborted();
 
@@ -306,10 +311,10 @@ export class AuthArmorInteractiveClient {
      *
      * @returns A promise that resolves once the email was sent.
      */
-    public async logInWithMagicLinkEmailAsync(
+    public async authenticateWithMagicLinkEmailAsync(
         emailAddress: string,
         redirectUrl?: string,
-        options: Partial<IMagicLinkEmailLogInOptions> = {},
+        options: Partial<IMagicLinkEmailAuthenticateOptions> = {},
         abortSignal?: AbortSignal
     ): Promise<void> {
         const abortController = new AbortController();
@@ -337,9 +342,9 @@ export class AuthArmorInteractiveClient {
         }
 
         try {
-            await this.client.sendLoginMagicLinkEmailAsync(emailAddress, finalRedirectUrl, {
-                ...this.configuration.defaultLogInOptions,
-                ...this.configuration.defaultEmailMagicLinkLogInOptions,
+            await this.client.sendAuthenticateMagicLinkEmailAsync(emailAddress, finalRedirectUrl, {
+                ...this.configuration.defaultAuthenticateOptions,
+                ...this.configuration.defaultEmailMagicLinkAuthenticateOptions,
                 ...options
             });
         } catch (error: unknown) {
@@ -480,7 +485,7 @@ export class AuthArmorInteractiveClient {
                 username,
                 {
                     ...this.configuration.defaultRegisterOptions,
-                    ...this.configuration.defaultAuthenticatorRegisterOptions,
+                    ...this.configuration.defaultAuthenticatorAuthenticateOptions,
                     ...options
                 },
                 abortController.signal

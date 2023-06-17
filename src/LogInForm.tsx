@@ -41,7 +41,7 @@ export function LogInForm(props: ILogInFormProps) {
         let result: AuthenticationResult | null;
 
         try {
-            result = await interactiveClient().logInAsync(username, abortSignal);
+            result = await interactiveClient().authenticateAsync(username, abortSignal);
         } catch (error: unknown) {
             if (error instanceof RequestDismissedError) {
             } else if (error instanceof NoAuthenticationMethodsAvailableError) {

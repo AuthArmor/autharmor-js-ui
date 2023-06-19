@@ -58,7 +58,7 @@ stages:
     displayName: 'Deploy to Azure Artifacts'
     jobs:
     - deployment: deploy_to_artifacts
-      displayName: 'Deploy to Azure Artifcats'
+      displayName: 'Deploy to Azure Artifacts'
       environment: sdk-development
       strategy:
         runOnce:

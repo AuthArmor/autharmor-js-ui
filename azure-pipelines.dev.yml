@@ -40,6 +40,9 @@ stages:
       - script: pnpm run build
         displayName: 'Build package'
 
+      - script: mv -f .dev.npmrc .npmrc
+        displayName: 'Install development .npmrc file'
+
       - task: CopyFiles@2
         displayName: 'Stage artifact files'
         inputs:

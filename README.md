@@ -21,6 +21,25 @@ pnpm add @autharmor/sdk @autharmor/ui
 yarn add @autharmor/sdk @autharmor/ui
 ```
 
+You can then import the CSS styles from `node_modules/@autharmor/ui/dist/esm/index.css`.
+
+In projects without an NPM package manager, we also serve an IIFE bundle from our CDN which you can load as follows:
+
+```html
+<script src="https://cdn.autharmor.com/scripts/autharmor-jsclient-sdk/v4.0.0/autharmor-sdk.js"></script>
+<script src="https://cdn.autharmor.com/scripts/autharmor-jsclient-sdk/v4.0.0/autharmor-sdk-ui.js"></script>
+```
+
+```html
+<link rel="stylesheet" href="https://cdn.autharmor.com/scripts/autharmor-jsclient-sdk/v4.0.0/autharmor.css">
+```
+
+This module's exports will then be available in the `authArmorUi` global variable. Instead of `import` statements, you can use destructuring:
+
+```js
+const { AuthArmorInteractiveClient } = authArmorUi;
+```
+
 ## Initial Setup
 
 In order to use the functionality offered by this package, you must first create an `AuthArmorClient` instance. That class and the instructions for doing that are part of the [@autharmor/sdk](https://github.com/AuthArmor/autharmor-jsclient-sdk).
@@ -40,6 +59,11 @@ To create an `AuthArmorInteractiveClient`, pass it your `AuthArmorClient` as the
 ```ts
 const authArmorInteractiveClient = new AuthArmorInteractiveClient(authArmorClient, {});
 ```
+
+> You must import `AuthArmorinteractiveClient` at the top of your file:
+> ```ts
+> import { AuthArmorInteractiveClient } from "@autharmor/ui";
+> ```
 
 ### Logging a User In
 

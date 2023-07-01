@@ -303,13 +303,17 @@ export class AuthArmorInteractiveClient {
      *
      * @param username The username of the user.
      * @param redirectUrl
-     *  The URL that's sent to the user's email.
-     *  If this is blank, the default one configured for this interactive client will be used.
-     *  The validation token and request ID will be added as query parameters with the names `auth_validation_token` and `auth_request_id` respectively.
+     *  The URL that's sent to the user's email. If this is blank, the default one configured for
+     *  this interactive client will be used.
      * @param options The options to use for this request.
      * @param abortSignal The abort signal to use for this request.
      *
      * @returns A promise that resolves once the email was sent.
+     * 
+     * @remarks
+     * The user will be redirected to the specified URL after they have logged in. The validation
+     * token and request ID will be added as query parameters with the names
+     * `auth_validation_token` and `auth_request_id` respectively.
      */
     public async authenticateWithMagicLinkEmailAsync(
         emailAddress: string,
@@ -627,13 +631,20 @@ export class AuthArmorInteractiveClient {
      *
      * @param username The username of the user.
      * @param redirectUrl
-     *  The URL that's sent to the user's email.
-     *  If this is blank, the default one configured for this interactive client will be used.
-     *  The validation token will be added as a query parameter with the name `registration_validation_token`.
+     *  The URL that's sent to the user's email. If this is blank, the default one configured for
+     *  this interactive client will be used.
      * @param options The options to use for this request.
      * @param abortSignal The abort signal to use for this request.
      *
      * @returns A promise that resolves once the email was sent.
+     * 
+     * @remarks
+     * The user will be redirected to the specified URL after they have logged in. The URL will
+     * contain a query string parameter named `registration_validation_token` that can be used to
+     * validate the registration.
+     * 
+     * The account will not be created in AuthArmor's database until the registration is validated
+     * from the server.
      */
     public async registerWithMagicLinkEmailAsync(
         emailAddress: string,

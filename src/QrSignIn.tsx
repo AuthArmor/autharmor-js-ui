@@ -37,7 +37,6 @@ export default function QrSignIn(props: IQrSignInProps) {
 
     createEffect(
         on(interactiveConfiguration, () => {
-            abortController?.abort();
             tryAuthentication();
         })
     );
@@ -54,6 +53,8 @@ export default function QrSignIn(props: IQrSignInProps) {
     );
 
     const tryAuthentication = async () => {
+        abortController?.abort();
+
         abortController = new AbortController();
         const abortSignal = abortController.signal;
 
@@ -115,6 +116,8 @@ export default function QrSignIn(props: IQrSignInProps) {
         if (abortSignal.aborted) {
             return;
         }
+
+        abortController = null;
 
         setSignInUrl(null);
         setVerificationCode(null);

@@ -62,3 +62,31 @@ stages:
                 customEndpoint: 'npm publish connection'
             - script: npm publish --access public
               workingDirectory: $(Pipeline.Workspace)/autharmor-sdk-ui/
+
+  - stage: deploy_storage
+    displayName: 'Deploy to Azure Storage'
+    dependsOn: build
+    jobs:
+    - deployment: deploy_to_storage
+      displayName: 'Deploy to Azure Storage'
+      environment: sdk-production
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - download: current
+              artifact: autharmor-sdk-ui
+            - script: echo "console.log('##vso[task.setvariable variable=PackageVersion;]' + require('./package.json').version)" | node
+              displayName: 'Extract package version'
+              workingDirectory: $(Pipeline.Workspace)/autharmor-sdk-ui/
+            - task: AzureCLI@2
+              inputs:
+                azureSubscription: 'Auth Armor Azure Prod Subscription'
+                scriptType: bash
+                scriptLocation: inlineScript
+                inlineScript: |
+                  az storage blob upload-batch \
+                    --source "$(Pipeline.Workspace)/autharmor-sdk-ui/dist/" \
+                    --account-name cdnstroageaarmor \
+                    --destination scripts \
+                    --destination-path autharmor-ui/$(PackageVersion)

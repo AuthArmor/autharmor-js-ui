@@ -14,7 +14,7 @@
             "node": "./dist/cjs/index.cjs",
             "require": "./dist/cjs/index.cjs"
         },
-        "./index.css": "./dist/esm/index.css"
+        "./autharmor.css": "./dist/esm/autharmor.css"
     },
     "license": "MIT",
     "homepage": "https://github.com/AuthArmor/autharmor-jsclient-sdk-ui#readme",

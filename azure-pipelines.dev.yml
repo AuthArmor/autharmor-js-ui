@@ -54,7 +54,7 @@ stages:
           targetFolder: $(Build.ArtifactStagingDirectory)
 
       - publish: $(Build.ArtifactStagingDirectory)
-        artifact: autharmor-sdk-ui-ui
+        artifact: autharmor-sdk-ui
         displayName: 'Publish package'
 
   - stage: deploy
@@ -68,9 +68,37 @@ stages:
           deploy:
             steps:
             - download: current
-              artifact: autharmor-sdk-ui-ui
+              artifact: autharmor-sdk-ui
             - task: npmAuthenticate@0
               inputs:
-                workingFile: $(Pipeline.Workspace)/autharmor-sdk-ui-ui/.npmrc
+                workingFile: $(Pipeline.Workspace)/autharmor-sdk-ui/.npmrc
             - script: npm publish
-              workingDirectory: $(Pipeline.Workspace)/autharmor-sdk-ui-ui/
+              workingDirectory: $(Pipeline.Workspace)/autharmor-sdk-ui/
+
+  - stage: deploy_storage
+    displayName: 'Deploy to Azure Storage'
+    dependsOn: build
+    jobs:
+    - deployment: deploy_to_storage
+      displayName: 'Deploy to Azure Storage'
+      environment: sdk-development
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - download: current
+              artifact: autharmor-sdk-ui
+            - script: echo "console.log('##vso[task.setvariable variable=PackageVersion;]' + require('./package.json').version)" | node
+              displayName: 'Extract package version'
+              workingDirectory: $(Pipeline.Workspace)/autharmor-sdk-ui/
+            - task: AzureCLI@2
+              inputs:
+                azureSubscription: 'Auth Armor Azure Dev Subscription'
+                scriptType: bash
+                scriptLocation: inlineScript
+                inlineScript: |
+                  az storage blob upload-batch \
+                    --source "$(Pipeline.Workspace)/autharmor-sdk-ui/dist/" \
+                    --account-name dvdtstscripts \
+                    --destination scripts \
+                    --destination-path autharmor-ui/$(PackageVersion)

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>AuthArmor Vanilla JS Sample</title>
+
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link
+            rel="stylesheet"
+            href="https://cdn.autharmor.com/scripts/autharmor-ui/4.0.0-alpha.5/global/autharmor.css"
+        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+
+        <script src="https://cdn.autharmor.com/scripts/autharmor-js/4.0.0-alpha.5/global/autharmor.js"></script>
+        <script src="https://cdn.autharmor.com/scripts/autharmor-ui/4.0.0-alpha.5/global/autharmor-ui.js"></script>
+
+        <script src="/js/script.js"></script>
+
+        <script>
+            window.addEventListener("load", () => {
+                const form = document.getElementById("auth-form");
+
+                form.client = authArmorClient;
+                form.interactiveConfig = authArmorInteractiveConfig;
+
+                form.addEventListener("logIn", handleLogIn);
+                form.addEventListener("register", handleRegister);
+
+                const applyBtn = document.getElementById("apply-btn");
+
+                const allowLogInInput = document.getElementById("allow-log-in-input");
+                const allowRegisterInput = document.getElementById("allow-register-input");
+                const allowAuthenticatorInput = document.getElementById("allow-authenticator-input");
+                const allowMagicLinkEmailInput = document.getElementById("allow-magic-link-email-input");
+                const allowWebAuthnInput = document.getElementById("allow-webauthn-input");
+                const allowUsernamelessInput = document.getElementById("allow-usernameless-input");
+
+                applyBtn.addEventListener("click", () => {
+                    form.enableLogIn = allowLogInInput.checked;
+                    form.enableRegistration = allowRegisterInput.checked;
+                    form.interactiveConfig.permittedMethods = {
+                        authenticator: allowAuthenticatorInput.checked,
+                        magicLinkEmail: allowMagicLinkEmailInput.checked,
+                        webAuthn: allowWebAuthnInput.checked
+                    };
+                    form.enableUsernameless = allowUsernamelessInput.checked;
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <img src="/img/logo.png" width="28" height="28" />
+                    <p class="has-text-weight-bold ml-1">Auth Armor Vanilla JS Sample</p>
+                </a>
+
+                <a
+                    role="button"
+                    class="navbar-burger"
+                    aria-label="menu"
+                    aria-expanded="false"
+                    data-target="navbarBasicExample"
+                >
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="/">Home</a>
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">Scenarios</a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="/imperative-auth.html">Imperative authentication</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-primary" href="/sign-up-log-in.html">
+                                <strong>Sign up or log in</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <section class="section">
+            <h1 class="title">Authentication form</h1>
+            <p id="auth-status">
+                The AuthArmor UI supports rendering a form that allows the user to log in or register. It emits events when that happens with the result of the action which can be sent to the server for further processing and to establish a session.
+            </p>
+        </section>
+
+        <section class="section columns">
+            <autharmor-form
+                id="auth-form"
+                class="column"
+            ></autharmor-form>
+            <div class="column is-three-fifths">
+                <div class="field">
+                    <label for="" class="label">Allowed Actions</label>
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" id="allow-log-in-input" checked>
+                            Log in
+                        </label>
+                    </div>
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" id="allow-register-input" checked>
+                            Register
+                        </label>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="" class="label">Allowed Methods</label>
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" id="allow-authenticator-input" checked>
+                            Authenticator
+                        </label>
+                    </div>
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" id="allow-magic-link-email-input" checked>
+                            Magic link email
+                        </label>
+                    </div>
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" id="allow-webauthn-input" checked>
+                            WebAuthn
+                        </label>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="" class="label">Miscellaneous</label>
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" id="allow-usernameless-input" checked>
+                            Allow usernameless login
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                      <button id="apply-btn" class="button is-link">Apply</button>
+                    </div>
+                  </div>
+            </div>
+        </section>
+    </body>
+</html>

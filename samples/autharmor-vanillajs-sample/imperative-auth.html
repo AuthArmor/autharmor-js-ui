@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>AuthArmor Vanilla JS Sample</title>
+
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link
+            rel="stylesheet"
+            href="https://cdn.autharmor.com/scripts/autharmor-ui/4.0.0-alpha.5/global/autharmor.css"
+        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+
+        <script src="https://cdn.autharmor.com/scripts/autharmor-js/4.0.0-alpha.5/global/autharmor.js"></script>
+        <script src="https://cdn.autharmor.com/scripts/autharmor-ui/4.0.0-alpha.5/global/autharmor-ui.js"></script>
+
+        <script src="/js/script.js"></script>
+
+        <script>
+            const { AuthArmorInteractiveClient } = authArmorUi;
+
+            window.addEventListener("load", () => {
+                const authArmorInteractiveClient = new AuthArmorInteractiveClient(authArmorClient, {
+                    ...authArmorInteractiveConfig,
+                    defaultEmailMagicLinkLogInRedirectUrl: `${frontendBaseUrl}/imperative-auth.html`,
+                    defaultEmailMagicLinkRegisterRedirectUrl: `${frontendBaseUrl}/imperative-auth.html`
+                });
+
+                const usernameInput = document.getElementById("username-input");
+
+                const logInButton = document.getElementById("log-in-btn");
+                const registerButton = document.getElementById("register-btn");
+
+                const serverMessageSection = document.getElementById("server-msg-section");
+                const serverMessagePre = document.getElementById("server-msg-pre");
+
+                const errorMessageParagraph = document.getElementById("error-msg-p");
+
+                const updateGreetingMessage = async (token) => {
+                    const greeting = await getGreetingWithToken(token);
+                    serverMessagePre.innerText = greeting;
+
+                    serverMessageSection.style.display = null;
+                };
+
+                logInButton.addEventListener("click", async () => {
+                    const username = usernameInput.value;
+
+                    let authenticationResult;
+
+                    try {
+                        authenticationResult = await authArmorInteractiveClient.authenticateAsync(
+                            username
+                        );
+                    } catch (error) {
+                        const errorMessage = error.message ?? "" + error;
+                        errorMessageParagraph.innerText = errorMessage;
+
+                        return;
+                    }
+
+                    const token = await fetchTokenFromAuthentication(authenticationResult);
+
+                    await updateGreetingMessage(token);
+                });
+
+                registerButton.addEventListener("click", async () => {
+                    const username = usernameInput.value;
+
+                    let registrationResult;
+
+                    try {
+                        registrationResult = await authArmorInteractiveClient.registerAsync(
+                            username
+                        );
+                    } catch (error) {
+                        const errorMessage = error.message ?? "" + error;
+                        errorMessageParagraph.innerText = errorMessage;
+
+                        return;
+                    }
+
+                    const token = await fetchTokenFromRegistration(registrationResult);
+
+                    await updateGreetingMessage(token);
+                });
+
+                const queryParams = new URLSearchParams(window.location.search);
+
+                const checkAuthenticateTokenFromQuery = async () => {
+                    const requestId = queryParams.get("auth_request_id");
+                    const validationToken = queryParams.get("auth_validation_token");
+
+                    if (requestId === null || validationToken === null) {
+                        return;
+                    }
+
+                    const token = await fetchTokenFromAuthentication({
+                        requestId,
+                        authenticationMethod: "magicLinkEmail",
+                        validationToken
+                    });
+
+                    await updateGreetingMessage(token);
+                };
+
+                const checkRegisterTokenFromQuery = async () => {
+                    const validationToken = queryParams.get("registration_validation_token");
+
+                    if (validationToken === null) {
+                        return;
+                    }
+
+                    const token = await claimMagicLinkEmailRegistration(validationToken);
+
+                    await updateGreetingMessage(token);
+                };
+
+                checkAuthenticateTokenFromQuery();
+                checkRegisterTokenFromQuery();
+            });
+        </script>
+    </head>
+    <body>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <img src="/img/logo.png" width="28" height="28" />
+                    <p class="has-text-weight-bold ml-1">Auth Armor Vanilla JS Sample</p>
+                </a>
+
+                <a
+                    role="button"
+                    class="navbar-burger"
+                    aria-label="menu"
+                    aria-expanded="false"
+                    data-target="navbarBasicExample"
+                >
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="/">Home</a>
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">Scenarios</a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="/imperative-auth.html"
+                                >Imperative authentication</a
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-primary" href="/sign-up-log-in.html">
+                                <strong>Sign up or log in</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <section class="section">
+            <h1 class="title">Imperative authentication</h1>
+            <p id="auth-status">
+                The AuthArmor UI supports imperative authentication provided a username which is
+                ideal for two-factor authentication cases. For example, before a user is authorized
+                to withdraw coins off a cryptocurrency exchange, we might request an authentication
+                through the code and only authorize the withdrawal once that succeeds.
+            </p>
+        </section>
+
+        <section class="section">
+            <div class="field">
+                <label for="" class="label">Username</label>
+                <div class="control">
+                    <input
+                        type="text"
+                        id="username-input"
+                        class="input"
+                        placeholder="hello@example.com"
+                    />
+                </div>
+            </div>
+
+            <div class="field is-grouped">
+                <div class="control">
+                    <button id="log-in-btn" class="button is-link">Authenticate</button>
+                </div>
+                <div class="control">
+                    <button id="register-btn" class="button is-link is-light">Register</button>
+                </div>
+            </div>
+
+            <div class="field">
+                <p id="error-msg-p" class="control has-text-danger"></p>
+            </div>
+        </section>
+
+        <section id="server-msg-section" class="section" style="display: none">
+            <p>This message is retrieved from the server:</p>
+            <pre id="server-msg-pre" class="mt-2"></pre>
+        </section>
+    </body>
+</html>

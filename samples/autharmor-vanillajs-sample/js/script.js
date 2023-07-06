@@ -116,3 +116,13 @@ async function getGreetingWithToken(token) {
 
     return message;
 }
+
+window.addEventListener("load", () => {
+    const navbarToggler = document.getElementById("navbar-toggler");
+    const navbarMenu = document.getElementById("navbar-menu");
+
+    navbarToggler.addEventListener("click", () => {
+        navbarToggler.classList.toggle("is-active");
+        navbarMenu.classList.toggle("is-active");
+    });
+});

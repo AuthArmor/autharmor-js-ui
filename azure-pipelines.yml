@@ -89,4 +89,4 @@ stages:
                     --source "$(Pipeline.Workspace)/autharmor-sdk-ui/dist/" \
                     --account-name cdnstroageaarmor \
                     --destination scripts \
-                    --destination-path autharmor-ui/$(PackageVersion)
+                    --destination-path autharmor-js-ui/$(PackageVersion)

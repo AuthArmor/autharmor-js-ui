@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -17,8 +17,8 @@ dependencies:
 
 devDependencies:
   '@autharmor/sdk':
-    specifier: link:..\autharmor-jsclient-sdk
-    version: link:../autharmor-jsclient-sdk
+    specifier: link:..\autharmor-js
+    version: link:../autharmor-js
   '@babel/preset-env':
     specifier: ^7.22.2
     version: 7.22.2(@babel/core@7.21.4)

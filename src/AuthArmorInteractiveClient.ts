@@ -309,7 +309,7 @@ export class AuthArmorInteractiveClient {
      * @param abortSignal The abort signal to use for this request.
      *
      * @returns A promise that resolves once the email was sent.
-     * 
+     *
      * @remarks
      * The user will be redirected to the specified URL after they have logged in. The validation
      * token and request ID will be added as query parameters with the names
@@ -336,7 +336,7 @@ export class AuthArmorInteractiveClient {
         setStatusMessage(this.tt.statusDialog.magicLinkEmail.logIn.status.sending);
 
         const finalRedirectUrl =
-            redirectUrl ?? this.configuration.defaultEmailMagicLinkLogInRedirectUrl;
+            redirectUrl ?? this.configuration.defaultMagicLinkEmailLogInRedirectUrl;
 
         if (finalRedirectUrl === undefined) {
             setStatusMessage(this.tt.statusDialog.magicLinkEmail.logIn.status.unknownFailed);
@@ -348,7 +348,7 @@ export class AuthArmorInteractiveClient {
         try {
             await this.client.sendAuthenticateMagicLinkEmailAsync(emailAddress, finalRedirectUrl, {
                 ...this.configuration.defaultAuthenticateOptions,
-                ...this.configuration.defaultEmailMagicLinkAuthenticateOptions,
+                ...this.configuration.defaultMagicLinkEmailAuthenticateOptions,
                 ...options
             });
         } catch (error: unknown) {
@@ -637,12 +637,12 @@ export class AuthArmorInteractiveClient {
      * @param abortSignal The abort signal to use for this request.
      *
      * @returns A promise that resolves once the email was sent.
-     * 
+     *
      * @remarks
      * The user will be redirected to the specified URL after they have logged in. The URL will
      * contain a query string parameter named `registration_validation_token` that can be used to
      * validate the registration.
-     * 
+     *
      * The account will not be created in AuthArmor's database until the registration is validated
      * from the server.
      */
@@ -667,7 +667,7 @@ export class AuthArmorInteractiveClient {
         setStatusMessage(this.tt.statusDialog.magicLinkEmail.register.status.sending);
 
         const finalRedirectUrl =
-            redirectUrl ?? this.configuration.defaultEmailMagicLinkRegisterRedirectUrl;
+            redirectUrl ?? this.configuration.defaultMagicLinkEmailRegisterRedirectUrl;
 
         if (finalRedirectUrl === undefined) {
             setStatusMessage(this.tt.statusDialog.magicLinkEmail.register.status.unknownFailed);
@@ -679,7 +679,7 @@ export class AuthArmorInteractiveClient {
         try {
             await this.client.sendRegisterMagicLinkEmailAsync(emailAddress, finalRedirectUrl, {
                 ...this.configuration.defaultRegisterOptions,
-                ...this.configuration.defaultEmailMagicLinkRegisterOptions,
+                ...this.configuration.defaultMagicLinkEmailRegisterOptions,
                 ...options
             });
         } catch (error: unknown) {

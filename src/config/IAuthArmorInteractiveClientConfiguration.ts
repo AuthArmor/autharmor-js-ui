@@ -19,14 +19,14 @@ export interface IAuthArmorInteractiveClientConfiguration {
     defaultAuthenticatorAuthenticateOptions?: Partial<IAuthenticatorAuthenticateOptions>;
     defaultAuthenticatorUserSpecificAuthenticateOptions?: Partial<IAuthenticatorUserSpecificAuthenticateOptions>;
     defaultAuthenticatorUsernamelessAuthenticateOptions?: Partial<IAuthenticatorUsernamelessAuthenticateOptions>;
-    defaultEmailMagicLinkAuthenticateOptions?: Partial<IMagicLinkEmailAuthenticateOptions>;
+    defaultMagicLinkEmailAuthenticateOptions?: Partial<IMagicLinkEmailAuthenticateOptions>;
     defaultRegisterOptions?: Partial<IRegisterOptions>;
     defaultAuthenticatorRegisterOptions?: Partial<IAuthenticatorRegisterOptions>;
     defaultWebAuthnRegisterOptions?: Partial<IWebAuthnRegisterOptions>;
-    defaultEmailMagicLinkRegisterOptions?: Partial<IMagicLinkEmailRegisterOptions>;
+    defaultMagicLinkEmailRegisterOptions?: Partial<IMagicLinkEmailRegisterOptions>;
 
-    defaultEmailMagicLinkLogInRedirectUrl?: string;
-    defaultEmailMagicLinkRegisterRedirectUrl?: string;
+    defaultMagicLinkEmailLogInRedirectUrl?: string;
+    defaultMagicLinkEmailRegisterRedirectUrl?: string;
 
     uiOptions?: IUiOptions;
 

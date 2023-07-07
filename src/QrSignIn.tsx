@@ -80,6 +80,10 @@ export default function QrSignIn(props: IQrSignInProps) {
                 abortSignal
             );
         } catch (error: unknown) {
+            if (abortSignal.aborted) {
+                return;
+            }
+
             setIsLoading(false);
 
             if (!(error instanceof ApiError)) {
@@ -90,6 +94,10 @@ export default function QrSignIn(props: IQrSignInProps) {
 
             setError(error.message);
 
+            return;
+        }
+
+        if (abortSignal.aborted) {
             return;
         }
 

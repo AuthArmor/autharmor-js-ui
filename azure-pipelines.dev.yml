@@ -101,4 +101,4 @@ stages:
                     --source "$(Pipeline.Workspace)/autharmor-sdk-ui/dist/" \
                     --account-name dvdtstscripts \
                     --destination scripts \
-                    --destination-path autharmor-ui/$(PackageVersion)
+                    --destination-path autharmor-js-ui/$(PackageVersion)

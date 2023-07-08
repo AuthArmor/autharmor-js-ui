@@ -1,6 +1,6 @@
-# AuthArmor Javascript Client-Side SDK UI
+# Auth Armor Javascript Client-Side SDK UI
 
-AuthArmor provides a SaaS solution to authenticate your users exclusively using passwordless authentication methods such as WebAuthn, magic links and the proprietary AuthArmor mobile app.
+Auth Armor provides a SaaS solution to authenticate your users exclusively using passwordless authentication methods such as WebAuthn, magic links and the proprietary Auth Armor mobile app.
 
 This package provides a flexible and full-featured UI around the [@autharmor/sdk](https://github.com/AuthArmor/autharmor-jsclient-sdk) package. It provides a Web Components-based form component that can be used to log in and register users and an interactive client interface that can be used for imperatively launching login or registration requests (such as for two-factor authentication).
 
@@ -77,7 +77,7 @@ The user will be prompted to select their log in method (if applicable—i.e., t
 
 In most cases, the `AuthenticationResult` will be returned to you. This type is part of the [@autharmor/sdk](https://github.com/AuthArmor/autharmor-jsclient-sdk) package and you can refer to its documentation to see how you would use that result.
 
-> AuthArmor will not store the authentication state for you. You _must_ pass it to your backend and process it for authentication to be useful.
+> Auth Armor will not store the authentication state for you. You _must_ pass it to your backend and process it for authentication to be useful.
 
 However, if the nature of the authentication means that the user will not be authenticated on the same session, `null` will be returned instead. Currently, this applies to email magic link authentication: the user will get authenticated on the tab that opens once they click the link in the email, _not_ on the tab where the authentication request originated. The authentication result will be available on the target page as query string parameters in the URL.
 
@@ -166,10 +166,10 @@ For an example translation table, see [`defaultTranslationTable`](./src/i18n/tra
 
 The following properties and attributes are available on `autharmor-form` components:
 
-| **Property**         | **Attribute**         | **Type**                          | **Default** | **Description**                                                        |
-|----------------------|-----------------------|-----------------------------------|-------------|------------------------------------------------------------------------|
-| `client`             | N/A                   | `AuthArmorClient`                 | `null`      | The `AuthArmorClient` to use for communicating with the AuthArmor API. |
-| `interactiveConfig`  | N/A                   | `IInteractiveClientConfiguration` | `{}`        | The configuration to use for this interactive client.                  |
-| `enableLogIn`        | `enable-log-in`       | `boolean`                         | `true`      | Whether to allow users to log in with this form or not.                |
-| `enableRegistration` | `enable-registration` | `boolean`                         | `true`      | Whether to allow users to register with this form or not.              |
-| `enableUsernameless` | `enable-usernameless` | `boolean`                         | `true`      | Whether to display a usernameless QR code for logging in or not.       |
+| **Property**         | **Attribute**         | **Type**                          | **Default** | **Description**                                                         |
+|----------------------|-----------------------|-----------------------------------|-------------|-------------------------------------------------------------------------|
+| `client`             | N/A                   | `AuthArmorClient`                 | `null`      | The `AuthArmorClient` to use for communicating with the Auth Armor API. |
+| `interactiveConfig`  | N/A                   | `IInteractiveClientConfiguration` | `{}`        | The configuration to use for this interactive client.                   |
+| `enableLogIn`        | `enable-log-in`       | `boolean`                         | `true`      | Whether to allow users to log in with this form or not.                 |
+| `enableRegistration` | `enable-registration` | `boolean`                         | `true`      | Whether to allow users to register with this form or not.               |
+| `enableUsernameless` | `enable-usernameless` | `boolean`                         | `true`      | Whether to display a usernameless QR code for logging in or not.        |

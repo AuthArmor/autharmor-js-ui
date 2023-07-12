@@ -98,7 +98,7 @@
 
 .form .qrCodeContainer > * {
     position: absolute;
-    inset: 1rem;
+    padding: 1rem;
 }
 
 .form .qrCodeContainer > .qrCode {

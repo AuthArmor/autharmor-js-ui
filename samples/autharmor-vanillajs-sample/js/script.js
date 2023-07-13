@@ -9,8 +9,8 @@ var authArmorClientConfig = {
 };
 
 var authArmorInteractiveConfig = {
-    defaultEmailMagicLinkLogInRedirectUrl: `${frontendBaseUrl}/`,
-    defaultEmailMagicLinkRegisterRedirectUrl: `${frontendBaseUrl}/`
+    defaultMagicLinkEmailLogInRedirectUrl: `${frontendBaseUrl}/`,
+    defaultMagicLinkEmailRegisterRedirectUrl: `${frontendBaseUrl}/`
 };
 
 var authArmorClient = new AuthArmorClient(authArmorClientConfig);

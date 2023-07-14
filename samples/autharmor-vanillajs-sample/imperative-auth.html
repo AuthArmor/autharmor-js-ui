@@ -60,6 +60,10 @@
                         return;
                     }
 
+                    if (authenticationResult === null || !authenticationResult.succeeded) {
+                        return;
+                    }
+
                     const token = await fetchTokenFromAuthentication(authenticationResult);
 
                     await updateGreetingMessage(token);
@@ -78,6 +82,10 @@
                         const errorMessage = error.message ?? "" + error;
                         errorMessageParagraph.innerText = errorMessage;
 
+                        return;
+                    }
+
+                    if (registrationResult === null || !registrationResult.succeeded) {
                         return;
                     }
 

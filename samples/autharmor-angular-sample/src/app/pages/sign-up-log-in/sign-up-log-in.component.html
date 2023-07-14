@@ -1,0 +1,12 @@
+<section class="section columns">
+    <autharmor-form
+        id="auth-form"
+        class="column"
+        [client]="authArmorClient"
+        [interactiveConfig]="authArmorInteractiveClientConfig"
+        (logIn)="onLogIn($any($event))"
+        (register)="onRegister($any($event))"
+    ></autharmor-form>
+    <div class="column is-three-fifths">
+    </div>
+</section>

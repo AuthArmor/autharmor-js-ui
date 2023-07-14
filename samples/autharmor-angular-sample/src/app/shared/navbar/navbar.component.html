@@ -1,0 +1,45 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <img src="/assets/img/logo.png" width="28" height="28" />
+            <p class="has-text-weight-bold ml-1">Auth Armor Angular Sample</p>
+        </a>
+
+        <button
+            id="navbar-toggler"
+            class="navbar-burger"
+            aria-label="menu"
+            aria-expanded="false"
+        >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </button>
+    </div>
+
+    <div id="navbar-menu" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" [routerLink]="['/']">Home</a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">Scenarios</a>
+
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" [routerLink]="['/imperative-auth']"
+                        >Imperative authentication</a
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-primary" [routerLink]="['/sign-up-log-in']">
+                        <strong>Sign up or log in</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

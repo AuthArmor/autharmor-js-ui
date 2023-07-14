@@ -1,0 +1,46 @@
+<section class="section">
+    <h1 class="title">Imperative authentication</h1>
+    <p>
+        The AuthArmor UI supports imperative authentication provided a username which is ideal for
+        two-factor authentication cases. For example, before a user is authorized to withdraw coins
+        off a cryptocurrency exchange, we might request an authentication through the code and only
+        authorize the withdrawal once that succeeds.
+    </p>
+</section>
+
+<section class="section">
+    <div class="field">
+        <label for="username-input" class="label">Username</label>
+        <div class="control">
+            <input
+                type="text"
+                id="username-input"
+                class="input"
+                placeholder="hello@example.com"
+                #username
+            />
+        </div>
+    </div>
+
+    <div class="field is-grouped">
+        <div class="control">
+            <button (click)="authenticate(username.value)" class="button is-link">
+                Authenticate
+            </button>
+        </div>
+        <div class="control">
+            <button (click)="register(username.value)" class="button is-link is-light">
+                Register
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="error !== null" class="field">
+        <p class="control has-text-danger">{{ error }}</p>
+    </div>
+</section>
+
+<section *ngIf="serverMessage !== null" class="section">
+    <p>This message is retrieved from the server:</p>
+    <pre class="mt-2">{{ serverMessage }}</pre>
+</section>

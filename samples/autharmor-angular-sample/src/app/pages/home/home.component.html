@@ -1,0 +1,19 @@
+<section class="section">
+    <h1 class="title">Welcome to the AuthArmor Angular Sample!</h1>
+
+    <ng-container *ngIf="isAuthenticated$ | async; else unauthenticatedTemplate">
+        <p *ngIf="greeting$ | async as greeting; else greetingLoadingTemplate">
+            {{ greeting }}
+        </p>
+
+        <ng-template #greetingLoadingTemplate>
+            <p>You are logged in. Please wait while we retrieve your greeting...</p>
+        </ng-template>
+
+        <button class="button is-danger is-light mt-2" (click)="logOut()">Log out</button>
+    </ng-container>
+
+    <ng-template #unauthenticatedTemplate>
+        <p>You are not logged in.</p>
+    </ng-template>
+</section>

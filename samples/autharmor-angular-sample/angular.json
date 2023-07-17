@@ -52,7 +52,7 @@
                         "tsConfig": "tsconfig.app.json",
                         "assets": ["src/favicon.ico", "src/assets"],
                         "styles": [
-                            "./node_modules/@autharmor/ui/dist/esm/autharmor.css",
+                            "./node_modules/@autharmor/autharmor-js-ui/dist/esm/autharmor-js-ui.css",
                             "./node_modules/bulma/css/bulma.min.css"
                         ],
                         "scripts": []

@@ -1,10 +1,18 @@
 import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { AuthArmorInteractiveClient, IAuthArmorInteractiveClientConfiguration } from "@autharmor/ui";
+import {
+    ApiError,
+    AuthArmorClient,
+    AuthenticationResult,
+    RegistrationResult
+} from "@autharmor/autharmor-js";
+import {
+    AuthArmorInteractiveClient,
+    IAuthArmorInteractiveClientConfiguration
+} from "@autharmor/autharmor-js-ui";
 import { Subscription, filter, firstValueFrom, map, merge, switchMap } from "rxjs";
 import { SampleBackendService } from "src/app/services/sample-backend.service";
-import { ApiError, AuthArmorClient, AuthenticationResult, RegistrationResult } from "@autharmor/sdk";
 import { ActivatedRoute } from "@angular/router";
 import { LogInRequest } from "src/app/api-models/log-in.request";
 import { RegisterWithMagicLinkRequest } from "src/app/api-models/register-with-magic-link.request";

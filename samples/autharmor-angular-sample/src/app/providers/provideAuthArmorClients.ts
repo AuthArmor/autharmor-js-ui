@@ -1,9 +1,6 @@
 import { InjectionToken, Provider } from "@angular/core";
-import { AuthArmorClient } from "@autharmor/sdk";
-import {
-    AuthArmorInteractiveClient,
-    IAuthArmorInteractiveClientConfiguration
-} from "@autharmor/ui";
+import { AuthArmorClient } from "@autharmor/autharmor-js";
+import { IAuthArmorInteractiveClientConfiguration } from "@autharmor/autharmor-js-ui";
 import { environment } from "src/config/environment";
 
 export const AUTH_ARMOR_INTERACTIVE_CLIENT_CONFIG_TOKEN =

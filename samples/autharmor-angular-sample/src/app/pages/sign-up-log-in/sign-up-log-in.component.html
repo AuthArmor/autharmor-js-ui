@@ -4,9 +4,67 @@
         class="column"
         [client]="authArmorClient"
         [interactiveConfig]="authArmorInteractiveClientConfig"
+        [enableLogIn]="allowLogIn"
+        [enableRegistration]="allowRegister"
+        [enableUsernameless]="allowUsernamelessAuth"
         (logIn)="onLogIn($any($event))"
         (register)="onRegister($any($event))"
     ></autharmor-form>
-    <div class="column is-three-fifths">
-    </div>
+    <form
+        class="column is-three-fifths"
+        [formGroup]="preferencesForm"
+        (ngSubmit)="applyPreferences()"
+    >
+        <div class="field" formGroupName="allowedActions">
+            <p class="label">Allowed Actions</p>
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" formControlName="logIn" checked />
+                    Log in
+                </label>
+            </div>
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" formControlName="register" checked />
+                    Register
+                </label>
+            </div>
+        </div>
+        <div class="field" formGroupName="allowedMethods">
+            <p class="label">Allowed Methods</p>
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" formControlName="authenticator" checked />
+                    Authenticator
+                </label>
+            </div>
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" formControlName="magicLinkEmail" checked />
+                    Magic link email
+                </label>
+            </div>
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" formControlName="webAuthn" checked />
+                    WebAuthn
+                </label>
+            </div>
+        </div>
+        <div class="field" formGroupName="miscellaneous">
+            <p class="label">Miscellaneous</p>
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" formControlName="usernamelessAuth" checked />
+                    Allow usernameless login
+                </label>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <button type="submit" class="button is-link">Apply</button>
+            </div>
+        </div>
+    </form>
 </section>

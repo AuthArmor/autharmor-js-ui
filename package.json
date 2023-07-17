@@ -1,6 +1,6 @@
 {
-    "name": "@autharmor/ui",
-    "version": "4.0.0-alpha.8",
+    "name": "@autharmor/autharmor-js-ui",
+    "version": "4.0.0-alpha.9",
     "type": "module",
     "source": "src/index.ts",
     "types": "./dist/types/index.d.ts",
@@ -47,7 +47,7 @@
         "@rollup/plugin-commonjs": "^25.0.0",
         "@rollup/plugin-image": "^3.0.2",
         "@rollup/plugin-node-resolve": "^15.0.2",
-        "@autharmor/sdk": "link:..\\autharmor-js",
+        "@autharmor/autharmor-js": "link:..\\autharmor-js",
         "babel-preset-solid": "^1.7.4",
         "postcss": "^8.4.23",
         "prettier": "^2.8.7",
@@ -58,6 +58,6 @@
         "typescript": "^5.0.3"
     },
     "peerDependencies": {
-        "@autharmor/sdk": ">=4.0.0-alpha.8 <4.0.0-alpha.9"
+        "@autharmor/autharmor-js": ">=4.0.0-alpha.9 <4.0.0-alpha.10"
     }
 }

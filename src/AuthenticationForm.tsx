@@ -2,7 +2,7 @@ import {
     AuthArmorClient,
     IAuthenticationSuccessResult,
     IRegistrationSuccessResult
-} from "@autharmor/sdk";
+} from "@autharmor/autharmor-js";
 import { JSXElement, Match, Show, Switch, createMemo, createSignal } from "solid-js";
 import { ClientProvider } from "./context/ClientProvider";
 import { LogInForm } from "./LogInForm";

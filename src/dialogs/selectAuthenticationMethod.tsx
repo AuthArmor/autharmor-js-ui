@@ -1,4 +1,4 @@
-import { AuthenticationMethod, AvailableAuthenticationMethods } from "@autharmor/sdk";
+import { AuthenticationMethod, AvailableAuthenticationMethods } from "@autharmor/autharmor-js";
 import { AuthenticationMethodSelectionDialog } from "../common/AuthenticationMethodSelectionDialog";
 import { ITranslationTable } from "../i18n/ITranslationTable";
 import { defaultTranslationTable } from "../i18n/translationTables";

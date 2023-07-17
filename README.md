@@ -2,36 +2,39 @@
 
 Auth Armor provides a SaaS solution to authenticate your users exclusively using passwordless authentication methods such as WebAuthn, magic links and the proprietary Auth Armor mobile app.
 
-This package provides a flexible and full-featured UI around the [@autharmor/sdk](https://github.com/AuthArmor/autharmor-jsclient-sdk) package. It provides a Web Components-based form component that can be used to log in and register users and an interactive client interface that can be used for imperatively launching login or registration requests (such as for two-factor authentication).
+This package provides a flexible and full-featured UI around the [@autharmor/autharmor-js](https://github.com/AuthArmor/autharmor-js) package. It provides a Web Components-based form component that can be used to log in and register users and an interactive client interface that can be used for imperatively launching login or registration requests (such as for two-factor authentication).
 
-This package is designed to work together with [@autharmor/sdk](https://github.com/AuthArmor/autharmor-jsclient-sdk). A knowledge of how that package works will be helpful in using this package.
+This package is designed to work together with [@autharmor/autharmor-js](https://github.com/AuthArmor/autharmor-js). A knowledge of how that package works will be helpful in using this package.
 
 ## Installation
 
-This package is available on the NPM registry as `@autharmor/ui`. You must have the `@autharmor/sdk` package to use it. Use your project's package manager to install both the packages:
+This package is available on the NPM registry as `@autharmor/autharmor-js-ui`. You must have the `@autharmor/autharmor-js` package to use it. Use your project's package manager to install both the packages:
 
 ```sh
 # NPM
-npm install @autharmor/sdk @autharmor/ui
+npm install @autharmor/autharmor-js @autharmor/autharmor-js-ui
 
 # PNPM
-pnpm add @autharmor/sdk @autharmor/ui
+pnpm add @autharmor/autharmor-js @autharmor/autharmor-js-ui
 
 # Yarn
-yarn add @autharmor/sdk @autharmor/ui
+yarn add @autharmor/autharmor-js @autharmor/autharmor-js-ui
 ```
 
-You can then import the CSS styles from `node_modules/@autharmor/ui/dist/esm/index.css`.
+You can then import the CSS styles from `node_modules/@autharmor/autharmor-js-ui/dist/esm/index.css`.
 
 In projects without an NPM package manager, we also serve an IIFE bundle from our CDN which you can load as follows:
 
 ```html
-<script src="https://cdn.autharmor.com/scripts/autharmor-jsclient-sdk/v4.0.0/autharmor-sdk.js"></script>
-<script src="https://cdn.autharmor.com/scripts/autharmor-jsclient-sdk/v4.0.0/autharmor-sdk-ui.js"></script>
+<script src="https://cdn.autharmor.com/scripts/autharmor-js/4.0.0-alpha.9/global/autharmor.js"></script>
+<script src="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-alpha.9/global/autharmor-ui.js"></script>
 ```
 
 ```html
-<link rel="stylesheet" href="https://cdn.autharmor.com/scripts/autharmor-jsclient-sdk/v4.0.0/autharmor.css">
+<link
+    rel="stylesheet"
+    href="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-alpha.9/global/autharmor.css"
+/>
 ```
 
 This module's exports will then be available in the `authArmorUi` global variable. Instead of `import` statements, you can use destructuring:
@@ -42,7 +45,7 @@ const { AuthArmorInteractiveClient } = authArmorUi;
 
 ## Initial Setup
 
-In order to use the functionality offered by this package, you must first create an `AuthArmorClient` instance. That class and the instructions for doing that are part of the [@autharmor/sdk](https://github.com/AuthArmor/autharmor-jsclient-sdk).
+In order to use the functionality offered by this package, you must first create an `AuthArmorClient` instance. That class and the instructions for doing that are part of the [@autharmor/autharmor-js](https://github.com/AuthArmor/autharmor-js).
 
 Once you have your `AuthArmorClient` instance created, you can use the UI in one of two ways (or both, if that suits your use-case).
 
@@ -61,8 +64,9 @@ const authArmorInteractiveClient = new AuthArmorInteractiveClient(authArmorClien
 ```
 
 > You must import `AuthArmorinteractiveClient` at the top of your file:
+>
 > ```ts
-> import { AuthArmorInteractiveClient } from "@autharmor/ui";
+> import { AuthArmorInteractiveClient } from "@autharmor/autharmor-js-ui";
 > ```
 
 ### Logging a User In
@@ -75,7 +79,7 @@ const authenticationResult = await authArmorInteractiveClient.logInAsync("userna
 
 The user will be prompted to select their log in method (if applicable—i.e., they have more than one available method), and they will then be authenticated using their selected method.
 
-In most cases, the `AuthenticationResult` will be returned to you. This type is part of the [@autharmor/sdk](https://github.com/AuthArmor/autharmor-jsclient-sdk) package and you can refer to its documentation to see how you would use that result.
+In most cases, the `AuthenticationResult` will be returned to you. This type is part of the [@autharmor/autharmor-js](https://github.com/AuthArmor/autharmor-js) package and you can refer to its documentation to see how you would use that result.
 
 > Auth Armor will not store the authentication state for you. You _must_ pass it to your backend and process it for authentication to be useful.
 
@@ -167,7 +171,7 @@ For an example translation table, see [`defaultTranslationTable`](./src/i18n/tra
 The following properties and attributes are available on `autharmor-form` components:
 
 | **Property**         | **Attribute**         | **Type**                          | **Default** | **Description**                                                         |
-|----------------------|-----------------------|-----------------------------------|-------------|-------------------------------------------------------------------------|
+| -------------------- | --------------------- | --------------------------------- | ----------- | ----------------------------------------------------------------------- |
 | `client`             | N/A                   | `AuthArmorClient`                 | `null`      | The `AuthArmorClient` to use for communicating with the Auth Armor API. |
 | `interactiveConfig`  | N/A                   | `IInteractiveClientConfiguration` | `{}`        | The configuration to use for this interactive client.                   |
 | `enableLogIn`        | `enable-log-in`       | `boolean`                         | `true`      | Whether to allow users to log in with this form or not.                 |

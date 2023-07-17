@@ -31,11 +31,11 @@ export default defineConfig({
             format: "iife",
             name: "authArmorUi",
             globals: {
-                "@autharmor/sdk": "authArmor"
+                "@autharmor/autharmor-js": "authArmor"
             }
         }
     ],
-    external: ["@autharmor/sdk"],
+    external: ["@autharmor/autharmor-js"],
     plugins: [
         babel({
             extensions: [".js", ".ts", ".jsx", ".tsx"],

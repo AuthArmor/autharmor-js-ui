@@ -1,4 +1,4 @@
-import { AuthenticationMethod, AvailableAuthenticationMethods } from "@autharmor/sdk";
+import { AuthenticationMethod, AvailableAuthenticationMethods } from "@autharmor/autharmor-js";
 import { Show } from "solid-js";
 import { Dialog } from "./Dialog";
 import styles from "./AuthenticationMethodSelectionDialog.module.css";

@@ -1,4 +1,4 @@
-import { IRegistrationSuccessResult, RegistrationResult, ApiError } from "@autharmor/sdk";
+import { IRegistrationSuccessResult, RegistrationResult, ApiError } from "@autharmor/autharmor-js";
 import { Show, createSignal } from "solid-js";
 import { useClient } from "./context/useClient";
 import { RequestDismissedError } from "./errors/RequestDismissedError";

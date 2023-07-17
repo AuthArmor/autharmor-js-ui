@@ -9,7 +9,7 @@ import {
     IAuthenticatorRegisterOptions,
     IWebAuthnRegisterOptions,
     IMagicLinkEmailRegisterOptions
-} from "@autharmor/sdk";
+} from "@autharmor/autharmor-js";
 import { IInternationalizationOptions, IUiOptions } from "../options";
 
 export interface IAuthArmorInteractiveClientConfiguration {

@@ -11,7 +11,7 @@ import {
     IMagicLinkEmailRegisterOptions,
     AuthenticationMethod,
     AvailableAuthenticationMethods
-} from "@autharmor/sdk";
+} from "@autharmor/autharmor-js";
 import { createAuthStatusDialog } from "./dialogs/createAuthStatusDialog";
 import { selectAuthenticationMethod } from "./dialogs/selectAuthenticationMethod";
 import { IAuthArmorInteractiveClientConfiguration } from "./config/IAuthArmorInteractiveClientConfiguration";

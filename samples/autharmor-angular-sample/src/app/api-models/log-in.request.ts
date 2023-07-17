@@ -1,4 +1,4 @@
-import { AuthenticationMethod } from "@autharmor/sdk";
+import { AuthenticationMethod } from "@autharmor/autharmor-js";
 
 export interface LogInRequest {
     requestId: string;

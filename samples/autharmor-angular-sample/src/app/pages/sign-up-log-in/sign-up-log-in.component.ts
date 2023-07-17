@@ -1,8 +1,12 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component, Inject, OnInit } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, Component, Inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { AuthArmorClient, AvailableAuthenticationMethods } from "@autharmor/sdk";
-import { IAuthArmorInteractiveClientConfiguration, LogInEvent, RegisterEvent } from "@autharmor/ui";
-import "@autharmor/ui";
+import { AuthArmorClient, AvailableAuthenticationMethods } from "@autharmor/autharmor-js";
+import {
+    IAuthArmorInteractiveClientConfiguration,
+    LogInEvent,
+    RegisterEvent
+} from "@autharmor/autharmor-js-ui";
+import "@autharmor/autharmor-js-ui";
 import { SampleBackendService } from "src/app/services/sample-backend.service";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import { Router } from "@angular/router";

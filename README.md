@@ -21,19 +21,19 @@ pnpm add @autharmor/autharmor-js @autharmor/autharmor-js-ui
 yarn add @autharmor/autharmor-js @autharmor/autharmor-js-ui
 ```
 
-You can then import the CSS styles from `node_modules/@autharmor/autharmor-js-ui/dist/esm/index.css`.
+You can then import the CSS styles from `node_modules/@autharmor/autharmor-js-ui/dist/esm/autharmor-js-ui.css`.
 
 In projects without an NPM package manager, we also serve an IIFE bundle from our CDN which you can load as follows:
 
 ```html
-<script src="https://cdn.autharmor.com/scripts/autharmor-js/4.0.0-alpha.9/global/autharmor.js"></script>
-<script src="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-alpha.9/global/autharmor-ui.js"></script>
+<script src="https://cdn.autharmor.com/scripts/autharmor-js/4.0.0-alpha.9/global/autharmor-js.js"></script>
+<script src="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-alpha.9/global/autharmor-js-ui.js"></script>
 ```
 
 ```html
 <link
     rel="stylesheet"
-    href="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-alpha.9/global/autharmor.css"
+    href="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-alpha.9/global/autharmor-js-ui.css"
 />
 ```
 

@@ -27,7 +27,7 @@ export default defineConfig({
             format: "cjs"
         },
         {
-            file: "dist/global/autharmor-ui.js",
+            file: "dist/global/autharmor-js-ui.js",
             format: "iife",
             name: "authArmorUi",
             globals: {
@@ -52,7 +52,7 @@ export default defineConfig({
         commonjs(),
         image(),
         postcss({
-            extract: "autharmor.css",
+            extract: "autharmor-js-ui.css",
             modules: true
         }),
         {

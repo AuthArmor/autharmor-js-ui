@@ -4,8 +4,8 @@ import { FormsModule } from "@angular/forms";
 import {
     ApiError,
     AuthArmorClient,
-    AuthenticationResult,
-    RegistrationResult
+    IAuthenticationSuccessResult,
+    IRegistrationSuccessResult
 } from "@autharmor/autharmor-js";
 import {
     AuthArmorInteractiveClient,
@@ -88,7 +88,7 @@ export class ImperativeAuthComponent implements OnInit, OnDestroy {
     }
 
     public async authenticate(username: string) {
-        let authenticationResult: AuthenticationResult | null;
+        let authenticationResult: IAuthenticationSuccessResult;
 
         try {
             authenticationResult = await this.authArmorInteractiveClient.authenticateAsync(
@@ -104,10 +104,6 @@ export class ImperativeAuthComponent implements OnInit, OnDestroy {
             }
         }
 
-        if (authenticationResult === null || !authenticationResult.succeeded) {
-            return;
-        }
-
         const { token } = await firstValueFrom(this.backendService.logIn(authenticationResult));
         const { message } = await firstValueFrom(this.backendService.getGreeting(token));
 
@@ -115,7 +111,7 @@ export class ImperativeAuthComponent implements OnInit, OnDestroy {
     }
 
     public async register(username: string) {
-        let registrationResult: RegistrationResult | null;
+        let registrationResult: IRegistrationSuccessResult;
 
         try {
             registrationResult = await this.authArmorInteractiveClient.registerAsync(username);
@@ -127,10 +123,6 @@ export class ImperativeAuthComponent implements OnInit, OnDestroy {
                 this.error = "An unexpected error occurred. Please check the console.";
                 throw error;
             }
-        }
-
-        if (registrationResult === null || !registrationResult.succeeded) {
-            return;
         }
 
         const { token } = await firstValueFrom(this.backendService.register(registrationResult));

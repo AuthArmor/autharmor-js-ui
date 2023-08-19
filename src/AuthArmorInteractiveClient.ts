@@ -7,7 +7,8 @@ import {
     IMagicLinkEmailRegisterOptions,
     IAuthenticationSuccessResult,
     IRegistrationSuccessResult,
-    IAuthenticateOptions
+    IAuthenticateOptions,
+    IRegisterOptions
 } from "@autharmor/autharmor-js";
 import { render } from "solid-js/web";
 import { IAuthArmorInteractiveClientConfiguration } from "./config";
@@ -185,6 +186,50 @@ export class AuthArmorInteractiveClient {
             },
             abortSignal
         )) as never;
+    }
+
+    /**
+     * Registers a user.
+     *
+     * @param username The username of the user.
+     * @param options The options to use for this request.
+     * @param abortSignal The abort signal to use for this request.
+     *
+     * @returns A promise that resolves with the registration result.
+     */
+    public async registerAsync(
+        username: string,
+        options: Partial<IRegisterOptions> = {},
+        abortSignal?: AbortSignal
+    ): Promise<IRegistrationSuccessResult> {
+        return (await this.evaluateFormAsync(
+            {
+                action: "register",
+                username,
+                method: null,
+                defaultAction: "register",
+                enableUsernamelessLogIn: false
+            },
+            {
+                defaultAuthenticateOptions: {
+                    ...this.configuration.defaultRegisterOptions,
+                    ...options
+                },
+                defaultAuthenticatorRegisterOptions: {
+                    ...this.configuration.defaultAuthenticatorRegisterOptions,
+                    ...options
+                },
+                defaultWebAuthnRegisterOptions: {
+                    ...this.configuration.defaultWebAuthnRegisterOptions,
+                    ...options
+                },
+                defaultMagicLinkEmailRegisterOptions: {
+                    ...this.configuration.defaultMagicLinkEmailRegisterOptions,
+                    ...options
+                }
+            },
+            abortSignal
+        )) as IRegistrationSuccessResult;
     }
 
     /**

@@ -158,9 +158,22 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
 
     createEffect(
         on(
-            [currentAction, currentUsername, isDocumentVisible, usernamelessLogInError],
-            async ([action, username, isDocumentVisible, usernamelessLogInError]) => {
+            [
+                () => props.enableUsernamelessLogIn,
+                currentAction,
+                currentUsername,
+                isDocumentVisible,
+                usernamelessLogInError
+            ],
+            async ([
+                enableUsernamelessLogIn,
+                action,
+                username,
+                isDocumentVisible,
+                usernamelessLogInError
+            ]) => {
                 if (
+                    !enableUsernamelessLogIn ||
                     action !== "logIn" ||
                     username !== null ||
                     !isDocumentVisible ||

@@ -265,8 +265,7 @@ export class AuthArmorInteractiveClient {
      *
      * @remarks
      * The user will be redirected to the specified URL after they have logged in. The validation
-     * token and request ID will be added as query parameters with the names
-     * `auth_validation_token` and `auth_request_id` respectively.
+     * token will be added as a query parameters with the name `registration_validation_token`.
      */
     public async registerWithMagicLinkEmailAsync(
         username: string,

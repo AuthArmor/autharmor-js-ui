@@ -1,0 +1,20 @@
+.qrCodeLoader {
+    background-color: hsl(0deg 0% 40%);
+}
+
+.activeQrCodeLoader {
+    animation-name: flicker;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes flicker {
+    from {
+        background-color: hsl(0deg 0% 40%);
+    }
+
+    to {
+        background-color: hsl(0deg 0% 15%);
+    }
+}

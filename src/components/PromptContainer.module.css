@@ -1,0 +1,51 @@
+.controlsBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.25rem;
+}
+
+.backButton {
+    display: flex;
+    align-items: center;
+
+    border: none;
+
+    margin: 0;
+
+    padding: 0;
+
+    background-color: transparent;
+    color: hsl(0deg 0% 15%);
+    
+    cursor: pointer;
+}
+
+.backButtonIcon {
+    margin: 0;
+
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.promptPurpose {
+    margin: 0;
+
+    padding: 0;
+    
+    color: hsl(0deg 0% 30%);
+
+    font-size: 1.125rem;
+    font-weight: 500;
+}
+
+.promptPurposeDetail {
+    color: hsl(0deg 0% 15%);
+
+    font-weight: 600;
+}
+
+.prompt {
+    margin-block-start: 2rem;
+}

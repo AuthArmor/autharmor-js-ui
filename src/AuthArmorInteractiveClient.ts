@@ -12,8 +12,6 @@ import {
     AuthenticationMethod,
     AvailableAuthenticationMethods
 } from "@autharmor/autharmor-js";
-import { createAuthStatusDialog } from "./dialogs/createAuthStatusDialog";
-import { selectAuthenticationMethod } from "./dialogs/selectAuthenticationMethod";
 import { IAuthArmorInteractiveClientConfiguration } from "./config/IAuthArmorInteractiveClientConfiguration";
 import { ITranslationTable, defaultTranslationTable } from "./i18n";
 import { NoAuthenticationMethodsAvailableError } from "./errors";

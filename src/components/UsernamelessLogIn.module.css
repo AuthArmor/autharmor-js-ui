@@ -1,0 +1,68 @@
+.qrCode {
+    display: block;
+
+    margin-block-start: 2rem;
+
+    width: 10rem;
+    height: 10rem;
+
+    color: hsl(0deg 0% 15%);
+}
+
+.errorStateQrCode {
+    color: hsl(0deg 0% 75%);
+    filter: blur(0.0625rem);
+}
+
+.verificationCode {
+    margin: 0;
+    margin-block-start: 0.75rem;
+
+    padding: 0;
+
+    color: hsl(0deg 0% 30%);
+
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+
+.verificationCodeValue {
+    color: hsl(290deg 100% 40%);
+
+    font-weight: 500;
+}
+
+
+.error {
+    margin: 0;
+    margin-block-start: 1.5rem;
+
+    padding: 0;
+
+    color: hsl(0deg 100% 40%);
+
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.retryButton {
+    display: block;
+
+    border: none;
+
+    margin: 0;
+    margin-block-start: 0.5rem;
+
+    padding: 0;
+
+    background-color: transparent;
+    color: hsl(0deg 0% 15%);
+
+    text-align: start;
+    text-decoration: underline;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+
+    cursor: pointer;
+}

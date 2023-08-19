@@ -1,0 +1,25 @@
+.control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    border: none;
+
+    margin: 0;
+
+    padding: 0.5rem 0.75rem;
+
+    height: 2.75rem;
+}
+
+.control:first-child {
+    border-start-start-radius: 0.25rem;
+    border-end-start-radius: 0.25rem;
+}
+
+.control:last-child {
+    border-start-end-radius: 0.25rem;
+    border-end-end-radius: 0.25rem;
+}

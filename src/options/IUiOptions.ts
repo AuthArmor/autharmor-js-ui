@@ -1,7 +1,4 @@
-export interface IUiOptions {
-    form?: IFormUiOptions;
-    dialog?: IDialogUiOptions;
-}
+export interface IUiOptions {}
 
 export interface IFormUiOptions {
     borderRadius?: string;

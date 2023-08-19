@@ -1,20 +1,21 @@
 import {
     AuthArmorClient,
-    AuthenticationResult,
     IAuthenticatorUserSpecificAuthenticateOptions,
-    QrCodeResult,
-    ApiError,
     IMagicLinkEmailAuthenticateOptions,
-    RegistrationResult,
     IAuthenticatorRegisterOptions,
     IWebAuthnRegisterOptions,
     IMagicLinkEmailRegisterOptions,
-    AuthenticationMethod,
-    AvailableAuthenticationMethods
+    IAuthenticationSuccessResult,
+    IRegistrationSuccessResult,
+    IAuthenticateOptions
 } from "@autharmor/autharmor-js";
-import { IAuthArmorInteractiveClientConfiguration } from "./config/IAuthArmorInteractiveClientConfiguration";
+import { render } from "solid-js/web";
+import { IAuthArmorInteractiveClientConfiguration } from "./config";
 import { ITranslationTable, defaultTranslationTable } from "./i18n";
 import { NoAuthenticationMethodsAvailableError } from "./errors";
+import { JSXElement } from "solid-js";
+import { ModalContainer } from "./ui/ModalContainer";
+import { AuthArmorForm, AuthArmorFormProps } from "./form/AuthArmorForm";
 
 /**
  * The client for interacting with AuthArmor's client-side SDK providing a user-facing interface.
@@ -23,7 +24,7 @@ export class AuthArmorInteractiveClient {
     /**
      * The translation table to use for strings displayed to the user.
      */
-    private readonly tt: ITranslationTable;
+    protected readonly tt: ITranslationTable;
 
     /**
      * @param client The AuthArmorClient for interacting with AuthArmor's client-side SDK.
@@ -31,7 +32,8 @@ export class AuthArmorInteractiveClient {
      */
     public constructor(
         private readonly client: AuthArmorClient,
-        private readonly configuration: IAuthArmorInteractiveClientConfiguration = {}
+        private readonly configuration: IAuthArmorInteractiveClientConfiguration = {},
+        private readonly renderTarget: HTMLElement | null = null
     ) {
         this.tt =
             this.configuration.internationalizationOptions?.translationTable ??
@@ -39,93 +41,47 @@ export class AuthArmorInteractiveClient {
     }
 
     /**
-     * Authenticates, prompting them for the authentication method if necessary.
+     * Authenticates a user.
      *
      * @param username The username of the user.
+     * @param options The options to use for this request.
      * @param abortSignal The abort signal to use for this request.
      *
-     * @returns
-     *  A promise that resolves with the authentication result, or null if the authentication result is not available
-     *  (e.g. the user has used an email magic link).
+     * @returns A promise that resolves with the authentication result.
      */
     public async authenticateAsync(
         username: string,
+        options: Partial<IAuthenticateOptions> = {},
         abortSignal?: AbortSignal
-    ): Promise<AuthenticationResult | null> {
-        const selectedMethod = await this.selectAuthenticationMethodAsync(username, abortSignal);
-
-        switch (selectedMethod) {
-            case "authenticator": {
-                return await this.authenticateWithAuthenticatorAsync(username, {}, abortSignal);
-            }
-
-            case "webAuthn": {
-                return await this.authenticateWithWebAuthnAsync(username, abortSignal);
-            }
-
-            case "magicLinkEmail": {
-                await this.authenticateWithMagicLinkEmailAsync(
-                    username,
-                    undefined,
-                    {},
-                    abortSignal
-                );
-                return null;
-            }
-        }
+    ): Promise<IAuthenticationSuccessResult> {
+        return (await this.evaluateFormAsync(
+            {
+                action: "logIn",
+                username,
+                method: null,
+                defaultAction: "logIn",
+                enableUsernamelessLogIn: false
+            },
+            {
+                defaultAuthenticateOptions: {
+                    ...this.configuration.defaultAuthenticateOptions,
+                    ...options
+                },
+                defaultAuthenticatorUserSpecificAuthenticateOptions: {
+                    ...this.configuration.defaultAuthenticatorUserSpecificAuthenticateOptions,
+                    ...options
+                },
+                defaultMagicLinkEmailAuthenticateOptions: {
+                    ...this.configuration.defaultMagicLinkEmailAuthenticateOptions,
+                    ...options
+                }
+            },
+            abortSignal
+        )) as IAuthenticationSuccessResult;
     }
 
     /**
-     * Prompts a user to select an authentication method from the methods available to them.
-     *
-     * @param username The username of the user.
-     * @param abortSignal The abort signal to use for this request.
-     *
-     * @returns A promise that resolves with the authentication method.
-     */
-    public async selectAuthenticationMethodAsync(
-        username: string,
-        abortSignal?: AbortSignal
-    ): Promise<AuthenticationMethod> {
-        let methods: AvailableAuthenticationMethods =
-            await this.client.getAvailableAuthenticationMethodsAsync(username);
-
-        if (this.configuration.permittedMethods !== undefined) {
-            const permittedMethods: AvailableAuthenticationMethods = {
-                authenticator: false,
-                magicLinkEmail: false,
-                webAuthn: false,
-                ...this.configuration.permittedMethods
-            };
-
-            methods = {
-                authenticator: permittedMethods.authenticator && methods.authenticator,
-                magicLinkEmail: permittedMethods.magicLinkEmail && methods.magicLinkEmail,
-                webAuthn: permittedMethods.webAuthn && methods.webAuthn
-            };
-        }
-
-        const methodCount = Object.values(methods).filter((m) => m).length;
-
-        if (methodCount === 0) {
-            throw new NoAuthenticationMethodsAvailableError();
-        }
-
-        const selectedMethod =
-            methodCount > 1
-                ? await selectAuthenticationMethod(
-                      methods,
-                      this.tt,
-                      this.configuration.uiOptions?.dialog,
-                      abortSignal
-                  )
-                : (Object.keys(methods) as AuthenticationMethod[]).find((m) => methods[m])!;
-
-        return selectedMethod;
-    }
-
-    /**
-     * Logs a user in using their authenticator app.
+     * Authenticates a user using their authenticator app.
      *
      * @param username The username of the user.
      * @param options The options to use for this request.
@@ -137,176 +93,68 @@ export class AuthArmorInteractiveClient {
         username: string,
         options: Partial<IAuthenticatorUserSpecificAuthenticateOptions> = {},
         abortSignal?: AbortSignal
-    ): Promise<AuthenticationResult> {
-        const abortController = new AbortController();
-        const abortHandler = (reason: any) => abortController.abort(reason);
-        abortSignal?.addEventListener("abort", abortHandler);
-
-        const [
-            _,
-            { setTitle, setStatusMessage, setStatusType, setAuthenticationUrl, setVerificationCode }
-        ] = createAuthStatusDialog(
-            this.tt,
-            this.configuration.uiOptions?.dialog,
-            abortController.signal,
-            abortController
-        );
-
-        setTitle(this.tt.statusDialog.authenticator.logIn.title);
-        setStatusMessage(this.tt.statusDialog.authenticator.logIn.status.sending);
-
-        let qrResult: QrCodeResult<AuthenticationResult>;
-
-        try {
-            qrResult = await this.client.authenticateWithAuthenticatorAsync(
+    ): Promise<IAuthenticationSuccessResult> {
+        return (await this.evaluateFormAsync(
+            {
+                action: "logIn",
                 username,
-                {
-                    ...this.configuration.defaultAuthenticateOptions,
-                    ...this.configuration.defaultAuthenticatorAuthenticateOptions,
+                method: "authenticator",
+                defaultAction: "logIn",
+                enableUsernamelessLogIn: false
+            },
+            {
+                defaultAuthenticatorUserSpecificAuthenticateOptions: {
                     ...this.configuration.defaultAuthenticatorUserSpecificAuthenticateOptions,
                     ...options
-                },
-                abortController.signal
-            );
-        } catch (error: unknown) {
-            abortController.signal.throwIfAborted();
-
-            setStatusType("error");
-
-            if (error instanceof ApiError) {
-                setStatusMessage(error.message);
-            } else {
-                setStatusMessage(this.tt.statusDialog.authenticator.logIn.status.unknownFailed);
-            }
-
-            throw error;
-        }
-
-        setStatusMessage(this.tt.statusDialog.authenticator.logIn.status.pending);
-        setAuthenticationUrl(qrResult.qrCodeUrl);
-        setVerificationCode(qrResult.verificationCode);
-
-        let authenticationResult: AuthenticationResult;
-
-        try {
-            authenticationResult = await qrResult.resultAsync();
-        } catch (error: unknown) {
-            abortController.signal.throwIfAborted();
-
-            setStatusType("error");
-            setAuthenticationUrl(null);
-            setVerificationCode(null);
-
-            if (error instanceof ApiError) {
-                setStatusMessage(error.message);
-            } else {
-                setStatusMessage(this.tt.statusDialog.authenticator.logIn.status.unknownFailed);
-            }
-
-            throw error;
-        }
-
-        if (authenticationResult.succeeded) {
-            setStatusMessage(this.tt.statusDialog.authenticator.logIn.status.approved);
-            setStatusType("success");
-
-            setTimeout(() => abortController.abort(), 1000);
-        } else {
-            const failureMessage = {
-                timedOut: this.tt.statusDialog.authenticator.logIn.status.timedOut,
-                declined: this.tt.statusDialog.authenticator.logIn.status.declined,
-                aborted: this.tt.statusDialog.authenticator.logIn.status.aborted,
-                unknown: this.tt.statusDialog.authenticator.logIn.status.unknownFailed
-            }[authenticationResult.failureReason];
-
-            setStatusMessage(failureMessage);
-            setStatusType("error");
-            setAuthenticationUrl(null);
-            setVerificationCode(null);
-        }
-
-        abortSignal?.removeEventListener("abort", abortHandler);
-
-        return authenticationResult;
+                }
+            },
+            abortSignal
+        )) as IAuthenticationSuccessResult;
     }
 
     /**
-     * Logs a user in using WebAuthn.
+     * Authenticates a user using WebAuthn.
      *
      * @param username The username of the user.
+     * @param options The options to use for this request.
      * @param abortSignal The abort signal to use for this request.
      *
      * @returns A promise that resolves with the authentication result.
      */
     public async authenticateWithWebAuthnAsync(
         username: string,
+        options: Partial<IAuthenticateOptions>,
         abortSignal?: AbortSignal
-    ): Promise<AuthenticationResult> {
-        const abortController = new AbortController();
-        const abortHandler = (reason: any) => abortController.abort(reason);
-        abortSignal?.addEventListener("abort", abortHandler);
-
-        const [_, { setTitle, setStatusMessage, setStatusType }] = createAuthStatusDialog(
-            this.tt,
-            this.configuration.uiOptions?.dialog,
-            abortController.signal,
-            abortController
-        );
-
-        setTitle(this.tt.statusDialog.webAuthn.logIn.title);
-        setStatusMessage(this.tt.statusDialog.webAuthn.logIn.status.pending);
-
-        let authenticationResult: AuthenticationResult;
-
-        try {
-            authenticationResult = await this.client.authenticateWithWebAuthnAsync(username);
-        } catch (error: unknown) {
-            abortController.signal.throwIfAborted();
-
-            setStatusType("error");
-
-            if (error instanceof ApiError) {
-                setStatusMessage(error.message);
-            } else {
-                setStatusMessage(this.tt.statusDialog.webAuthn.logIn.status.unknownFailed);
-            }
-
-            throw error;
-        }
-
-        if (authenticationResult.succeeded) {
-            setStatusMessage(this.tt.statusDialog.webAuthn.logIn.status.approved);
-            setStatusType("success");
-
-            setTimeout(() => abortController.abort(), 1000);
-        } else {
-            const failureMessage = {
-                timedOut: this.tt.statusDialog.webAuthn.logIn.status.timedOut,
-                declined: this.tt.statusDialog.webAuthn.logIn.status.declined,
-                aborted: this.tt.statusDialog.webAuthn.logIn.status.aborted,
-                unknown: this.tt.statusDialog.webAuthn.logIn.status.unknownFailed
-            }[authenticationResult.failureReason];
-
-            setStatusMessage(failureMessage);
-            setStatusType("error");
-        }
-
-        abortSignal?.removeEventListener("abort", abortHandler);
-
-        return authenticationResult;
+    ): Promise<IAuthenticationSuccessResult> {
+        return (await this.evaluateFormAsync(
+            {
+                action: "logIn",
+                username,
+                method: "webAuthn",
+                defaultAction: "logIn",
+                enableUsernamelessLogIn: false
+            },
+            {
+                defaultAuthenticateOptions: {
+                    ...this.configuration.defaultAuthenticateOptions,
+                    ...options
+                }
+            },
+            abortSignal
+        )) as IAuthenticationSuccessResult;
     }
 
     /**
-     * Logs a user in using an email magic link.
+     * Authenticates a user using an email magic link.
      *
      * @param username The username of the user.
      * @param redirectUrl
-     *  The URL that's sent to the user's email. If this is blank, the default one configured for
-     *  this interactive client will be used.
+     * The URL that's sent to the user's email. If this is blank, the default one configured for
+     * this interactive client will be used.
      * @param options The options to use for this request.
      * @param abortSignal The abort signal to use for this request.
      *
-     * @returns A promise that resolves once the email was sent.
+     * @returns A promise that never resolves.
      *
      * @remarks
      * The user will be redirected to the specified URL after they have logged in. The validation
@@ -314,135 +162,33 @@ export class AuthArmorInteractiveClient {
      * `auth_validation_token` and `auth_request_id` respectively.
      */
     public async authenticateWithMagicLinkEmailAsync(
-        emailAddress: string,
+        username: string,
         redirectUrl?: string,
         options: Partial<IMagicLinkEmailAuthenticateOptions> = {},
         abortSignal?: AbortSignal
-    ): Promise<void> {
-        const abortController = new AbortController();
-        const abortHandler = (reason: any) => abortController.abort(reason);
-        abortSignal?.addEventListener("abort", abortHandler);
-
-        const [_, { setTitle, setStatusMessage, setStatusType }] = createAuthStatusDialog(
-            this.tt,
-            this.configuration.uiOptions?.dialog,
-            abortController.signal,
-            abortController
-        );
-
-        setTitle(this.tt.statusDialog.magicLinkEmail.logIn.title);
-        setStatusMessage(this.tt.statusDialog.magicLinkEmail.logIn.status.sending);
-
-        const finalRedirectUrl =
-            redirectUrl ?? this.configuration.defaultMagicLinkEmailLogInRedirectUrl;
-
-        if (finalRedirectUrl === undefined) {
-            setStatusMessage(this.tt.statusDialog.magicLinkEmail.logIn.status.unknownFailed);
-            setStatusType("error");
-
-            throw new Error("Redirect link not specified.");
-        }
-
-        try {
-            await this.client.sendAuthenticateMagicLinkEmailAsync(emailAddress, finalRedirectUrl, {
-                ...this.configuration.defaultAuthenticateOptions,
-                ...this.configuration.defaultMagicLinkEmailAuthenticateOptions,
-                ...options
-            });
-        } catch (error: unknown) {
-            abortController.signal.throwIfAborted();
-
-            setStatusType("error");
-
-            if (error instanceof ApiError) {
-                setStatusMessage(error.message);
-            } else {
-                setStatusMessage(this.tt.statusDialog.magicLinkEmail.logIn.status.unknownFailed);
-            }
-
-            throw error;
-        }
-
-        setStatusMessage(this.tt.statusDialog.magicLinkEmail.logIn.status.pending);
-
-        abortSignal?.removeEventListener("abort", abortHandler);
+    ): Promise<never> {
+        return (await this.evaluateFormAsync(
+            {
+                action: "logIn",
+                username,
+                method: "magicLinkEmail",
+                defaultAction: "logIn",
+                enableUsernamelessLogIn: false
+            },
+            {
+                defaultMagicLinkEmailAuthenticateOptions: {
+                    ...this.configuration.defaultMagicLinkEmailAuthenticateOptions,
+                    ...options
+                },
+                defaultMagicLinkEmailLogInRedirectUrl:
+                    redirectUrl ?? this.configuration.defaultMagicLinkEmailLogInRedirectUrl
+            },
+            abortSignal
+        )) as never;
     }
 
     /**
-     * Registers a user, prompting them for the registration method if necessary.
-     *
-     * @param username The username of the user.
-     * @param abortSignal The abort signal to use for this request.
-     *
-     * @returns
-     *  A promise that resolves with the registration result, or null if the registration result is not available
-     *  (e.g. the user has used an email magic link).
-     */
-    public async registerAsync(
-        username: string,
-        abortSignal?: AbortSignal
-    ): Promise<RegistrationResult | null> {
-        const selectedMethod = await this.selectRegistrationMethodAsync(abortSignal);
-
-        switch (selectedMethod) {
-            case "authenticator": {
-                return await this.registerWithAuthenticatorAsync(username, {}, abortSignal);
-            }
-
-            case "webAuthn": {
-                return await this.registerWithWebAuthnAsync(username, {}, abortSignal);
-            }
-
-            case "magicLinkEmail": {
-                await this.registerWithMagicLinkEmailAsync(username, undefined, {}, abortSignal);
-                return null;
-            }
-        }
-    }
-
-    /**
-     * Prompts a user to select an authentication method for registration from the allowed mtehods.
-     *
-     * @param username The username of the user.
-     * @param abortSignal The abort signal to use for this request.
-     *
-     * @returns A promise that resolves with the authentication method.
-     */
-    public async selectRegistrationMethodAsync(
-        abortSignal?: AbortSignal
-    ): Promise<AuthenticationMethod> {
-        const methods: AvailableAuthenticationMethods = {
-            authenticator: false,
-            magicLinkEmail: false,
-            webAuthn: false,
-            ...(this.configuration.permittedMethods ?? {
-                authenticator: true,
-                magicLinkEmail: true,
-                webAuthn: true
-            })
-        };
-
-        const methodCount = Object.values(methods).filter((m) => m).length;
-
-        if (methodCount === 0) {
-            throw new NoAuthenticationMethodsAvailableError();
-        }
-
-        const selectedMethod =
-            methodCount > 1
-                ? await selectAuthenticationMethod(
-                      methods,
-                      this.tt,
-                      this.configuration.uiOptions?.dialog,
-                      abortSignal
-                  )
-                : (Object.keys(methods) as AuthenticationMethod[]).find((m) => methods[m])!;
-
-        return selectedMethod;
-    }
-
-    /**
-     * Registers a using their authenticator app.
+     * Registers a user using their authenticator app.
      *
      * @param username The username of the user.
      * @param options The options to use for this request.
@@ -454,107 +200,27 @@ export class AuthArmorInteractiveClient {
         username: string,
         options: Partial<IAuthenticatorRegisterOptions> = {},
         abortSignal?: AbortSignal
-    ): Promise<RegistrationResult> {
-        const abortController = new AbortController();
-        const abortHandler = (reason: any) => abortController.abort(reason);
-        abortSignal?.addEventListener("abort", abortHandler);
-
-        const [
-            _,
+    ): Promise<IRegistrationSuccessResult> {
+        return (await this.evaluateFormAsync(
             {
-                setTitle,
-                setStatusMessage,
-                setStatusType,
-                setAuthenticationUrl,
-                setAlwaysShowQrCode,
-                setVerificationCode
-            }
-        ] = createAuthStatusDialog(
-            this.tt,
-            this.configuration.uiOptions?.dialog,
-            abortController.signal,
-            abortController
-        );
-
-        setTitle(this.tt.statusDialog.authenticator.register.title);
-        setStatusMessage(this.tt.statusDialog.authenticator.register.status.sending);
-        setAlwaysShowQrCode(true);
-
-        let qrResult: QrCodeResult<RegistrationResult>;
-
-        try {
-            qrResult = await this.client.registerWithAuthenticatorQrCodeAsync(
+                action: "register",
                 username,
-                {
-                    ...this.configuration.defaultRegisterOptions,
-                    ...this.configuration.defaultAuthenticatorAuthenticateOptions,
+                method: "authenticator",
+                defaultAction: "register",
+                enableUsernamelessLogIn: false
+            },
+            {
+                defaultAuthenticatorRegisterOptions: {
+                    ...this.configuration.defaultAuthenticatorRegisterOptions,
                     ...options
-                },
-                abortController.signal
-            );
-        } catch (error: unknown) {
-            abortController.signal.throwIfAborted();
-
-            setStatusType("error");
-
-            if (error instanceof ApiError) {
-                setStatusMessage(error.message);
-            } else {
-                setStatusMessage("Unknown error");
-            }
-
-            throw error;
-        }
-
-        setStatusMessage(this.tt.statusDialog.authenticator.register.status.pending);
-        setAuthenticationUrl(qrResult.qrCodeUrl);
-        setVerificationCode(qrResult.verificationCode);
-
-        let registrationResult: RegistrationResult;
-
-        try {
-            registrationResult = await qrResult.resultAsync();
-        } catch (error: unknown) {
-            abortController.signal.throwIfAborted();
-
-            setStatusType("error");
-            setAuthenticationUrl(null);
-            setVerificationCode(null);
-
-            if (error instanceof ApiError) {
-                setStatusMessage(error.message);
-            } else {
-                setStatusMessage(this.tt.statusDialog.authenticator.register.status.unknownFailed);
-            }
-
-            throw error;
-        }
-
-        if (registrationResult.succeeded) {
-            setStatusMessage(this.tt.statusDialog.authenticator.register.status.approved);
-            setStatusType("success");
-
-            setTimeout(() => abortController.abort(), 1000);
-        } else {
-            const failureMessage = {
-                timedOut: this.tt.statusDialog.authenticator.register.status.timedOut,
-                aborted: this.tt.statusDialog.authenticator.register.status.aborted,
-                unknown: this.tt.statusDialog.authenticator.register.status.unknownFailed
-            }[registrationResult.failureReason];
-
-            setStatusMessage(failureMessage);
-            setStatusType("error");
-            setAuthenticationUrl(null);
-            setVerificationCode(null);
-        }
-
-        abortSignal?.removeEventListener("abort", abortHandler);
-
-        return registrationResult;
+                }
+            },
+            abortSignal
+        )) as IRegistrationSuccessResult;
     }
 
     /**
-     * Registers a using WebAuthn.
+     * Authenticates a user using WebAuthn.
      *
      * @param username The username of the user.
      * @param options The options to use for this request.
@@ -564,64 +230,25 @@ export class AuthArmorInteractiveClient {
      */
     public async registerWithWebAuthnAsync(
         username: string,
-        options: Partial<IWebAuthnRegisterOptions> = {},
+        options: Partial<IWebAuthnRegisterOptions>,
         abortSignal?: AbortSignal
-    ): Promise<RegistrationResult> {
-        const abortController = new AbortController();
-        const abortHandler = (reason: any) => abortController.abort(reason);
-        abortSignal?.addEventListener("abort", abortHandler);
-
-        const [_, { setTitle, setStatusMessage, setStatusType }] = createAuthStatusDialog(
-            this.tt,
-            this.configuration.uiOptions?.dialog,
-            abortController.signal,
-            abortController
-        );
-
-        setTitle(this.tt.statusDialog.webAuthn.register.title);
-        setStatusMessage(this.tt.statusDialog.webAuthn.register.status.pending);
-
-        let registrationResult: RegistrationResult;
-
-        try {
-            registrationResult = await this.client.registerWithWebAuthnAsync(username, {
-                ...this.configuration.defaultRegisterOptions,
-                ...this.configuration.defaultWebAuthnRegisterOptions,
-                ...options
-            });
-        } catch (error: unknown) {
-            abortController.signal.throwIfAborted();
-
-            setStatusType("error");
-
-            if (error instanceof ApiError) {
-                setStatusMessage(error.message);
-            } else {
-                setStatusMessage(this.tt.statusDialog.webAuthn.register.status.unknownFailed);
-            }
-
-            throw error;
-        }
-
-        if (registrationResult.succeeded) {
-            setStatusMessage(this.tt.statusDialog.webAuthn.register.status.approved);
-            setStatusType("success");
-
-            setTimeout(() => abortController.abort(), 1000);
-        } else {
-            const failureMessage = {
-                timedOut: this.tt.statusDialog.webAuthn.register.status.timedOut,
-                aborted: this.tt.statusDialog.webAuthn.register.status.aborted,
-                unknown: this.tt.statusDialog.webAuthn.register.status.unknownFailed
-            }[registrationResult.failureReason];
-
-            setStatusMessage(failureMessage);
-            setStatusType("error");
-        }
-
-        abortSignal?.removeEventListener("abort", abortHandler);
-
-        return registrationResult;
+    ): Promise<IRegistrationSuccessResult> {
+        return (await this.evaluateFormAsync(
+            {
+                action: "register",
+                username,
+                method: "webAuthn",
+                defaultAction: "register",
+                enableUsernamelessLogIn: false
+            },
+            {
+                defaultWebAuthnRegisterOptions: {
+                    ...this.configuration.defaultWebAuthnRegisterOptions,
+                    ...options
+                }
+            },
+            abortSignal
+        )) as IRegistrationSuccessResult;
     }
 
     /**
@@ -634,68 +261,112 @@ export class AuthArmorInteractiveClient {
      * @param options The options to use for this request.
      * @param abortSignal The abort signal to use for this request.
      *
-     * @returns A promise that resolves once the email was sent.
+     * @returns A promise that never resolves.
      *
      * @remarks
-     * The user will be redirected to the specified URL after they have logged in. The URL will
-     * contain a query string parameter named `registration_validation_token` that can be used to
-     * validate the registration.
-     *
-     * The account will not be created in AuthArmor's database until the registration is validated
-     * from the server.
+     * The user will be redirected to the specified URL after they have logged in. The validation
+     * token and request ID will be added as query parameters with the names
+     * `auth_validation_token` and `auth_request_id` respectively.
      */
     public async registerWithMagicLinkEmailAsync(
-        emailAddress: string,
+        username: string,
         redirectUrl?: string,
         options: Partial<IMagicLinkEmailRegisterOptions> = {},
         abortSignal?: AbortSignal
-    ): Promise<void> {
-        const abortController = new AbortController();
-        const abortHandler = (reason: any) => abortController.abort(reason);
-        abortSignal?.addEventListener("abort", abortHandler);
+    ): Promise<never> {
+        return (await this.evaluateFormAsync(
+            {
+                action: "register",
+                username,
+                method: "magicLinkEmail",
+                defaultAction: "register",
+                enableUsernamelessLogIn: false
+            },
+            {
+                defaultMagicLinkEmailRegisterOptions: {
+                    ...this.configuration.defaultMagicLinkEmailRegisterOptions,
+                    ...options
+                },
+                defaultMagicLinkEmailRegisterRedirectUrl:
+                    redirectUrl ?? this.configuration.defaultMagicLinkEmailRegisterRedirectUrl
+            },
+            abortSignal
+        )) as never;
+    }
 
-        const [_, { setTitle, setStatusMessage, setStatusType }] = createAuthStatusDialog(
-            this.tt,
-            this.configuration.uiOptions?.dialog,
-            abortController.signal,
-            abortController
+    /**
+     * Renders the given code into this interactive client's render target.
+     *
+     * @param code The code to render.
+     *
+     * @returns A function to clean up and destroy the rendered root.
+     *
+     * @remarks
+     * If this interactive client does not have an explicitly specified render target, a new render
+     * target is created that functions as a modal.
+     */
+    protected render(code: () => JSXElement): () => void {
+        if (this.renderTarget !== null) {
+            return render(code, this.renderTarget);
+        }
+
+        const temporaryRenderTarget = document.createElement("div");
+        document.body.appendChild(temporaryRenderTarget);
+
+        const solidCleanup = render(
+            () => ModalContainer({ children: code() }),
+            temporaryRenderTarget
         );
 
-        setTitle(this.tt.statusDialog.magicLinkEmail.register.title);
-        setStatusMessage(this.tt.statusDialog.magicLinkEmail.register.status.sending);
+        const cleanup = () => {
+            solidCleanup();
+            document.body.removeChild(temporaryRenderTarget);
+        };
 
-        const finalRedirectUrl =
-            redirectUrl ?? this.configuration.defaultMagicLinkEmailRegisterRedirectUrl;
+        return cleanup;
+    }
 
-        if (finalRedirectUrl === undefined) {
-            setStatusMessage(this.tt.statusDialog.magicLinkEmail.register.status.unknownFailed);
-            setStatusType("error");
+    /**
+     * Evaluates the result of an Auth Armor form.
+     *
+     * @param props The props to pass to the form.
+     * @param abortSignal The abort signal to use for this request.
+     *
+     * @returns A promise that resolves with the authentication or registration result.
+     */
+    protected evaluateFormAsync(
+        props: Omit<AuthArmorFormProps, "client" | "interactiveConfig" | "onLogIn" | "onRegister">,
+        configurationOverride: Partial<IAuthArmorInteractiveClientConfiguration> = {},
+        abortSignal?: AbortSignal
+    ): Promise<IAuthenticationSuccessResult | IRegistrationSuccessResult> {
+        return new Promise((resolve, reject) => {
+            const handleLogIn = (authenticationResult: IAuthenticationSuccessResult) => {
+                cleanup();
+                resolve(authenticationResult);
+            };
 
-            throw new Error("Redirect link not specified.");
-        }
+            const handleRegister = (registrationResult: IRegistrationSuccessResult) => {
+                cleanup();
+                resolve(registrationResult);
+            };
 
-        try {
-            await this.client.sendRegisterMagicLinkEmailAsync(emailAddress, finalRedirectUrl, {
-                ...this.configuration.defaultRegisterOptions,
-                ...this.configuration.defaultMagicLinkEmailRegisterOptions,
-                ...options
+            const cleanup = this.render(() =>
+                AuthArmorForm({
+                    client: this.client,
+                    interactiveConfig: {
+                        ...this.configuration,
+                        ...configurationOverride
+                    },
+                    ...props,
+                    onLogIn: handleLogIn,
+                    onRegister: handleRegister
+                })
+            );
+
+            abortSignal?.addEventListener("abort", (reason) => {
+                cleanup();
+                reject(reason);
             });
-        } catch (error: unknown) {
-            abortController.signal.throwIfAborted();
-
-            setStatusType("error");
-
-            if (error instanceof ApiError) {
-                setStatusMessage(error.message);
-            } else {
-                setStatusMessage(this.tt.statusDialog.magicLinkEmail.register.status.unknownFailed);
-            }
-
-            throw error;
-        }
-
-        setStatusMessage(this.tt.statusDialog.magicLinkEmail.register.status.pending);
-
-        abortSignal?.removeEventListener("abort", abortHandler);
+        });
     }
 }

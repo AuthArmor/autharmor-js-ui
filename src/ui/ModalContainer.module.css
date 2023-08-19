@@ -1,0 +1,20 @@
+.backdrop {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 1rem;
+
+    background-color: hsl(0deg 0% 50%);
+
+    backdrop-filter: blur(0.125rem);
+
+    z-index: 999;
+}
+
+.content {
+    max-width: 32rem;
+}

@@ -1,3 +1,1 @@
-import { IAuthArmorInteractiveClientConfiguration } from "./IAuthArmorInteractiveClientConfiguration";
-
-export type { IAuthArmorInteractiveClientConfiguration };
+export * from "./IAuthArmorInteractiveClientConfiguration";

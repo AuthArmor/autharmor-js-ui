@@ -4,9 +4,8 @@
         class="column"
         [client]="authArmorClient"
         [interactiveConfig]="authArmorInteractiveClientConfig"
-        [enableLogIn]="allowLogIn"
-        [enableRegistration]="allowRegister"
-        [enableUsernameless]="allowUsernamelessAuth"
+        [action]="action"
+        [enableUsernamelessLogIn]="enableUsernamelessLogIn"
         (logIn)="onLogIn($any($event))"
         (register)="onRegister($any($event))"
     ></autharmor-form>
@@ -15,19 +14,16 @@
         [formGroup]="preferencesForm"
         (ngSubmit)="applyPreferences()"
     >
-        <div class="field" formGroupName="allowedActions">
-            <p class="label">Allowed Actions</p>
+        <div class="field" formGroupName="enforceAction">
+            <p class="label">Enforce Action</p>
             <div class="control">
-                <label class="checkbox">
-                    <input type="checkbox" formControlName="logIn" checked />
-                    Log in
-                </label>
-            </div>
-            <div class="control">
-                <label class="checkbox">
-                    <input type="checkbox" formControlName="register" checked />
-                    Register
-                </label>
+                <div class="select">
+                    <select formControlName="action">
+                        <option value="">None</option>
+                        <option value="logIn">Log In</option>
+                        <option value="register">Register</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="field" formGroupName="allowedMethods">
@@ -55,8 +51,8 @@
             <p class="label">Miscellaneous</p>
             <div class="control">
                 <label class="checkbox">
-                    <input type="checkbox" formControlName="usernamelessAuth" checked />
-                    Allow usernameless login
+                    <input type="checkbox" formControlName="enableUsernamelessLogIn" checked />
+                    Enable usernameless login
                 </label>
             </div>
         </div>

@@ -1,4 +1,4 @@
 export interface RegisterRequest {
-    userId: string;
-    username: string;
+    registrationId: string;
+    validationToken: string;
 }

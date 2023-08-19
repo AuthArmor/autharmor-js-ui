@@ -39,14 +39,12 @@ export class SignUpLogInComponent {
         }
     };
 
-    public allowLogIn: boolean = true;
-    public allowRegister: boolean = true;
-    public allowUsernamelessAuth: boolean = true;
+    public action: "logIn" | "register" | null = null;
+    public enableUsernamelessLogIn: boolean = true;
 
     public preferencesForm = new FormGroup({
-        allowedActions: new FormGroup({
-            logIn: new FormControl(true),
-            register: new FormControl(true)
+        enforceAction: new FormGroup({
+            action: new FormControl<"logIn" | "register" | "">("")
         }),
         allowedMethods: new FormGroup({
             authenticator: new FormControl(true),
@@ -54,18 +52,17 @@ export class SignUpLogInComponent {
             webAuthn: new FormControl(true)
         }),
         miscellaneous: new FormGroup({
-            usernamelessAuth: new FormControl(true)
+            enableUsernamelessLogIn: new FormControl(true)
         })
     });
 
     public applyPreferences() {
         const preferences = this.preferencesForm.getRawValue();
 
-        this.allowLogIn = preferences.allowedActions.logIn ?? true;
-        this.allowRegister = preferences.allowedActions.register ?? true;
+        this.action = preferences.enforceAction.action || null;
         this.authArmorInteractiveClientConfig.permittedMethods =
             preferences.allowedMethods as AvailableAuthenticationMethods;
-        this.allowUsernamelessAuth = preferences.miscellaneous.usernamelessAuth ?? true;
+        this.enableUsernamelessLogIn = preferences.miscellaneous.enableUsernamelessLogIn ?? true;
     }
 
     public onLogIn({ authenticationResult }: LogInEvent) {

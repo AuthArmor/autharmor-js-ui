@@ -1,0 +1,52 @@
+.tabs {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.tab {
+    position: relative;
+
+    border: none;
+
+    margin: 0;
+
+    padding: 0;
+
+    background: none;
+    color: hsl(0deg 0% 45%);
+
+    font-size: 1.25rem;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease-out;
+}
+
+.tab:hover {
+    color: hsl(0deg 0% 15%);
+}
+
+.tab::after {
+    content: "";
+
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-end: -0.75rem;
+
+    border-radius: 0.125rem;
+
+    width: 0.25rem;
+    height: 0.25rem;
+
+    transition: background-color 0.2s ease-out;
+}
+
+.tab.activeTab {
+    color: hsl(290deg 100% 40%);
+}
+
+.tab.activeTab::after {
+    background-color: hsl(290deg 100% 40%);
+}

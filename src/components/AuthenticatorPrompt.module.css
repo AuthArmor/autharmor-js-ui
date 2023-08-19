@@ -1,0 +1,11 @@
+.qrCode {
+    width: 10rem;
+    height: 10rem;
+
+    color: hsl(0deg 0% 15%);
+}
+
+.errorStateQrCode {
+    color: hsl(0deg 0% 75%);
+    filter: blur(0.0625rem);
+}

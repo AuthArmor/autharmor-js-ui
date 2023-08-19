@@ -3,32 +3,28 @@ import {
     IAuthenticationSuccessResult,
     IRegistrationSuccessResult
 } from "@autharmor/autharmor-js";
+import { Show } from "solid-js";
 import { customElement, noShadowDOM } from "solid-element";
 import { LogInEvent } from "./events/LogInEvent";
 import { RegisterEvent } from "./events/RegisterEvent";
-import { AuthenticationForm, AuthenticationMode } from "../AuthenticationForm";
-import { Show } from "solid-js";
-import { IAuthArmorInteractiveClientConfiguration } from "../config";
+import { AuthArmorForm, AuthArmorFormProps } from "../form/AuthArmorForm";
 
-export interface IAuthArmorFormCustomElementProps {
-    client: AuthArmorClient | null;
-    interactiveConfig: IAuthArmorInteractiveClientConfiguration;
-    enableLogIn: boolean;
-    enableRegistration: boolean;
-    initialMode: AuthenticationMode;
-    enableUsernameless: boolean;
-}
+export type AuthArmorFormCustomElementProps = Omit<
+    AuthArmorFormProps,
+    "client" | "onLogIn" | "onRegister"
+> & { client: AuthArmorFormProps["client"] | null };
 
 customElement(
     "autharmor-form",
     {
         client: null,
         interactiveConfig: {},
-        enableLogIn: true,
-        enableRegistration: true,
-        initialMode: "logIn",
-        enableUsernameless: true
-    } as IAuthArmorFormCustomElementProps,
+        action: null,
+        username: null,
+        method: null,
+        defaultAction: null,
+        enableUsernamelessLogIn: true
+    } satisfies AuthArmorFormCustomElementProps as AuthArmorFormCustomElementProps,
     (props, { element }) => {
         noShadowDOM();
 
@@ -42,13 +38,9 @@ customElement(
 
         return (
             <Show when={props.client instanceof AuthArmorClient}>
-                <AuthenticationForm
-                    client={props.client!}
-                    interactiveConfig={props.interactiveConfig}
-                    enableLogIn={props.enableLogIn}
-                    enableRegistration={props.enableRegistration}
-                    initialMode={props.initialMode}
-                    enableUsernameless={props.enableUsernameless}
+                <AuthArmorForm
+                    {...(props as AuthArmorFormCustomElementProps &
+                        Pick<AuthArmorFormProps, "client">)}
                     onLogIn={handleLogIn}
                     onRegister={handleRegister}
                 />
@@ -59,6 +51,6 @@ customElement(
 
 declare global {
     interface HTMLElementTagNameMap {
-        "autharmor-form": HTMLElement & IAuthArmorFormCustomElementProps;
+        "autharmor-form": HTMLElement & AuthArmorFormCustomElementProps;
     }
 }

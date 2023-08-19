@@ -1,161 +1,124 @@
 export interface ITranslationTable {
     form: {
-        logIn: {
-            tab: string;
-            authenticatorApp: {
-                prompt: string;
-                appLink: string;
-                appLinkLoading: string;
-                qrCodePrompt: string;
-                verificationCodeMessage: (verificationCode: string) => string;
-                successMessage: string;
-                retryButton: string;
-                errors: {
-                    declined: string;
-                    internalFailed: string;
-                    unknownFailed: string;
-                };
-            };
-            username: {
-                prompt: string;
-                logInButton: string;
-                errors: {
-                    usernameNotProvided: string;
-                    noMethodsAvailable: string;
-                    declined: string;
-                    timedOut: string;
-                    aborted: string;
-                    internalFailed: string;
-                    unknownFailed: string;
-                };
-            };
-        };
-        register: {
-            tab: string;
-            username: {
-                prompt: string;
-                registerButton: string;
-                errors: {
-                    usernameNotProvided: string;
-                    timedOut: string;
-                    aborted: string;
-                    internalFailed: string;
-                    unknownFailed: string;
-                };
-            };
-        };
-        methodSeparator: string;
-    };
-    dialogCommon: {
-        closeButton: string;
-    };
-    statusDialog: {
-        common: {
-            logoAltText: string;
-            qrCodePrompt: string;
-            appLink: string;
-            appLinkPrompt: string;
-            showQrCodeButton: string;
-            hideQrCodeButton: string;
-            showAppLinkButton: string;
-            hideAppLinkButton: string;
-        };
-        authenticator: {
+        actions: {
             logIn: {
-                title: string;
-                status: {
-                    sending: string;
-                    pending: string;
-                    approved: string;
-                    declined: string;
-                    timedOut: string;
-                    aborted: string;
-                    unknownFailed: string;
+                tabName: string;
+                usernameless: {
+                    title: string;
+                    description: string;
+                    verificationCode: <TVerificationCode>(
+                        verificationCode: TVerificationCode
+                    ) => (string | TVerificationCode)[];
+                    retry: string;
                 };
+                username: {
+                    title: string;
+                    fields: {
+                        username: {
+                            label: string;
+                        };
+                    };
+                    submit: string;
+                };
+                prompt: <TUsername>(usernameToken: TUsername) => (string | TUsername)[];
             };
             register: {
-                title: string;
-                status: {
-                    sending: string;
-                    pending: string;
-                    approved: string;
-                    timedOut: string;
-                    aborted: string;
-                    unknownFailed: string;
+                tabName: string;
+                username: {
+                    title: string;
+                    fields: {
+                        username: {
+                            label: string;
+                        };
+                    };
+                    submit: string;
                 };
+                prompt: <TUsername>(usernameToken: TUsername) => (string | TUsername)[];
             };
         };
-        webAuthn: {
-            logIn: {
-                title: string;
-                status: {
-                    pending: string;
-                    approved: string;
-                    declined: string;
-                    timedOut: string;
-                    aborted: string;
-                    unknownFailed: string;
-                };
-            };
-            register: {
-                title: string;
-                status: {
-                    pending: string;
-                    approved: string;
-                    timedOut: string;
-                    aborted: string;
-                    unknownFailed: string;
-                };
-            };
-        };
-        magicLinkEmail: {
-            logIn: {
-                title: string;
-                status: {
-                    sending: string;
-                    pending: string;
-                    unknownFailed: string;
-                };
-            };
-            register: {
-                title: string;
-                status: {
-                    sending: string;
-                    pending: string;
-                    unknownFailed: string;
-                };
-            };
-        };
-    };
-    methodSelectorDialog: {
-        prompt: {
-            logIn: string;
-            register: string;
-        };
+        back: string;
         methods: {
+            prompt: string;
             authenticator: {
-                button: string;
-                text: string;
-                prompt: {
-                    logIn: string;
-                    register: string;
+                label: string;
+                description: string;
+            };
+            magicLinkEmail: {
+                label: string;
+                description: string;
+            };
+            webAuthn: {
+                label: string;
+                description: string;
+            };
+        };
+        prompts: {
+            authenticator: {
+                logIn: {
+                    title: string;
+                    description: string;
+                };
+                register: {
+                    title: string;
+                    description: string;
                 };
             };
-            email: {
-                button: string;
-                text: string;
-                prompt: {
-                    logIn: string;
-                    register: string;
+            magicLinkEmail: {
+                logIn: {
+                    title: string;
+                    description: string;
+                };
+                register: {
+                    title: string;
+                    description: string;
                 };
             };
             webAuthn: {
-                button: string;
-                text: string;
-                prompt: {
-                    logIn: string;
-                    register: string;
+                logIn: {
+                    title: string;
+                    description: string;
                 };
+                register: {
+                    title: string;
+                    description: string;
+                };
+            };
+            wait: {
+                title: string;
+                description: string;
+            };
+        };
+        errors: {
+            usernamelessLogIn: {
+                declined: string;
+                network: string;
+                unknown: string;
+            };
+            usernameLogIn: {
+                userNotFound: string;
+                noAvailableMethods: string;
+                network: string;
+                unknown: string;
+            };
+            usernameRegister: {
+                userAlreadyExists: string;
+                network: string;
+                unknown: string;
+            };
+            authenticator: {
+                timedOut: string;
+                declined: string;
+                network: string;
+                unknown: string;
+            };
+            magicLinkEmail: {
+                network: string;
+                unknown: string;
+            };
+            webAuthn: {
+                declined: string;
+                network: string;
+                unknown: string;
             };
         };
     };

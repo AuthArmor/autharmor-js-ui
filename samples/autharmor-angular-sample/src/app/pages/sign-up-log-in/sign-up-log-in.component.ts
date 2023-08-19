@@ -40,11 +40,19 @@ export class SignUpLogInComponent {
     };
 
     public action: "logIn" | "register" | null = null;
+    public username: string | null = null;
+    public method: "authenticator" | "webAuthn" | "magicLinkEmail" | null = null;
     public enableUsernamelessLogIn: boolean = true;
 
     public preferencesForm = new FormGroup({
         enforceAction: new FormGroup({
             action: new FormControl<"logIn" | "register" | "">("")
+        }),
+        enforceUsername: new FormGroup({
+            username: new FormControl("")
+        }),
+        enforceMethod: new FormGroup({
+            method: new FormControl<"authenticator" | "webAuthn" | "magicLinkEmail" | "">("")
         }),
         allowedMethods: new FormGroup({
             authenticator: new FormControl(true),
@@ -60,6 +68,8 @@ export class SignUpLogInComponent {
         const preferences = this.preferencesForm.getRawValue();
 
         this.action = preferences.enforceAction.action || null;
+        this.username = preferences.enforceUsername.username || null;
+        this.method = preferences.enforceMethod.method || null;
         this.authArmorInteractiveClientConfig.permittedMethods =
             preferences.allowedMethods as AvailableAuthenticationMethods;
         this.enableUsernamelessLogIn = preferences.miscellaneous.enableUsernamelessLogIn ?? true;

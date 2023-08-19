@@ -30,11 +30,11 @@ dependencies:
     specifier: ^16.1.0
     version: 16.1.0(@angular/common@16.1.0)(@angular/core@16.1.0)(@angular/platform-browser@16.1.0)(rxjs@7.8.0)
   '@autharmor/autharmor-js':
-    specifier: 4.0.0-alpha.9
-    version: 4.0.0-alpha.9
+    specifier: 4.0.0-alpha.10
+    version: 4.0.0-alpha.10
   '@autharmor/autharmor-js-ui':
-    specifier: 4.0.0-alpha.9
-    version: 4.0.0-alpha.9(@autharmor/autharmor-js@4.0.0-alpha.9)
+    specifier: 4.0.0-alpha.10
+    version: 4.0.0-alpha.10(@autharmor/autharmor-js@4.0.0-alpha.10)
   bulma:
     specifier: ^0.9.4
     version: 0.9.4
@@ -412,19 +412,21 @@ packages:
     resolution: {integrity: sha512-H71nDOOL8Y7kWRLqf6Sums+01Q5msqBW2KhDUTemh1tvY04eSkSXrK0uj/4mmY0Xr16/3zyZmsrxN7CKuRbNRg==}
     dev: true
 
-  /@autharmor/autharmor-js-ui@4.0.0-alpha.9(@autharmor/autharmor-js@4.0.0-alpha.9):
-    resolution: {integrity: sha512-xTvsadWL5HHbgqh+5hfvQrAtmQRkSVrBZO3mAfDMD/xVneuarXtGgli6mELrOy1vFvQOTAz2LoBJM8urq6sMyw==}
+  /@autharmor/autharmor-js-ui@4.0.0-alpha.10(@autharmor/autharmor-js@4.0.0-alpha.10):
+    resolution: {integrity: sha512-mXiJN+KYRSn7LYGo3FU14BLMrR8h55Ri3ouy3DUHeuBXHrNm86Tg/3KeXK0Qcyxey0bmmvfWTy0D3eaCFbB+Fg==}
     peerDependencies:
-      '@autharmor/autharmor-js': '>=4.0.0-alpha.9 <4.0.0-alpha.10'
+      '@autharmor/autharmor-js': '>=4.0.0-alpha.10 <4.0.0-alpha.11'
     dependencies:
-      '@autharmor/autharmor-js': 4.0.0-alpha.9
+      '@autharmor/autharmor-js': 4.0.0-alpha.10
+      '@hcaptcha/types': 1.0.3
+      clsx: 2.0.0
       qrcode-generator: 1.4.4
       solid-element: 1.7.1(solid-js@1.7.8)
       solid-js: 1.7.8
     dev: false
 
-  /@autharmor/autharmor-js@4.0.0-alpha.9:
-    resolution: {integrity: sha512-rOHI0kXJKDs1skjo6gJZCYiauQzfGnzTWV70HiP6ZCO2WkDmY4Nb1G778+FKIKPUTfHmGGC89P+nX4URJUsWVA==}
+  /@autharmor/autharmor-js@4.0.0-alpha.10:
+    resolution: {integrity: sha512-upe4FLCcvkR2AxKY1uxZi8UdAE5JzoIv8vN49tBVXeipfQAe2FfM0RqZwfh8GaXBdy3nXs+GNhkLHJU6hcXknQ==}
     dev: false
 
   /@babel/code-frame@7.22.5:
@@ -1911,6 +1913,10 @@ packages:
     dev: true
     optional: true
 
+  /@hcaptcha/types@1.0.3:
+    resolution: {integrity: sha512-1mbU6eSGawRrqeahRrOzZo/SVLI6oZ5/azuBpSyVrRRR96CnS3fOVDWfzxpngfxKD0/I9Rwu6c/3ITqD8rXeTQ==}
+    dev: false
+
   /@isaacs/cliui@8.0.2:
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
@@ -2920,6 +2926,11 @@ packages:
     engines: {node: '>=0.8'}
     dev: true
 
+  /clsx@2.0.0:
+    resolution: {integrity: sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==}
+    engines: {node: '>=6'}
+    dev: false
+
   /color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
     dependencies:
@@ -3139,6 +3150,7 @@ packages:
 
   /debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
+    requiresBuild: true
     peerDependencies:
       supports-color: '*'
     peerDependenciesMeta:
@@ -4669,6 +4681,7 @@ packages:
 
   /node-addon-api@3.2.1:
     resolution: {integrity: sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4680,6 +4693,7 @@ packages:
   /node-gyp-build@4.6.0:
     resolution: {integrity: sha512-NTZVKn9IylLwUzaKjkas1e4u2DLNcV4rdYagA4PWdPwW87Bi7z+BznyKSRwS/761tV/lzCGXplWsiaMjLqP2zQ==}
     hasBin: true
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5042,6 +5056,7 @@ packages:
   /pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5180,6 +5195,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5471,6 +5487,7 @@ packages:
 
   /sax@1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -5507,6 +5524,7 @@ packages:
   /semver@5.7.2:
     resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
     hasBin: true
+    requiresBuild: true
     dev: true
     optional: true
 

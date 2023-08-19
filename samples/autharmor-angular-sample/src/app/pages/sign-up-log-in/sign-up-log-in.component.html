@@ -26,6 +26,25 @@
                 </div>
             </div>
         </div>
+        <div class="field" formGroupName="enforceUsername">
+            <p class="label">Enforce Username</p>
+            <div class="control">
+                <input type="text" class="input" formControlName="username" />
+            </div>
+        </div>
+        <div class="field" formGroupName="enforceMethod">
+            <p class="label">Enforce Method</p>
+            <div class="control">
+                <div class="select">
+                    <select formControlName="method">
+                        <option value="">None</option>
+                        <option value="authenticator">Authenticator App</option>
+                        <option value="magicLinkEmail">Magic Link Email</option>
+                        <option value="webAuthn">WebAuthn</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <div class="field" formGroupName="allowedMethods">
             <p class="label">Allowed Methods</p>
             <div class="control">

@@ -1,9 +1,7 @@
 .authArmorForm {
-    padding: 2rem 3rem;
-    
     overflow-block: auto;
 }
 
-.view {
+.view:not(:first-child) {
     padding-block: 2rem;
 }

@@ -60,5 +60,6 @@ stages:
                 skip_app_build: true
                 skip_api_build: true
                 is_static_export: true
+                app_location: $(Pipeline.Workspace)/autharmor-angular-sample-bundle/
                 output_location: $(Pipeline.Workspace)/autharmor-angular-sample-bundle/
                 azure_static_web_apps_api_token: $(AzureSwaDeploymentToken)

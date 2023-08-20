@@ -28,7 +28,7 @@ stages:
         displayName: 'Install dependencies'
         workingDirectory: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/
       
-      - script: pnpm run ng build --prod
+      - script: pnpm run ng build --configuration production
         displayName: 'Build bundle'
         workingDirectory: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/
 

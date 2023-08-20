@@ -231,6 +231,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
 
                     if (authenticationResult.succeeded) {
                         setIsSucceeded(true);
+                        setUserSelectedCurrentUsername(authenticationResult.username);
 
                         props.onLogIn(authenticationResult);
 

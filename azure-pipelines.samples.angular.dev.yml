@@ -6,6 +6,8 @@
 trigger:
 - main
 
+pr: none
+
 pool:
   vmImage: ubuntu-latest
 
@@ -57,6 +59,7 @@ stages:
               artifact: autharmor-angular-sample-bundle
             - task: AzureStaticWebApp@0
               inputs:
+                production_branch: main
                 skip_app_build: true
                 skip_api_build: true
                 is_static_export: true

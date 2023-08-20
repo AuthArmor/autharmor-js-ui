@@ -24,14 +24,6 @@ stages:
       - script: npm install --global pnpm@latest-8
         displayName: 'Install pnpm'
 
-      - script: mv -f .dev.npmrc .npmrc
-        displayName: 'Install development .npmrc file'
-        workingDirectory: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/
-
-      - task: npmAuthenticate@0
-        inputs:
-          workingFile: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/.npmrc
-
       - script: pnpm install
         displayName: 'Install dependencies'
         workingDirectory: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/

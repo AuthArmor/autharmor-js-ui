@@ -42,3 +42,23 @@ stages:
         artifact: autharmor-angular-sample-bundle
         displayName: 'Publish bundle'
 
+  - stage: deploy_swa
+    displayName: 'Deploy to Azure Static Web App'
+    dependsOn: build
+    jobs:
+    - deployment: deploy_to_swa
+      displayName: 'Deploy to Azure Static Web App'
+      environment: sdk-development
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - download: current
+              artifact: autharmor-angular-sample-bundle
+            - task: AzureStaticWebApp@0
+              inputs:
+                skip_app_build: true
+                skip_api_build: true
+                is_static_export: true
+                output_location: $(Pipeline.Workspace)/autharmor-angular-sample-bundle/
+                azure_static_web_apps_api_token: $(AzureSwaDeploymentToken)

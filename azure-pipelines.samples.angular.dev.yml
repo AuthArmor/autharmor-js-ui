@@ -30,6 +30,17 @@ stages:
         displayName: 'Install dependencies'
         workingDirectory: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/
       
+      - task: DownloadSecureFile@1
+        name: envFile
+        displayName: 'Download development environment file'
+        inputs:
+          secureFile: 'autharmor-angular-sample.environment.development.ts'
+
+      - script: |
+          rm $(System.DefaultWorkingDirectory)/src/config/environment.ts
+          mv $(envFile.secureFilePath) $(System.DefaultWorkingDirectory)/src/config/environment.ts
+        displayName: 'Install development environment file'
+
       - script: pnpm run ng build --configuration production
         displayName: 'Build bundle'
         workingDirectory: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/

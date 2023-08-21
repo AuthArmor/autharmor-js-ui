@@ -37,8 +37,8 @@ stages:
           secureFile: 'autharmor-angular-sample.environment.development.ts'
 
       - script: |
-          rm $(System.DefaultWorkingDirectory)/src/config/environment.ts
-          mv $(envFile.secureFilePath) $(System.DefaultWorkingDirectory)/src/config/environment.ts
+          rm $(System.DefaultWorkingDirectory)/samples/autharmor-angular-sample/src/config/environment.ts
+          mv $(envFile.secureFilePath) $(System.DefaultWorkingDirectory)/samples/autharmor-angular-sample/src/config/environment.ts
         displayName: 'Install development environment file'
 
       - script: pnpm run ng build --configuration production

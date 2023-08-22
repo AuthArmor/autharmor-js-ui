@@ -28,6 +28,7 @@ stages:
 
       - script: mv -f .dev.npmrc .npmrc
         displayName: 'Install development .npmrc file'
+        workingDirectory: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/
 
       - script: pnpm install
         displayName: 'Install dependencies'

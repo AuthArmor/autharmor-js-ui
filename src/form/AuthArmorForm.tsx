@@ -509,6 +509,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
     );
 
     const handleTabSelect = (action: FormAction) => {
+        if (isSucceeded()) return;
+
         setUserSelectedCurrentMethod(null);
         setUserSelectedCurrentUsername(null);
         setUserSelectedCurrentAction(action);

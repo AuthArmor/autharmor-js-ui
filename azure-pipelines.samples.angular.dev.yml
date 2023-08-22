@@ -34,7 +34,11 @@ stages:
         inputs:
           workingFile: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/.npmrc
 
-      - script: pnpm install --no-verify-store-integrity
+      - script: pnpm store prune
+        displayName: 'Prune pnpm store'
+        workingDirectory: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/
+
+      - script: pnpm install
         displayName: 'Install dependencies'
         workingDirectory: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/
       

@@ -30,11 +30,11 @@ dependencies:
     specifier: ^16.1.0
     version: 16.1.0(@angular/common@16.1.0)(@angular/core@16.1.0)(@angular/platform-browser@16.1.0)(rxjs@7.8.0)
   '@autharmor/autharmor-js':
-    specifier: 4.0.0-alpha.11
-    version: 4.0.0-alpha.11
+    specifier: 4.0.0-alpha.12
+    version: 4.0.0-alpha.12
   '@autharmor/autharmor-js-ui':
-    specifier: 4.0.0-alpha.11
-    version: 4.0.0-alpha.11(@autharmor/autharmor-js@4.0.0-alpha.11)
+    specifier: 4.0.0-alpha.12
+    version: 4.0.0-alpha.12(@autharmor/autharmor-js@4.0.0-alpha.12)
   bulma:
     specifier: ^0.9.4
     version: 0.9.4
@@ -412,12 +412,12 @@ packages:
     resolution: {integrity: sha512-H71nDOOL8Y7kWRLqf6Sums+01Q5msqBW2KhDUTemh1tvY04eSkSXrK0uj/4mmY0Xr16/3zyZmsrxN7CKuRbNRg==}
     dev: true
 
-  /@autharmor/autharmor-js-ui@4.0.0-alpha.11(@autharmor/autharmor-js@4.0.0-alpha.11):
-    resolution: {integrity: sha512-fukK0lAdf8RS1yHKY85Co1QKeOyd1FNLEYtB79pOWr4B5/NCBuYdrmD4TzKprSH5gwd+gOxzPQQlP5i6YUJVFA==}
+  /@autharmor/autharmor-js-ui@4.0.0-alpha.12(@autharmor/autharmor-js@4.0.0-alpha.12):
+    resolution: {integrity: sha512-IlJjj3q51YGy7ODp5ckEpoLuRZ0Y8CILVIg5E8XbGyKf/8BmATEqRcq25H4mN+Anj5G5IyqcJ56xMAc1KZO+1Q==}
     peerDependencies:
       '@autharmor/autharmor-js': '>=4.0.0-alpha.11 <4.0.0-alpha.12'
     dependencies:
-      '@autharmor/autharmor-js': 4.0.0-alpha.11
+      '@autharmor/autharmor-js': 4.0.0-alpha.12
       '@hcaptcha/types': 1.0.3
       clsx: 2.0.0
       qrcode-generator: 1.4.4
@@ -425,8 +425,8 @@ packages:
       solid-js: 1.7.11
     dev: false
 
-  /@autharmor/autharmor-js@4.0.0-alpha.11:
-    resolution: {integrity: sha512-+6OPmzLK0Hu2QPK7eP+B/PPSyGrKsblL7hgcrMB15qUJ6D/oM/8dJ1px/RG9CObJqaZnus4cDv/iNfBdmeGYLw==}
+  /@autharmor/autharmor-js@4.0.0-alpha.12:
+    resolution: {integrity: sha512-PUDH1lMRMS8eKzO9PEgBYA3NMVikSs0dpik40epoGwHq09TsBtLQ4yPWChEWdT774oZA2ksNFRgYLu5Wn7tHRg==}
     dev: false
 
   /@babel/code-frame@7.22.5:

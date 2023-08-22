@@ -34,9 +34,8 @@ stages:
         inputs:
           workingFile: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/.npmrc
 
-      - script: pnpm store prune
-        displayName: 'Prune pnpm store'
-        workingDirectory: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/
+      - script: pnpm update
+        displayName: 'Update dependencies'
 
       - script: pnpm install
         displayName: 'Install dependencies'

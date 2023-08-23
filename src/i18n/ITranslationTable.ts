@@ -87,6 +87,10 @@ export interface ITranslationTable {
                 title: string;
                 description: string;
             };
+            captcha: {
+                title: string;
+                description: string;
+            };
         };
         errors: {
             usernamelessLogIn: {

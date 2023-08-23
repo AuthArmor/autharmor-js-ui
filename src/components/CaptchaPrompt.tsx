@@ -21,7 +21,7 @@ export function CaptchaPrompt(props: CaptchaPromptProps) {
     let captchaId: string = null!;
 
     const [isCaptchaLoaded, setIsCaptchaLoaded] = createSignal<boolean>(hcaptcha !== undefined);
-    
+
     onMount(() => {
         if (!isCaptchaLoaded()) {
             const script = document.createElement("script");
@@ -66,10 +66,8 @@ export function CaptchaPrompt(props: CaptchaPromptProps) {
 
     return (
         <div class={props.class} style={props.style}>
-            <p class={promptStyles.prompt}>Verifying request.</p>
-            <p class={promptStyles.promptDescription}>
-                We’re verifying that you're not a robot. You may need to complete a challenge.
-            </p>
+            <p class={promptStyles.prompt}>{tt().form.prompts.captcha.title}.</p>
+            <p class={promptStyles.promptDescription}>{tt().form.prompts.captcha.description}</p>
             <div class={promptStyles.promptAction}>
                 <div ref={captchaRef} />
             </div>

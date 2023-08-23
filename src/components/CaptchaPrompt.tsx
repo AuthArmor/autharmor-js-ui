@@ -1,8 +1,8 @@
 /// <reference types="@hcaptcha/types"/>
 
 import { ICaptchaConfirmationRequest } from "@autharmor/autharmor-js";
-import { JSX, createEffect, onCleanup } from "solid-js";
-import { useTranslationTable } from "../i18n";
+import { JSX, createEffect, createSignal, onCleanup, onMount } from "solid-js";
+import { translationTables, useTranslationTable } from "../i18n";
 import promptStyles from "./Prompt.module.css";
 
 export type CaptchaPromptProps = {
@@ -20,6 +20,21 @@ export function CaptchaPrompt(props: CaptchaPromptProps) {
     let captchaRef: HTMLDivElement = null!;
     let captchaId: string = null!;
 
+    const [isCaptchaLoaded, setIsCaptchaLoaded] = createSignal<boolean>(hcaptcha !== undefined);
+    
+    onMount(() => {
+        if (!isCaptchaLoaded()) {
+            const script = document.createElement("script");
+            script.src = "https://js.hcaptcha.com/1/api.js";
+            script.async = true;
+            script.defer = true;
+
+            script.onload = () => setIsCaptchaLoaded(true);
+
+            document.head.appendChild(script);
+        }
+    });
+
     const handleCaptchaSubmission = () => {
         const captchaConfirmation: ICaptchaConfirmationRequest = {
             hCaptchaResponse: hcaptcha.getResponse(captchaId),
@@ -30,6 +45,10 @@ export function CaptchaPrompt(props: CaptchaPromptProps) {
     };
 
     createEffect(() => {
+        if (!isCaptchaLoaded()) {
+            return;
+        }
+
         const _captchaId = hcaptcha.render(captchaRef, {
             sitekey: props.hCaptchaSiteId!,
             callback: handleCaptchaSubmission

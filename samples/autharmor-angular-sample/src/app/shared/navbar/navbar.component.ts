@@ -10,5 +10,9 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  public isActive: boolean = false;
 
+  public toggleActive() {
+    this.isActive = !this.isActive;
+  }
 }

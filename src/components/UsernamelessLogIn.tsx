@@ -3,8 +3,10 @@ import cn from "clsx";
 import { QrCodeLoader } from "../ui/QrCodeLoader";
 import { QrCode } from "../ui/QrCode";
 import { useTranslationTable } from "../i18n";
+import { isMobile } from "../common/isMobile";
 import styles from "./UsernamelessLogIn.module.css";
 import formStyles from "./Form.module.css";
+import { AppLink } from "./AppLink";
 
 export type UsernamelessLogInError = "declined" | "network" | "unknown";
 
@@ -28,16 +30,23 @@ export function UsernamelessLogIn(props: UsernamelessLogInProps) {
         <div class={props.class} style={props.style}>
             <p class={formStyles.methodTitle}>{tt().form.actions.logIn.usernameless.title}</p>
             <p class={formStyles.methodDescription}>
-                {tt().form.actions.logIn.usernameless.description}
+                {tt().form.actions.logIn.usernameless.description[isMobile ? "appLink" : "qrCode"]}
             </p>
             <Show
                 when={props.qrCodeData !== null}
                 fallback={<QrCodeLoader class={styles.qrCode} isActive={!isError()} />}
             >
-                <QrCode
-                    data={props.qrCodeData!}
-                    class={cn(styles.qrCode, { [styles.errorStateQrCode]: isError() })}
-                />
+                <Show
+                    when={isMobile}
+                    fallback={
+                        <QrCode
+                            data={props.qrCodeData!}
+                            class={cn(styles.qrCode, { [styles.errorStateQrCode]: isError() })}
+                        />
+                    }
+                >
+                    <AppLink data={props.qrCodeData!} class={styles.appLink} />
+                </Show>
             </Show>
             <Show when={props.verificationCode !== null}>
                 <p class={styles.verificationCode}>

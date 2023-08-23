@@ -1,7 +1,9 @@
 import { JSX, Show } from "solid-js";
 import cn from "clsx";
+import { AppLink } from "./AppLink";
 import { QrCodeLoader } from "../ui/QrCodeLoader";
 import { QrCode } from "../ui/QrCode";
+import { isMobile } from "../common/isMobile";
 import { useTranslationTable } from "../i18n";
 import styles from "./AuthenticatorPrompt.module.css";
 import promptStyles from "./Prompt.module.css";
@@ -34,10 +36,8 @@ export function AuthenticatorPrompt(props: AuthenticatorPromptProps) {
             </p>
             <p class={promptStyles.promptDescription}>
                 {
-                    (props.isRegistering
-                        ? tt().form.prompts.authenticator.register
-                        : tt().form.prompts.authenticator.logIn
-                    ).description
+                    tt().form.prompts.authenticator[props.isRegistering ? "register" : "logIn"]
+                        .description[isMobile ? "appLink" : "qrCode"]
                 }
             </p>
             <div class={cn(promptStyles.promptAction, styles.qrCode)}>
@@ -45,10 +45,17 @@ export function AuthenticatorPrompt(props: AuthenticatorPromptProps) {
                     when={props.qrCodeData !== null}
                     fallback={<QrCodeLoader isActive={!isError()} class={styles.qrCode} />}
                 >
-                    <QrCode
-                        data={props.qrCodeData!}
-                        class={cn(styles.qrCode, { [styles.errorStateQrCode]: isError() })}
-                    />
+                    <Show
+                        when={isMobile}
+                        fallback={
+                            <QrCode
+                                data={props.qrCodeData!}
+                                class={cn(styles.qrCode, { [styles.errorStateQrCode]: isError() })}
+                            />
+                        }
+                    >
+                        <AppLink data={props.qrCodeData!} />
+                    </Show>
                 </Show>
             </div>
             <Show when={props.error !== undefined && props.error !== null}>

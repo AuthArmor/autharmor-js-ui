@@ -37,6 +37,7 @@ import { UsernameRegisterError } from "../components/UsernameRegister";
 import { useDocumentVisibility } from "../common/useDocumentVisibility";
 import { TranslationTableContext, defaultTranslationTable } from "../i18n";
 import styles from "./AuthArmorForm.module.css";
+import { isMobile } from "src/common/isMobile";
 
 export type FormAction = "logIn" | "register";
 export const defaultFormAction: FormAction = "logIn";
@@ -135,6 +136,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
 
     const isDocumentVisible = useDocumentVisibility();
 
+    const isDesktopDocumentVisible = createMemo(() => (isMobile ? true : isDocumentVisible()));
+
     createEffect(
         on(
             () => props.client,
@@ -162,21 +165,21 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                 () => props.enableUsernamelessLogIn,
                 currentAction,
                 currentUsername,
-                isDocumentVisible,
+                isDesktopDocumentVisible,
                 usernamelessLogInError
             ],
             async ([
                 enableUsernamelessLogIn,
                 action,
                 username,
-                isDocumentVisible,
+                isDesktopDocumentVisible,
                 usernamelessLogInError
             ]) => {
                 if (
                     !enableUsernamelessLogIn ||
                     action !== "logIn" ||
                     username !== null ||
-                    !isDocumentVisible ||
+                    !isDesktopDocumentVisible ||
                     usernamelessLogInError !== null
                 ) {
                     return;
@@ -529,9 +532,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
         let availableMethodsForUser: AvailableAuthenticationMethods | null = null;
 
         try {
-            availableMethodsForUser = await props.client.getAvailableAuthenticationMethodsAsync(
-                username
-            );
+            availableMethodsForUser =
+                await props.client.getAvailableAuthenticationMethodsAsync(username);
         } catch (error: unknown) {
             if (!(error instanceof ApiError && error.statusCode === 404)) {
                 throw error;

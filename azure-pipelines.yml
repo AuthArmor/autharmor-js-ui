@@ -43,7 +43,7 @@ stages:
           targetFolder: $(Build.ArtifactStagingDirectory)
 
       - publish: $(Build.ArtifactStagingDirectory)
-        artifact: autharmor-sdk-ui
+        artifact: autharmor-js-ui
         displayName: 'Publish package'
 
   - stage: deploy
@@ -57,13 +57,13 @@ stages:
           deploy:
             steps:
             - download: current
-              artifact: autharmor-sdk-ui
+              artifact: autharmor-js-ui
             - task: npmAuthenticate@0
               inputs:
-                workingFile: $(Pipeline.Workspace)/autharmor-sdk-ui/.npmrc
+                workingFile: $(Pipeline.Workspace)/autharmor-js-ui/.npmrc
                 customEndpoint: 'npm publish connection'
             - script: npm publish --access public
-              workingDirectory: $(Pipeline.Workspace)/autharmor-sdk-ui/
+              workingDirectory: $(Pipeline.Workspace)/autharmor-js-ui/
 
   - stage: deploy_storage
     displayName: 'Deploy to Azure Storage'
@@ -77,10 +77,10 @@ stages:
           deploy:
             steps:
             - download: current
-              artifact: autharmor-sdk-ui
+              artifact: autharmor-js-ui
             - script: echo "console.log('##vso[task.setvariable variable=PackageVersion;]' + require('./package.json').version)" | node
               displayName: 'Extract package version'
-              workingDirectory: $(Pipeline.Workspace)/autharmor-sdk-ui/
+              workingDirectory: $(Pipeline.Workspace)/autharmor-js-ui/
             - task: AzureCLI@2
               inputs:
                 azureSubscription: 'Auth Armor Azure Prod Subscription'
@@ -88,7 +88,7 @@ stages:
                 scriptLocation: inlineScript
                 inlineScript: |
                   az storage blob upload-batch \
-                    --source "$(Pipeline.Workspace)/autharmor-sdk-ui/dist/" \
+                    --source "$(Pipeline.Workspace)/autharmor-js-ui/dist/" \
                     --account-name cdnstroageaarmor \
                     --destination scripts \
                     --destination-path autharmor-js-ui/$(PackageVersion)

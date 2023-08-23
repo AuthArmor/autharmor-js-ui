@@ -10,7 +10,10 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                     tabName: "Log in",
                     usernameless: {
                         title: "Sign in with app.",
-                        description: "Scan the code below with the Auth Armor app.",
+                        description: {
+                            appLink: "Click the button to open the Auth Armor app.",
+                            qrCode: "Scan the code below with the Auth Armor app."
+                        },
                         verificationCode: (verificationCode) => [
                             "Your verification code is ",
                             verificationCode,
@@ -65,13 +68,19 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                 authenticator: {
                     logIn: {
                         title: "Authenticate with authenticator app.",
-                        description:
-                            "We’ve sent a push notification to your authenticator app. If that’s not working, you can scan the code below instead."
+                        description: {
+                            qrCode: "We’ve sent a push notification to your authenticator app. If that’s not working, you can scan the code below instead.",
+                            appLink:
+                                "We’ve sent a push notification to your authenticator app. If that’s not working, you can click the button below instead."
+                        }
                     },
                     register: {
                         title: "Register with authenticator app.",
-                        description:
-                            "Scan the code below with your phone. We’ll prompt you to download the Auth Armor app if it isn’t already installed."
+                        description: {
+                            qrCode: "Scan the code below with your phone. We’ll prompt you to download the Auth Armor app if it isn’t already installed.",
+                            appLink:
+                                "Click the button below. We’ll prompt you to download the Auth Armor app if it isn’t already installed."
+                        }
                     }
                 },
                 magicLinkEmail: {
@@ -99,6 +108,11 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                 wait: {
                     title: "Please wait.",
                     description: "We’re processing your request."
+                },
+                captcha: {
+                    title: "Verifying request.",
+                    description:
+                        "We’re verifying that you’re not a robot. You may need to complete a challenge."
                 }
             },
             errors: {

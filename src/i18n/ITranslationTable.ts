@@ -5,7 +5,10 @@ export interface ITranslationTable {
                 tabName: string;
                 usernameless: {
                     title: string;
-                    description: string;
+                    description: {
+                        qrCode: string;
+                        appLink: string;
+                    };
                     verificationCode: <TVerificationCode>(
                         verificationCode: TVerificationCode
                     ) => (string | TVerificationCode)[];
@@ -56,11 +59,17 @@ export interface ITranslationTable {
             authenticator: {
                 logIn: {
                     title: string;
-                    description: string;
+                    description: {
+                        qrCode: string;
+                        appLink: string;
+                    };
                 };
                 register: {
                     title: string;
-                    description: string;
+                    description: {
+                        qrCode: string;
+                        appLink: string;
+                    };
                 };
             };
             magicLinkEmail: {

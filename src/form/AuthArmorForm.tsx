@@ -35,9 +35,9 @@ import { UsernameLogInError } from "../components/UsernameLogIn";
 import { UsernamelessLogInError } from "../components/UsernamelessLogIn";
 import { UsernameRegisterError } from "../components/UsernameRegister";
 import { useDocumentVisibility } from "../common/useDocumentVisibility";
+import { isMobile } from "../common/isMobile";
 import { TranslationTableContext, defaultTranslationTable } from "../i18n";
 import styles from "./AuthArmorForm.module.css";
-import { isMobile } from "src/common/isMobile";
 
 export type FormAction = "logIn" | "register";
 export const defaultFormAction: FormAction = "logIn";

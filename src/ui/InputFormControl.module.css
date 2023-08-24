@@ -1,8 +1,8 @@
 .input {
     width: 100%;
 
-    background-color: hsl(0deg 0% 95%);
-    color: hsl(0deg 0% 15%);
+    background-color: var(--form-input-background-color);
+    color: var(--form-input-foreground-color);
 
     font-size: 0.875rem;
     font-weight: 500;

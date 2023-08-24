@@ -36,6 +36,7 @@ import { UsernamelessLogInError } from "../components/UsernamelessLogIn";
 import { UsernameRegisterError } from "../components/UsernameRegister";
 import { useDocumentVisibility } from "../common/useDocumentVisibility";
 import { isMobile } from "../common/isMobile";
+import { defaultUiOptions } from "../options";
 import { TranslationTableContext, defaultTranslationTable } from "../i18n";
 import styles from "./AuthArmorForm.module.css";
 
@@ -137,6 +138,24 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
     const isDocumentVisible = useDocumentVisibility();
 
     const isDesktopDocumentVisible = createMemo(() => (isMobile ? true : isDocumentVisible()));
+
+    const uiOptions = createMemo(() => ({
+        ...defaultUiOptions,
+        ...props.interactiveConfig.uiOptions
+    }));
+
+    const uiOptionsDerivedStyles = createMemo(() =>
+        Object.fromEntries(
+            Object.entries(uiOptions()).map(([property, value]) => [
+                `--${property
+                    .replace(/([a-z])([A-Z])/g, "$1-$2")
+                    .replace(/([a-zA-Z])([0-9])/g, "$1-$2")
+                    .replace(/([0-9])(a-zA-Z)/g, "$1-$2")
+                    .toLowerCase()}`,
+                value
+            ])
+        )
+    );
 
     createEffect(
         on(
@@ -626,7 +645,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
 
     return (
         <TranslationTableContext.Provider value={tt}>
-            <section class={styles.authArmorForm}>
+            <section class={styles.authArmorForm} style={uiOptionsDerivedStyles()}>
                 <Show when={props.action === null}>
                     <TabControl
                         tabs={[

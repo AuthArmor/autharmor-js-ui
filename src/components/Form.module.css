@@ -9,7 +9,7 @@
 
     padding: 0;
 
-    color: hsl(0deg 0% 15%);
+    color: var(--form-method-title-foreground-color);
 
     font-size: 1.5rem;
     font-weight: 500;
@@ -21,7 +21,7 @@
 
     padding: 0;
 
-    color: hsl(0deg 0% 30%);
+    color: var(--form-method-description-foreground-color);
 
     font-size: 1rem;
     font-weight: 400;

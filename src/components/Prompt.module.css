@@ -3,7 +3,7 @@
 
     padding: 0;
 
-    color: hsl(0deg 0% 15%);
+    color: var(--prompt-foreground-color);
 
     font-size: 1.5rem;
     font-weight: 500;
@@ -12,7 +12,7 @@
 .promptDescription {
     margin-block-start: 0.5rem;
 
-    color: hsl(0deg 0% 30%);
+    color: var(--prompt-description-foreground-color);
 
     line-height: 125%;
     font-size: 1rem;
@@ -29,7 +29,7 @@
 
     padding: 0;
 
-    color: hsl(0deg 100% 40%);
+    color: var(--prompt-error-foreground-color);
 
     font-size: 0.875rem;
     font-weight: 500;

@@ -129,6 +129,7 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                 },
                 usernameRegister: {
                     userAlreadyExists: "This username is already taken.",
+                    noAvailableMethods: "There are no available methods to use.",
                     network: "A network error occurred. Please check the console.",
                     unknown: "An unknown error occurred. The console may have further details."
                 },

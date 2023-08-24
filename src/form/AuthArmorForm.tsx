@@ -613,7 +613,11 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
             .map(([method]) => method as AuthenticationMethod);
 
         if (availableMethodsList.length === 0) {
-            setUsernameLogInError("noAvailableMethods");
+            if (currentAction() === "logIn") {
+                setUsernameLogInError("noAvailableMethods");
+            } else {
+                setUsernameRegisterError("noAvailableMethods");
+            }
 
             return;
         }

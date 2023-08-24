@@ -5,7 +5,11 @@ import { InputFormControl } from "../ui/InputFormControl";
 import { ButtonFormControl } from "../ui/ButtonFormControl";
 import { useTranslationTable } from "../i18n";
 
-export type UsernameRegisterError = "userAlreadyExists" | "network" | "unknown";
+export type UsernameRegisterError =
+    | "userAlreadyExists"
+    | "noAvailableMethods"
+    | "network"
+    | "unknown";
 
 export type UsernameRegisterProps = {
     isLoading?: boolean;

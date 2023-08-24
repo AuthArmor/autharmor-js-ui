@@ -1,13 +1,13 @@
 import { JSX, Show } from "solid-js";
 import cn from "clsx";
+import { AppLinkLoader } from "../ui/AppLinkLoader";
+import { AppLink } from "./AppLink";
 import { QrCodeLoader } from "../ui/QrCodeLoader";
 import { QrCode } from "../ui/QrCode";
 import { useTranslationTable } from "../i18n";
 import { isMobile } from "../common/isMobile";
 import styles from "./UsernamelessLogIn.module.css";
 import formStyles from "./Form.module.css";
-import { AppLink } from "./AppLink";
-import { AppLinkLoader } from "src/ui/AppLinkLoader";
 
 export type UsernamelessLogInError = "declined" | "network" | "unknown";
 

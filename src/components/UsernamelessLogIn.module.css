@@ -6,11 +6,11 @@
     width: 10rem;
     height: 10rem;
 
-    color: hsl(0deg 0% 15%);
+    color: var(--qr-code-foreground-color);
 }
 
 .errorStateQrCode {
-    color: hsl(0deg 0% 75%);
+    color: var(--qr-code-error-foreground-color);
     filter: blur(0.0625rem);
 }
 
@@ -24,14 +24,14 @@
 
     padding: 0;
 
-    color: hsl(0deg 0% 30%);
+    color: var(--verification-code-foreground-color);
 
     font-size: 0.875rem;
     font-weight: 400;
 }
 
 .verificationCodeValue {
-    color: hsl(290deg 100% 40%);
+    color: var(--verification-code-value-foreground-color);
 
     font-weight: 500;
 }

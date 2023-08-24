@@ -1,5 +1,5 @@
 .qrCodeLoader {
-    background-color: hsl(0deg 0% 40%);
+    background-color: var(--qr-code-loader-color);
 }
 
 .activeQrCodeLoader {
@@ -11,10 +11,10 @@
 
 @keyframes flicker {
     from {
-        background-color: hsl(0deg 0% 40%);
+        background-color: var(--qr-code-loader-active-color-2);
     }
 
     to {
-        background-color: hsl(0deg 0% 15%);
+        background-color: var(--qr-code-loader-active-color-1);
     }
 }

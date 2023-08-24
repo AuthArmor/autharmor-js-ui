@@ -14,7 +14,7 @@
     padding: 0;
 
     background: none;
-    color: hsl(0deg 0% 45%);
+    color: var(--tab-foreground-color);
 
     font-size: 1.25rem;
     font-weight: 500;
@@ -25,7 +25,7 @@
 }
 
 .tab:hover {
-    color: hsl(0deg 0% 15%);
+    color: var(--tab-hover-foreground-color);
 }
 
 .tab::after {
@@ -44,9 +44,9 @@
 }
 
 .tab.activeTab {
-    color: hsl(290deg 100% 40%);
+    color: var(--tab-active-foreground-color);
 }
 
 .tab.activeTab::after {
-    background-color: hsl(290deg 100% 40%);
+    background-color: var(--tab-active-foreground-color);
 }

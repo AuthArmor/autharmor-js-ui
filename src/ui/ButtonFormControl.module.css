@@ -1,6 +1,6 @@
 .button {
-    background-color: hsl(0deg 0% 15%);
-    color: hsl(0deg 0% 100%);
+    background-color: var(--form-button-background-color);
+    color: var(--form-button-foreground-color);
 
     font-family: inherit;
     font-size: 0.875rem;
@@ -8,7 +8,9 @@
 
     cursor: pointer;
 
-    transition: background-color 0.2s ease-out;
+    transition:
+        background-color 0.2s ease-out,
+        color 0.2s ease-out;
 }
 
 .button.button {
@@ -16,12 +18,13 @@
 }
 
 .button:hover {
-    background-color: hsl(0deg 0% 30%);
+    background-color: var(--form-button-hover-background-color);
+    color: var(--form-button-hover-foreground-color);
 }
 
 .button:disabled {
-    background-color: hsl(0deg 0% 45%);
-    color: hsl(0deg 0% 90%);
+    background-color: var(--form-button-disabled-background-color);
+    color: var(--form-button-disabled-foreground-color);
 
     cursor: not-allowed;
 }

@@ -2,10 +2,10 @@
     width: 10rem;
     height: 10rem;
 
-    color: hsl(0deg 0% 15%);
+    color: var(--qr-code-foreground-color);
 }
 
 .errorStateQrCode {
-    color: hsl(0deg 0% 75%);
+    color: var(--qr-code-error-foreground-color);
     filter: blur(0.0625rem);
 }

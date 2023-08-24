@@ -12,8 +12,7 @@
 
     padding: 1rem 1.25rem;
 
-    background-color: hsl(0deg 0% 95%);
-    color: transparent;
+    background-color: var(--option-card-background-color);
 
     text-align: start;
     font-family: inherit;
@@ -25,14 +24,14 @@
 }
 
 .card:hover {
-    background-color: hsl(290deg 50% 95%);
+    background-color: var(--option-card-hover-background-color);
 }
 
 .icon {
     width: 1.25rem;
     height: 1.25rem;
 
-    color: hsl(0deg 0% 15%);
+    color: var(--option-card-icon-foreground-color);
 }
 
 .label {
@@ -40,7 +39,7 @@
 
     padding: 0;
 
-    color: hsl(0deg 0% 15%);
+    color: var(--option-card-label-foreground-color);
 
     font-size: 1rem;
     font-weight: 500;
@@ -54,7 +53,7 @@
 
     padding: 0;
 
-    color: hsl(0deg 0% 30%);
+    color: var(--option-card-description-foreground-color);
 
     font-size: 0.875rem;
     font-weight: 400;

@@ -3,7 +3,7 @@
 
     padding: 0;
 
-    color: hsl(0deg 0% 15%);
+    color: var(--form-field-label-foreground-color);
 
     font-size: 0.875rem;
     font-weight: 500;
@@ -23,7 +23,7 @@
 
     padding: 0;
 
-    color: hsl(0deg 100% 40%);
+    color: var(--form-field-error-foreground-color);
 
     font-size: 0.875rem;
     font-weight: 500;

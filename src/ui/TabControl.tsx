@@ -8,7 +8,7 @@ export type TabControlProps<TTabIdentifier> = {
         displayName: string;
     }[];
     activeTabId: TTabIdentifier;
-    
+
     onTabSelect: (tabId: TTabIdentifier) => void;
 
     class?: string;

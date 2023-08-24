@@ -115,6 +115,7 @@ export interface ITranslationTable {
             };
             usernameRegister: {
                 userAlreadyExists: string;
+                noAvailableMethods: string;
                 network: string;
                 unknown: string;
             };

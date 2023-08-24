@@ -210,9 +210,9 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                 const abortController = new AbortController();
 
                 onCleanup(() => {
-                    setUsernamelessLogInQrCodeData(false);
+                    setUsernamelessLogInQrCodeData(props.enableUsernamelessLogIn ? null : false);
                     setUsernamelessLogInVerificationCode(null);
-                    
+
                     abortController.abort();
                 });
 

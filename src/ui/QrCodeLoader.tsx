@@ -18,6 +18,10 @@ export function QrCodeLoader(props: QrCodeLoaderProps) {
                 props.class
             )}
             style={props.style}
-        />
+        >
+            {[...new Array(9)].map(() => (
+                <div />
+            ))}
+        </div>
     );
 }

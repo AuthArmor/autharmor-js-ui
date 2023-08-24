@@ -34,7 +34,7 @@ export function UsernamelessLogIn(props: UsernamelessLogInProps) {
             </p>
             <Show
                 when={props.qrCodeData !== null}
-                fallback={<QrCodeLoader class={styles.qrCode} isActive={!isError()} />}
+                fallback={<QrCodeLoader class={styles.qrCodeLoader} isActive={!isError()} />}
             >
                 <Show
                     when={isMobile}

@@ -115,7 +115,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
     );
 
     const [usernamelessLogInQrCodeData, setUsernamelessLogInQrCodeData] = createSignal<
-        string | null
+        string | null | false
     >(null);
     const [usernamelessLogInVerificationCode, setUsernamelessLogInVerificationCode] = createSignal<
         string | null
@@ -204,12 +204,15 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                     return;
                 }
 
-                const abortController = new AbortController();
-
                 setUsernamelessLogInQrCodeData(null);
                 setUsernamelessLogInVerificationCode(null);
 
+                const abortController = new AbortController();
+
                 onCleanup(() => {
+                    setUsernamelessLogInQrCodeData(false);
+                    setUsernamelessLogInVerificationCode(null);
+                    
                     abortController.abort();
                 });
 

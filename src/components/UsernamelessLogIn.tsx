@@ -7,6 +7,7 @@ import { isMobile } from "../common/isMobile";
 import styles from "./UsernamelessLogIn.module.css";
 import formStyles from "./Form.module.css";
 import { AppLink } from "./AppLink";
+import { AppLinkLoader } from "src/ui/AppLinkLoader";
 
 export type UsernamelessLogInError = "declined" | "network" | "unknown";
 
@@ -33,17 +34,24 @@ export function UsernamelessLogIn(props: UsernamelessLogInProps) {
                 {tt().form.actions.logIn.usernameless.description[isMobile ? "appLink" : "qrCode"]}
             </p>
             <Show
-                when={props.qrCodeData !== null}
-                fallback={<QrCodeLoader class={styles.qrCodeLoader} isActive={!isError()} />}
-            >
-                <Show
-                    when={isMobile}
-                    fallback={
+                when={isMobile}
+                fallback={
+                    <Show
+                        when={props.qrCodeData !== null}
+                        fallback={
+                            <QrCodeLoader isActive={!isError()} class={styles.qrCodeLoader} />
+                        }
+                    >
                         <QrCode
                             data={props.qrCodeData!}
                             class={cn(styles.qrCode, { [styles.errorStateQrCode]: isError() })}
                         />
-                    }
+                    </Show>
+                }
+            >
+                <Show
+                    when={props.qrCodeData !== null}
+                    fallback={<AppLinkLoader isActive={!isError()} class={styles.appLinkLoader} />}
                 >
                     <AppLink data={props.qrCodeData!} class={styles.appLink} />
                 </Show>

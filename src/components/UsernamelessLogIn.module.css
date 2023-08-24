@@ -19,12 +19,17 @@
 
     width: 10rem;
     height: 10rem;
-
-    color: var(--qr-code-foreground-color);
 }
 
 .appLink.appLink {
     margin-block-start: 2rem;
+}
+
+.appLinkLoader {
+    margin-block-start: 2rem;
+
+    width: 6rem;
+    height: 2rem;
 }
 
 .verificationCode {

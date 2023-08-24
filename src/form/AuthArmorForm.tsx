@@ -612,7 +612,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
             .filter(([_, isEnabled]) => isEnabled)
             .map(([method]) => method as AuthenticationMethod);
 
-        if (availableMethodsList.length === 0) {
+        if (
+            availableMethodsList.length === 0 ||
+            (currentMethod() !== null && !availableMethodsList.includes(currentMethod()!))
+        ) {
             if (currentAction() === "logIn") {
                 setUsernameLogInError("noAvailableMethods");
             } else {
@@ -625,7 +628,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
         setUserSelectedCurrentUsername(username);
 
         if (availableMethodsList.length === 1) {
-            handleMethodSelect(availableMethodsList[0]);
+            setUserSelectedCurrentMethod(availableMethodsList[0]);
         }
     };
 

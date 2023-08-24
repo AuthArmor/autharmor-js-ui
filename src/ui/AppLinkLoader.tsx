@@ -14,7 +14,7 @@ export function AppLinkLoader(props: AppLinkLoaderProps) {
         <div
             class={cn(
                 styles.appLinkLoader,
-                { [styles.activeAppLinkLoadaer]: props.isActive },
+                { [styles.activeAppLinkLoader]: props.isActive },
                 props.class
             )}
             style={props.style}

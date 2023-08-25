@@ -20,7 +20,9 @@ export function CaptchaPrompt(props: CaptchaPromptProps) {
     let captchaRef: HTMLDivElement = null!;
     let captchaId: string = null!;
 
-    const [isCaptchaLoaded, setIsCaptchaLoaded] = createSignal<boolean>(hcaptcha !== undefined);
+    const [isCaptchaLoaded, setIsCaptchaLoaded] = createSignal<boolean>(
+        typeof hcaptcha !== "undefined"
+    );
 
     onMount(() => {
         if (!isCaptchaLoaded()) {

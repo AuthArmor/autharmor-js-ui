@@ -110,9 +110,9 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                     description: "We’re processing your request."
                 },
                 captcha: {
-                    title: "Verifying request.",
+                    title: "Verification needed.",
                     description:
-                        "We’re verifying that you’re not a robot. You may need to complete a challenge."
+                        "We need to make sure you’re not a robot."
                 }
             },
             errors: {

@@ -30,8 +30,8 @@ import { AuthenticatorError, AuthenticatorPrompt } from "../components/Authentic
 import { MagicLinkEmailError, MagicLinkEmailPrompt } from "../components/MagicLinkEmailPrompt";
 import { WebAuthnError, WebAuthnPrompt } from "../components/WebAuthnPrompt";
 import { WaitPrompt } from "../components/WaitPrompt";
-import { CaptchaPrompt } from "../components/CaptchaPrompt";
 import { UsernameLogInError } from "../components/UsernameLogIn";
+import { CaptchaProtectedWindow } from "../components/CaptchaProtectedWindow";
 import { UsernamelessLogInError } from "../components/UsernamelessLogIn";
 import { UsernameRegisterError } from "../components/UsernameRegister";
 import { useDocumentVisibility } from "../common/useDocumentVisibility";
@@ -309,7 +309,6 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
 
                 onCleanup(() => {
                     abortController.abort();
-                    setIsLoading(false);
                 });
 
                 switch (method) {
@@ -668,7 +667,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                 </Show>
                 <div class={styles.view}>
                     <Show
-                        when={isSucceeded() || currentUsername() !== null}
+                        when={currentUsername() !== null}
                         fallback={
                             <Switch>
                                 <Match when={currentAction() === "logIn"}>
@@ -698,10 +697,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                             onGoBack={goBackHandler()}
                         >
                             <Show
-                                when={isLoading() || isSucceeded()}
+                                when={isSucceeded()}
                                 fallback={
                                     <Show
-                                        when={currentMethod() !== null}
+                                        when={currentMethod() !== null && hCaptchaSiteId() !== null}
                                         fallback={
                                             <MethodSelectionPrompt
                                                 availableMethods={availableMethods()}
@@ -709,19 +708,9 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                             />
                                         }
                                     >
-                                        <Show
-                                            when={!isCaptchaPending()}
-                                            fallback={
-                                                <Show
-                                                    when={hCaptchaSiteId() !== null}
-                                                    fallback={<WaitPrompt />}
-                                                >
-                                                    <CaptchaPrompt
-                                                        hCaptchaSiteId={hCaptchaSiteId() as string}
-                                                        onConfirm={handleCaptchaConfirm}
-                                                    />
-                                                </Show>
-                                            }
+                                        <CaptchaProtectedWindow
+                                            hCaptchaSiteId={hCaptchaSiteId() as string | null}
+                                            onConfirm={handleCaptchaConfirm}
                                         >
                                             <Switch>
                                                 <Match when={currentMethod() === "authenticator"}>
@@ -750,7 +739,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                                     />
                                                 </Match>
                                             </Switch>
-                                        </Show>
+                                        </CaptchaProtectedWindow>
                                     </Show>
                                 }
                             >

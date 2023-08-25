@@ -701,7 +701,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                 when={isSucceeded()}
                                 fallback={
                                     <Show
-                                        when={currentMethod() !== null && hCaptchaSiteId() !== null}
+                                        when={currentMethod() !== null}
                                         fallback={
                                             <MethodSelectionPrompt
                                                 availableMethods={availableMethods()}
@@ -710,7 +710,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         }
                                     >
                                         <CaptchaProtectedWindow
-                                            hCaptchaSiteId={hCaptchaSiteId() as string | null}
+                                            hCaptchaSiteId={hCaptchaSiteId() || null}
                                             onConfirm={handleCaptchaConfirm}
                                         >
                                             <Switch>

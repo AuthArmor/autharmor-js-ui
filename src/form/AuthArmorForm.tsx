@@ -306,6 +306,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                 setAuthenticatorError(null);
                 setMagicLinkEmailError(null);
                 setWebAuthnError(null);
+                setQrCodeData(null);
 
                 onCleanup(() => {
                     abortController.abort();

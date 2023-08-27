@@ -58,6 +58,9 @@ devDependencies:
   rollup:
     specifier: ^3.28.0
     version: 3.28.0
+  rollup-plugin-peer-deps-external:
+    specifier: ^2.2.4
+    version: 2.2.4(rollup@3.28.0)
   rollup-plugin-postcss:
     specifier: ^4.0.2
     version: 4.0.2(postcss@8.4.28)
@@ -2594,6 +2597,14 @@ packages:
       is-core-module: 2.13.0
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
+    dev: true
+
+  /rollup-plugin-peer-deps-external@2.2.4(rollup@3.28.0):
+    resolution: {integrity: sha512-AWdukIM1+k5JDdAqV/Cxd+nejvno2FVLVeZ74NKggm3Q5s9cbbcOgUPGdbxPi4BXu7xGaZ8HG12F+thImYu/0g==}
+    peerDependencies:
+      rollup: '*'
+    dependencies:
+      rollup: 3.28.0
     dev: true
 
   /rollup-plugin-postcss@4.0.2(postcss@8.4.28):

@@ -1,4 +1,5 @@
 import { defineConfig } from "rollup";
+import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import babel from "@rollup/plugin-babel";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
@@ -37,6 +38,7 @@ export default defineConfig({
     ],
     external: ["@autharmor/autharmor-js"],
     plugins: [
+        peerDepsExternal(),
         babel({
             extensions: [".js", ".ts", ".jsx", ".tsx"],
             babelHelpers: "bundled",

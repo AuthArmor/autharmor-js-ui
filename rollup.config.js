@@ -36,7 +36,6 @@ export default defineConfig({
             }
         }
     ],
-    external: ["@autharmor/autharmor-js"],
     plugins: [
         peerDepsExternal(),
         babel({

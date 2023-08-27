@@ -1,6 +1,6 @@
 {
     "name": "@autharmor/autharmor-js-ui",
-    "version": "4.0.0-alpha.12",
+    "version": "4.0.0-alpha.13",
     "type": "module",
     "source": "src/index.ts",
     "types": "./dist/types/index.d.ts",
@@ -60,6 +60,6 @@
         "typescript": "^5.1.6"
     },
     "peerDependencies": {
-        "@autharmor/autharmor-js": ">=4.0.0-alpha.12 <4.0.0-alpha.13"
+        "@autharmor/autharmor-js": ">=4.0.0-alpha.13 <4.0.0-alpha.14"
     }
 }

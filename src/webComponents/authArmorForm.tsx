@@ -14,40 +14,42 @@ export type AuthArmorFormCustomElementProps = Omit<
     "client" | "onLogIn" | "onRegister"
 > & { client: AuthArmorFormProps["client"] | null };
 
-customElement(
-    "autharmor-form",
-    {
-        client: null,
-        interactiveConfig: {},
-        action: null,
-        username: null,
-        method: null,
-        defaultAction: null,
-        enableUsernamelessLogIn: true
-    } satisfies AuthArmorFormCustomElementProps as AuthArmorFormCustomElementProps,
-    (props, { element }) => {
-        noShadowDOM();
+if (typeof window !== "undefined") {
+    customElement(
+        "autharmor-form",
+        {
+            client: null,
+            interactiveConfig: {},
+            action: null,
+            username: null,
+            method: null,
+            defaultAction: null,
+            enableUsernamelessLogIn: true
+        } satisfies AuthArmorFormCustomElementProps as AuthArmorFormCustomElementProps,
+        (props, { element }) => {
+            noShadowDOM();
 
-        const handleLogIn = (authenticationResult: IAuthenticationSuccessResult) => {
-            element.renderRoot.dispatchEvent(new LogInEvent(authenticationResult));
-        };
+            const handleLogIn = (authenticationResult: IAuthenticationSuccessResult) => {
+                element.renderRoot.dispatchEvent(new LogInEvent(authenticationResult));
+            };
 
-        const handleRegister = (registrationResult: IRegistrationSuccessResult) => {
-            element.renderRoot.dispatchEvent(new RegisterEvent(registrationResult));
-        };
+            const handleRegister = (registrationResult: IRegistrationSuccessResult) => {
+                element.renderRoot.dispatchEvent(new RegisterEvent(registrationResult));
+            };
 
-        return (
-            <Show when={props.client instanceof AuthArmorClient}>
-                <AuthArmorForm
-                    {...(props as AuthArmorFormCustomElementProps &
-                        Pick<AuthArmorFormProps, "client">)}
-                    onLogIn={handleLogIn}
-                    onRegister={handleRegister}
-                />
-            </Show>
-        );
-    }
-);
+            return (
+                <Show when={props.client instanceof AuthArmorClient}>
+                    <AuthArmorForm
+                        {...(props as AuthArmorFormCustomElementProps &
+                            Pick<AuthArmorFormProps, "client">)}
+                        onLogIn={handleLogIn}
+                        onRegister={handleRegister}
+                    />
+                </Show>
+            );
+        }
+    );
+}
 
 declare global {
     interface HTMLElementTagNameMap {

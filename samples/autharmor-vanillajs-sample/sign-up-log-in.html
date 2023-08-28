@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
         <title>Auth Armor Vanilla JS Sample</title>
@@ -8,12 +8,12 @@
 
         <link
             rel="stylesheet"
-            href="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-alpha.9/global/autharmor-js-ui.css"
+            href="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-alpha.14/global/autharmor-js-ui.css"
         />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
 
-        <script src="https://cdn.autharmor.com/scripts/autharmor-js/4.0.0-alpha.9/global/autharmor-js.js"></script>
-        <script src="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-alpha.9/global/autharmor-js-ui.js"></script>
+        <script src="https://cdn.autharmor.com/scripts/autharmor-js/4.0.0-alpha.14/global/autharmor-js.js"></script>
+        <script src="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-alpha.14/global/autharmor-js-ui.js"></script>
 
         <script src="/js/script.js"></script>
 
@@ -29,22 +29,30 @@
 
                 const applyBtn = document.getElementById("apply-btn");
 
-                const allowLogInInput = document.getElementById("allow-log-in-input");
-                const allowRegisterInput = document.getElementById("allow-register-input");
-                const allowAuthenticatorInput = document.getElementById("allow-authenticator-input");
-                const allowMagicLinkEmailInput = document.getElementById("allow-magic-link-email-input");
+                const enforceActionInput = document.getElementById("enforce-action-input");
+                const enforceUsernameInput = document.getElementById("enforce-username-input");
+                const enforceMethodInput = document.getElementById("enforce-method-input");
+                const allowAuthenticatorInput = document.getElementById(
+                    "allow-authenticator-input"
+                );
+                const allowMagicLinkEmailInput = document.getElementById(
+                    "allow-magic-link-email-input"
+                );
                 const allowWebAuthnInput = document.getElementById("allow-webauthn-input");
-                const allowUsernamelessInput = document.getElementById("allow-usernameless-input");
+                const enableUsernamelessLogInInput = document.getElementById(
+                    "enable-usernameless-log-in-input"
+                );
 
                 applyBtn.addEventListener("click", () => {
-                    form.enableLogIn = allowLogInInput.checked;
-                    form.enableRegistration = allowRegisterInput.checked;
+                    form.action = enforceActionInput.value || null;
+                    form.username = enforceUsernameInput.value || null;
+                    form.method = enforceMethodInput.value || null;
                     form.interactiveConfig.permittedMethods = {
                         authenticator: allowAuthenticatorInput.checked,
                         magicLinkEmail: allowMagicLinkEmailInput.checked,
                         webAuthn: allowWebAuthnInput.checked
                     };
-                    form.enableUsernameless = allowUsernamelessInput.checked;
+                    form.enableUsernamelessLogIn = enableUsernamelessLogInInput.checked;
                 });
             });
         </script>
@@ -77,7 +85,9 @@
                         <a class="navbar-link">Scenarios</a>
 
                         <div class="navbar-dropdown">
-                            <a class="navbar-item" href="/imperative-auth.html">Imperative authentication</a>
+                            <a class="navbar-item" href="/imperative-auth.html"
+                                >Imperative authentication</a
+                            >
                         </div>
                     </div>
                 </div>
@@ -97,48 +107,63 @@
         <section class="section">
             <h1 class="title">Authentication form</h1>
             <p>
-                The AuthArmor UI supports rendering a form that allows the user to log in or register. It emits events when that happens with the result of the action which can be sent to the server for further processing and to establish a session.
+                The AuthArmor UI supports rendering a form that allows the user to log in or
+                register. It emits events when that happens with the result of the action which can
+                be sent to the server for further processing and to establish a session.
             </p>
         </section>
 
         <section class="section columns">
-            <autharmor-form
-                id="auth-form"
-                class="column"
-            ></autharmor-form>
+            <autharmor-form id="auth-form" class="column"></autharmor-form>
             <div class="column is-three-fifths">
-                <div class="field">
-                    <p class="label">Allowed Actions</p>
+                <div class="field" formGroupName="enforceAction">
+                    <p class="label">Enforce Action</p>
                     <div class="control">
-                        <label class="checkbox">
-                            <input type="checkbox" id="allow-log-in-input" checked>
-                            Log in
-                        </label>
+                        <div class="select">
+                            <select id="enforce-action-input">
+                                <option value="">None</option>
+                                <option value="logIn">Log In</option>
+                                <option value="register">Register</option>
+                            </select>
+                        </div>
                     </div>
+                </div>
+                <div class="field">
+                    <p class="label">Enforce Username</p>
                     <div class="control">
-                        <label class="checkbox">
-                            <input type="checkbox" id="allow-register-input" checked>
-                            Register
-                        </label>
+                        <input type="text" class="input" id="enforce-username-input" />
+                    </div>
+                </div>
+                <div class="field">
+                    <p class="label">Enforce Method</p>
+                    <div class="control">
+                        <div class="select">
+                            <select id="enforce-method-input">
+                                <option value="">None</option>
+                                <option value="authenticator">Authenticator App</option>
+                                <option value="magicLinkEmail">Magic Link Email</option>
+                                <option value="webAuthn">WebAuthn</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="field">
                     <p class="label">Allowed Methods</p>
                     <div class="control">
                         <label class="checkbox">
-                            <input type="checkbox" id="allow-authenticator-input" checked>
+                            <input type="checkbox" id="allow-authenticator-input" checked />
                             Authenticator
                         </label>
                     </div>
                     <div class="control">
                         <label class="checkbox">
-                            <input type="checkbox" id="allow-magic-link-email-input" checked>
+                            <input type="checkbox" id="allow-magic-link-email-input" checked />
                             Magic link email
                         </label>
                     </div>
                     <div class="control">
                         <label class="checkbox">
-                            <input type="checkbox" id="allow-webauthn-input" checked>
+                            <input type="checkbox" id="allow-web-authn-input" checked />
                             WebAuthn
                         </label>
                     </div>
@@ -147,15 +172,15 @@
                     <p class="label">Miscellaneous</p>
                     <div class="control">
                         <label class="checkbox">
-                            <input type="checkbox" id="allow-usernameless-input" checked>
-                            Allow usernameless login
+                            <input type="checkbox" id="enable-usernameless-log-in-input" checked />
+                            Enable usernameless login
                         </label>
                     </div>
                 </div>
 
                 <div class="field">
                     <div class="control">
-                      <button id="apply-btn" class="button is-link">Apply</button>
+                        <button id="apply-btn" class="button is-link">Apply</button>
                     </div>
                 </div>
             </div>

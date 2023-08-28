@@ -93,19 +93,19 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
 
     const currentUsername = createMemo(() => props.username ?? userSelectedCurrentUsername());
 
-    const [availableMethods, setAvailableMethods] = createSignal<AvailableAuthenticationMethods>({
-        authenticator: false,
-        magicLinkEmail: false,
-        webAuthn: false
-    });
+    const [availableMethods, setAvailableMethods] =
+        createSignal<AvailableAuthenticationMethods | null>(null);
 
-    const singleAvailableMethod = () => {
-        const availableMethodsList = Object.entries(availableMethods())
-            .filter(([_, isEnabled]) => isEnabled)
-            .map(([method]) => method as AuthenticationMethod);
+    const availableMethodsList = createMemo(
+        () =>
+            availableMethods() &&
+            Object.entries(availableMethods()!)
+                .filter(([_, isEnabled]) => isEnabled)
+                .map(([method]) => method as AuthenticationMethod)
+    );
 
-        return availableMethodsList.length === 1 ? availableMethodsList[0] : null;
-    };
+    const singleAvailableMethod = () =>
+        availableMethodsList()?.length === 1 ? availableMethodsList()![0] : null;
 
     const [userSelectedCurrentMethod, setUserSelectedCurrentMethod] =
         createSignal<AuthenticationMethod | null>(null);
@@ -114,8 +114,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
         () => props.method ?? singleAvailableMethod() ?? userSelectedCurrentMethod()
     );
 
+    const enableUsernamelessLogIn = () => props.enableUsernamelessLogIn && props.username === null;
+
     const [usernamelessLogInQrCodeData, setUsernamelessLogInQrCodeData] = createSignal<
-        string | null | false
+        string | null
     >(null);
     const [usernamelessLogInVerificationCode, setUsernamelessLogInVerificationCode] = createSignal<
         string | null
@@ -181,9 +183,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
     createEffect(
         on(
             [
-                () => props.enableUsernamelessLogIn,
+                enableUsernamelessLogIn,
                 currentAction,
                 currentUsername,
+                availableMethods,
                 isDesktopDocumentVisible,
                 usernamelessLogInError
             ],
@@ -191,13 +194,14 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                 enableUsernamelessLogIn,
                 action,
                 username,
+                availableMethods,
                 isDesktopDocumentVisible,
                 usernamelessLogInError
             ]) => {
                 if (
                     !enableUsernamelessLogIn ||
                     action !== "logIn" ||
-                    username !== null ||
+                    (username !== null && availableMethods !== null) ||
                     !isDesktopDocumentVisible ||
                     usernamelessLogInError !== null
                 ) {
@@ -210,7 +214,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                 const abortController = new AbortController();
 
                 onCleanup(() => {
-                    setUsernamelessLogInQrCodeData(props.enableUsernamelessLogIn ? null : false);
+                    setUsernamelessLogInQrCodeData(null);
                     setUsernamelessLogInVerificationCode(null);
 
                     abortController.abort();
@@ -279,6 +283,104 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                 }
             }
         )
+    );
+
+    createEffect(
+        on([currentUsername], async ([username]) => {
+            setAvailableMethods(null);
+
+            if (username === null) return;
+
+            const abortController = new AbortController();
+
+            onCleanup(() => {
+                setIsLoading(false);
+
+                abortController.abort();
+            });
+
+            setUsernameLogInError(null);
+            setUsernameRegisterError(null);
+
+            setIsLoading(true);
+
+            let availableMethodsForUser: AvailableAuthenticationMethods | null = null;
+
+            try {
+                availableMethodsForUser =
+                    await props.client.getAvailableAuthenticationMethodsAsync(username);
+            } catch (error: unknown) {
+                if (!(error instanceof ApiError && error.statusCode === 404)) {
+                    throw error;
+                }
+            } finally {
+                if (abortController.signal.aborted) return;
+
+                setIsLoading(false);
+            }
+
+            switch (currentAction()) {
+                case "logIn": {
+                    if (availableMethodsForUser === null) {
+                        setUsernameLogInError("userNotFound");
+                        return;
+                    }
+
+                    break;
+                }
+
+                case "register": {
+                    if (availableMethodsForUser !== null) {
+                        setUsernameRegisterError("userAlreadyExists");
+                        return;
+                    }
+
+                    const availableMethods: AvailableAuthenticationMethods = {
+                        authenticator: false,
+                        magicLinkEmail: false,
+                        webAuthn: false,
+                        ...(props.interactiveConfig.permittedMethods ?? {
+                            authenticator: true,
+                            magicLinkEmail:
+                                props.interactiveConfig.defaultMagicLinkEmailRegisterRedirectUrl !==
+                                undefined,
+                            webAuthn: true
+                        })
+                    };
+
+                    if (
+                        availableMethods.magicLinkEmail &&
+                        !/^[^@]+@[^@:/?#]*[^@:/.?#]+$/.test(username)
+                    ) {
+                        availableMethods.magicLinkEmail = false;
+                    }
+
+                    availableMethodsForUser = availableMethods;
+
+                    break;
+                }
+            }
+
+            const availableMethodsForUserList = Object.entries(availableMethodsForUser)
+                .filter(([_, isEnabled]) => isEnabled)
+                .map(([method]) => method as AuthenticationMethod);
+
+            if (
+                availableMethodsForUserList.length === 0 ||
+                (currentMethod() !== null &&
+                    !availableMethodsForUserList.includes(currentMethod()!))
+            ) {
+                if (currentAction() === "logIn") {
+                    setUsernameLogInError("noAvailableMethods");
+                } else {
+                    setUsernameRegisterError("noAvailableMethods");
+                }
+
+                return;
+            }
+
+            setAvailableMethods(availableMethodsForUser);
+        })
     );
 
     createEffect(
@@ -546,90 +648,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
     };
 
     const handleUsernameSelect = async (username: string) => {
-        setUsernameLogInError(null);
-        setUsernameRegisterError(null);
-
-        setIsLoading(true);
-
-        let availableMethodsForUser: AvailableAuthenticationMethods | null = null;
-
-        try {
-            availableMethodsForUser =
-                await props.client.getAvailableAuthenticationMethodsAsync(username);
-        } catch (error: unknown) {
-            if (!(error instanceof ApiError && error.statusCode === 404)) {
-                throw error;
-            }
-        } finally {
-            setIsLoading(false);
-        }
-
-        switch (currentAction()) {
-            case "logIn": {
-                if (availableMethodsForUser === null) {
-                    setUsernameLogInError("userNotFound");
-                    return;
-                }
-
-                setAvailableMethods(availableMethodsForUser);
-
-                break;
-            }
-
-            case "register": {
-                if (availableMethodsForUser !== null) {
-                    setUsernameRegisterError("userAlreadyExists");
-                    return;
-                }
-
-                const availableMethods: AvailableAuthenticationMethods = {
-                    authenticator: false,
-                    magicLinkEmail: false,
-                    webAuthn: false,
-                    ...(props.interactiveConfig.permittedMethods ?? {
-                        authenticator: true,
-                        magicLinkEmail:
-                            props.interactiveConfig.defaultMagicLinkEmailRegisterRedirectUrl !==
-                            undefined,
-                        webAuthn: true
-                    })
-                };
-
-                if (
-                    availableMethods.magicLinkEmail &&
-                    !/^[^@]+@[^@:/?#]*[^@:/.?#]+$/.test(username)
-                ) {
-                    availableMethods.magicLinkEmail = false;
-                }
-
-                setAvailableMethods(availableMethods);
-
-                break;
-            }
-        }
-
-        const availableMethodsList = Object.entries(availableMethods())
-            .filter(([_, isEnabled]) => isEnabled)
-            .map(([method]) => method as AuthenticationMethod);
-
-        if (
-            availableMethodsList.length === 0 ||
-            (currentMethod() !== null && !availableMethodsList.includes(currentMethod()!))
-        ) {
-            if (currentAction() === "logIn") {
-                setUsernameLogInError("noAvailableMethods");
-            } else {
-                setUsernameRegisterError("noAvailableMethods");
-            }
-
-            return;
-        }
-
         setUserSelectedCurrentUsername(username);
-
-        if (availableMethodsList.length === 1) {
-            setUserSelectedCurrentMethod(availableMethodsList[0]);
-        }
     };
 
     const handleMethodSelect = (method: AuthenticationMethod) => {
@@ -668,12 +687,16 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                 </Show>
                 <div class={styles.view}>
                     <Show
-                        when={currentUsername() !== null}
+                        when={availableMethods() !== null || props.username !== null}
                         fallback={
                             <Switch>
                                 <Match when={currentAction() === "logIn"}>
                                     <LogInForm
-                                        qrCodeData={usernamelessLogInQrCodeData()}
+                                        qrCodeData={
+                                            enableUsernamelessLogIn()
+                                                ? usernamelessLogInQrCodeData()
+                                                : false
+                                        }
                                         verificationCode={usernamelessLogInVerificationCode()}
                                         isLoading={isLoading()}
                                         usernameError={usernameLogInError()}
@@ -703,10 +726,12 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                     <Show
                                         when={currentMethod() !== null}
                                         fallback={
-                                            <MethodSelectionPrompt
-                                                availableMethods={availableMethods()}
-                                                onSelect={handleMethodSelect}
-                                            />
+                                            <Show when={availableMethods() !== null}>
+                                                <MethodSelectionPrompt
+                                                    availableMethods={availableMethods()!}
+                                                    onSelect={handleMethodSelect}
+                                                />
+                                            </Show>
                                         }
                                     >
                                         <CaptchaProtectedWindow

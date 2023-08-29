@@ -5,8 +5,6 @@ import {
     IAuthenticatorRegisterOptions,
     IWebAuthnRegisterOptions,
     IMagicLinkEmailRegisterOptions,
-    IAuthenticationSuccessResult,
-    IRegistrationSuccessResult,
     IAuthenticateOptions,
     IRegisterOptions,
     AuthenticationResult,
@@ -55,7 +53,7 @@ export class AuthArmorInteractiveClient {
         username: string,
         options: Partial<IAuthenticateOptions> = {},
         abortSignal?: AbortSignal
-    ): Promise<IAuthenticationSuccessResult> {
+    ): Promise<AuthenticationResult> {
         return (await this.evaluateFormAsync(
             {
                 action: "logIn",
@@ -79,7 +77,7 @@ export class AuthArmorInteractiveClient {
                 }
             },
             abortSignal
-        )) as IAuthenticationSuccessResult;
+        )) as AuthenticationResult;
     }
 
     /**
@@ -95,7 +93,7 @@ export class AuthArmorInteractiveClient {
         username: string,
         options: Partial<IAuthenticatorUserSpecificAuthenticateOptions> = {},
         abortSignal?: AbortSignal
-    ): Promise<IAuthenticationSuccessResult> {
+    ): Promise<AuthenticationResult> {
         return (await this.evaluateFormAsync(
             {
                 action: "logIn",
@@ -111,7 +109,7 @@ export class AuthArmorInteractiveClient {
                 }
             },
             abortSignal
-        )) as IAuthenticationSuccessResult;
+        )) as AuthenticationResult;
     }
 
     /**
@@ -127,7 +125,7 @@ export class AuthArmorInteractiveClient {
         username: string,
         options: Partial<IAuthenticateOptions>,
         abortSignal?: AbortSignal
-    ): Promise<IAuthenticationSuccessResult> {
+    ): Promise<AuthenticationResult> {
         return (await this.evaluateFormAsync(
             {
                 action: "logIn",
@@ -143,7 +141,7 @@ export class AuthArmorInteractiveClient {
                 }
             },
             abortSignal
-        )) as IAuthenticationSuccessResult;
+        )) as AuthenticationResult;
     }
 
     /**
@@ -156,7 +154,9 @@ export class AuthArmorInteractiveClient {
      * @param options The options to use for this request.
      * @param abortSignal The abort signal to use for this request.
      *
-     * @returns A promise that never resolves.
+     * @returns
+     * A promise that resolves with the authentication result. The promise will not resolve in the
+     * case of successful authentication.
      *
      * @remarks
      * The user will be redirected to the specified URL after they have logged in. The validation
@@ -168,7 +168,7 @@ export class AuthArmorInteractiveClient {
         redirectUrl?: string,
         options: Partial<IMagicLinkEmailAuthenticateOptions> = {},
         abortSignal?: AbortSignal
-    ): Promise<never> {
+    ): Promise<AuthenticationResult> {
         return (await this.evaluateFormAsync(
             {
                 action: "logIn",
@@ -186,7 +186,7 @@ export class AuthArmorInteractiveClient {
                     redirectUrl ?? this.configuration.defaultMagicLinkEmailLogInRedirectUrl
             },
             abortSignal
-        )) as never;
+        )) as AuthenticationResult;
     }
 
     /**
@@ -202,7 +202,7 @@ export class AuthArmorInteractiveClient {
         username: string,
         options: Partial<IRegisterOptions> = {},
         abortSignal?: AbortSignal
-    ): Promise<IRegistrationSuccessResult> {
+    ): Promise<RegistrationResult> {
         return (await this.evaluateFormAsync(
             {
                 action: "register",
@@ -230,7 +230,7 @@ export class AuthArmorInteractiveClient {
                 }
             },
             abortSignal
-        )) as IRegistrationSuccessResult;
+        )) as RegistrationResult;
     }
 
     /**
@@ -246,7 +246,7 @@ export class AuthArmorInteractiveClient {
         username: string,
         options: Partial<IAuthenticatorRegisterOptions> = {},
         abortSignal?: AbortSignal
-    ): Promise<IRegistrationSuccessResult> {
+    ): Promise<RegistrationResult> {
         return (await this.evaluateFormAsync(
             {
                 action: "register",
@@ -262,7 +262,7 @@ export class AuthArmorInteractiveClient {
                 }
             },
             abortSignal
-        )) as IRegistrationSuccessResult;
+        )) as RegistrationResult;
     }
 
     /**
@@ -278,7 +278,7 @@ export class AuthArmorInteractiveClient {
         username: string,
         options: Partial<IWebAuthnRegisterOptions>,
         abortSignal?: AbortSignal
-    ): Promise<IRegistrationSuccessResult> {
+    ): Promise<RegistrationResult> {
         return (await this.evaluateFormAsync(
             {
                 action: "register",
@@ -294,7 +294,7 @@ export class AuthArmorInteractiveClient {
                 }
             },
             abortSignal
-        )) as IRegistrationSuccessResult;
+        )) as RegistrationResult;
     }
 
     /**
@@ -307,7 +307,9 @@ export class AuthArmorInteractiveClient {
      * @param options The options to use for this request.
      * @param abortSignal The abort signal to use for this request.
      *
-     * @returns A promise that never resolves.
+     * @returns
+     * A promise that resolves with the authentication result. The promise will not resolve in the
+     * case of successful authentication.
      *
      * @remarks
      * The user will be redirected to the specified URL after they have logged in. The validation
@@ -318,7 +320,7 @@ export class AuthArmorInteractiveClient {
         redirectUrl?: string,
         options: Partial<IMagicLinkEmailRegisterOptions> = {},
         abortSignal?: AbortSignal
-    ): Promise<never> {
+    ): Promise<RegistrationResult> {
         return (await this.evaluateFormAsync(
             {
                 action: "register",
@@ -336,7 +338,7 @@ export class AuthArmorInteractiveClient {
                     redirectUrl ?? this.configuration.defaultMagicLinkEmailRegisterRedirectUrl
             },
             abortSignal
-        )) as never;
+        )) as RegistrationResult;
     }
 
     /**

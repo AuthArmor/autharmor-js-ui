@@ -4,8 +4,10 @@ import {
     AuthenticationMethod,
     AuthenticationResult,
     AvailableAuthenticationMethods,
+    IAuthenticationFailureResult,
     IAuthenticationSuccessResult,
     ICaptchaConfirmationRequest,
+    IRegistrationFailureResult,
     IRegistrationSuccessResult,
     QrCodeResult,
     RegistrationResult
@@ -38,6 +40,11 @@ import { useDocumentVisibility } from "../common/useDocumentVisibility";
 import { isMobile } from "../common/isMobile";
 import { defaultUiOptions } from "../options";
 import { TranslationTableContext, defaultTranslationTable } from "../i18n";
+import {
+    NoAuthenticationMethodsAvailableError,
+    UserAlreadyExistsError,
+    UserNotFoundError
+} from "../errors";
 import styles from "./AuthArmorForm.module.css";
 
 export type FormAction = "logIn" | "register";
@@ -57,6 +64,11 @@ export type AuthArmorFormProps = {
 
     onLogIn: (authenticationResult: IAuthenticationSuccessResult) => void;
     onRegister: (registrationResult: IRegistrationSuccessResult) => void;
+
+    onLogInFailure: (authenticationResult: IAuthenticationFailureResult) => void;
+    onRegisterFailure: (registrationResult: IRegistrationFailureResult) => void;
+
+    onError: (error: unknown) => void;
 };
 
 export function AuthArmorForm(props: AuthArmorFormProps) {
@@ -246,7 +258,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                             setUsernamelessLogInError("unknown");
                         }
 
-                        throw error;
+                        props.onError(error);
+                        return;
                     }
 
                     if (abortController.signal.aborted) {
@@ -277,6 +290,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                 break;
                             }
                         }
+
+                        props.onLogInFailure(authenticationResult);
 
                         break;
                     }
@@ -311,7 +326,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                     await props.client.getAvailableAuthenticationMethodsAsync(username);
             } catch (error: unknown) {
                 if (!(error instanceof ApiError && error.statusCode === 404)) {
-                    throw error;
+                    props.onError(error);
+                    return;
                 }
             } finally {
                 if (abortController.signal.aborted) return;
@@ -323,6 +339,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                 case "logIn": {
                     if (availableMethodsForUser === null) {
                         setUsernameLogInError("userNotFound");
+
+                        props.onError(new UserNotFoundError());
                         return;
                     }
 
@@ -332,6 +350,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                 case "register": {
                     if (availableMethodsForUser !== null) {
                         setUsernameRegisterError("userAlreadyExists");
+
+                        props.onError(new UserAlreadyExistsError());
                         return;
                     }
 
@@ -376,6 +396,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                     setUsernameRegisterError("noAvailableMethods");
                 }
 
+                props.onError(new NoAuthenticationMethodsAvailableError());
                 return;
             }
 
@@ -444,7 +465,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         setAuthenticatorError("unknown");
                                     }
 
-                                    throw error;
+                                    props.onError(error);
+                                    return;
                                 } finally {
                                     setIsLoading(false);
                                 }
@@ -457,6 +479,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                     props.onLogIn(authenticationResult);
                                 } else {
                                     setAuthenticatorError(authenticationResult.failureReason);
+
+                                    props.onLogInFailure(authenticationResult);
                                 }
 
                                 break;
@@ -485,7 +509,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         setAuthenticatorError("unknown");
                                     }
 
-                                    throw error;
+                                    props.onError(error);
+                                    return;
                                 } finally {
                                     setIsLoading(false);
                                 }
@@ -498,6 +523,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                     props.onRegister(registrationResult);
                                 } else {
                                     setAuthenticatorError(registrationResult.failureReason);
+
+                                    props.onRegisterFailure(registrationResult);
                                 }
 
                                 break;
@@ -529,7 +556,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         setMagicLinkEmailError("unknown");
                                     }
 
-                                    throw error;
+                                    props.onError(error);
+                                    return;
                                 } finally {
                                     setIsLoading(false);
                                 }
@@ -557,7 +585,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         setMagicLinkEmailError("unknown");
                                     }
 
-                                    throw error;
+                                    props.onError(error);
+                                    return;
                                 } finally {
                                     setIsLoading(false);
                                 }
@@ -586,6 +615,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         setWebAuthnError(
                                             authenticationResult.failureReason as WebAuthnError
                                         );
+
+                                        props.onLogInFailure(authenticationResult);
                                     }
                                 } catch (error: unknown) {
                                     if (error instanceof TypeError) {
@@ -594,7 +625,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         setWebAuthnError("unknown");
                                     }
 
-                                    throw error;
+                                    props.onError(error);
+                                    return;
                                 }
 
                                 break;
@@ -613,6 +645,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         setWebAuthnError(
                                             registrationResult.failureReason as WebAuthnError
                                         );
+
+                                        props.onRegisterFailure(registrationResult);
                                     }
                                 } catch (error: unknown) {
                                     if (error instanceof TypeError) {
@@ -621,7 +655,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         setWebAuthnError("unknown");
                                     }
 
-                                    throw error;
+                                    props.onError(error);
+                                    return;
                                 }
 
                                 break;

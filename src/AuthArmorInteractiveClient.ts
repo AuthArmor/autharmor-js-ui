@@ -8,13 +8,14 @@ import {
     IAuthenticationSuccessResult,
     IRegistrationSuccessResult,
     IAuthenticateOptions,
-    IRegisterOptions
+    IRegisterOptions,
+    AuthenticationResult,
+    RegistrationResult
 } from "@autharmor/autharmor-js";
+import { JSXElement } from "solid-js";
 import { render } from "solid-js/web";
 import { IAuthArmorInteractiveClientConfiguration } from "./config";
 import { ITranslationTable, defaultTranslationTable } from "./i18n";
-import { NoAuthenticationMethodsAvailableError } from "./errors";
-import { JSXElement } from "solid-js";
 import { ModalContainer } from "./ui/ModalContainer";
 import { AuthArmorForm, AuthArmorFormProps } from "./form/AuthArmorForm";
 
@@ -379,19 +380,28 @@ export class AuthArmorInteractiveClient {
      * @returns A promise that resolves with the authentication or registration result.
      */
     protected evaluateFormAsync(
-        props: Omit<AuthArmorFormProps, "client" | "interactiveConfig" | "onLogIn" | "onRegister">,
+        props: Omit<
+            AuthArmorFormProps,
+            | "client"
+            | "interactiveConfig"
+            | "onLogIn"
+            | "onRegister"
+            | "onLogInFailure"
+            | "onRegisterFailure"
+            | "onError"
+        >,
         configurationOverride: Partial<IAuthArmorInteractiveClientConfiguration> = {},
         abortSignal?: AbortSignal
-    ): Promise<IAuthenticationSuccessResult | IRegistrationSuccessResult> {
+    ): Promise<AuthenticationResult | RegistrationResult> {
         return new Promise((resolve, reject) => {
-            const handleLogIn = (authenticationResult: IAuthenticationSuccessResult) => {
+            const handleResult = (result: AuthenticationResult | RegistrationResult) => {
                 cleanup();
-                resolve(authenticationResult);
+                resolve(result);
             };
 
-            const handleRegister = (registrationResult: IRegistrationSuccessResult) => {
+            const handleError = (error: unknown) => {
                 cleanup();
-                resolve(registrationResult);
+                reject(error);
             };
 
             const cleanup = this.render(() =>
@@ -402,8 +412,11 @@ export class AuthArmorInteractiveClient {
                         ...configurationOverride
                     },
                     ...props,
-                    onLogIn: handleLogIn,
-                    onRegister: handleRegister
+                    onLogIn: handleResult,
+                    onRegister: handleResult,
+                    onLogInFailure: handleResult,
+                    onRegisterFailure: handleResult,
+                    onError: handleError
                 })
             );
 

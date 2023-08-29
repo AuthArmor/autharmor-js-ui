@@ -1,17 +1,24 @@
 import {
     AuthArmorClient,
+    IAuthenticationFailureResult,
     IAuthenticationSuccessResult,
+    IRegistrationFailureResult,
     IRegistrationSuccessResult
 } from "@autharmor/autharmor-js";
 import { Show } from "solid-js";
 import { customElement, noShadowDOM } from "solid-element";
-import { LogInEvent } from "./events/LogInEvent";
-import { RegisterEvent } from "./events/RegisterEvent";
 import { AuthArmorForm, AuthArmorFormProps } from "../form/AuthArmorForm";
+import {
+    LogInEvent,
+    RegisterEvent,
+    LogInFailureEvent,
+    RegisterFailureEvent,
+    ErrorThrownEvent
+} from "./events";
 
 export type AuthArmorFormCustomElementProps = Omit<
     AuthArmorFormProps,
-    "client" | "onLogIn" | "onRegister"
+    "client" | "onLogIn" | "onRegister" | "onLogInFailure" | "onRegisterFailure" | "onError"
 > & { client: AuthArmorFormProps["client"] | null };
 
 if (typeof window !== "undefined") {
@@ -37,6 +44,18 @@ if (typeof window !== "undefined") {
                 element.renderRoot.dispatchEvent(new RegisterEvent(registrationResult));
             };
 
+            const handleLogInFailure = (authenticationResult: IAuthenticationFailureResult) => {
+                element.renderRoot.dispatchEvent(new LogInFailureEvent(authenticationResult));
+            };
+
+            const handleRegisterFailure = (registrationResult: IRegistrationFailureResult) => {
+                element.renderRoot.dispatchEvent(new RegisterFailureEvent(registrationResult));
+            };
+
+            const handleError = (error: unknown) => {
+                element.renderRoot.dispatchEvent(new ErrorThrownEvent(error));
+            };
+
             return (
                 <Show when={props.client instanceof AuthArmorClient}>
                     <AuthArmorForm
@@ -44,6 +63,9 @@ if (typeof window !== "undefined") {
                             Pick<AuthArmorFormProps, "client">)}
                         onLogIn={handleLogIn}
                         onRegister={handleRegister}
+                        onLogInFailure={handleLogInFailure}
+                        onRegisterFailure={handleRegisterFailure}
+                        onError={handleError}
                     />
                 </Show>
             );

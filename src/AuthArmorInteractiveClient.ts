@@ -155,13 +155,14 @@ export class AuthArmorInteractiveClient {
      * @param abortSignal The abort signal to use for this request.
      *
      * @returns
-     * A promise that resolves with the authentication result. The promise will not resolve in the
-     * case of successful authentication.
+     * A promise that resolves with the authentication result.
      *
      * @remarks
      * The user will be redirected to the specified URL after they have logged in. The validation
      * token and request ID will be added as query parameters with the names
      * `auth_validation_token` and `auth_request_id` respectively.
+     *
+     * The validation token will not be included in the returned `AuthenticationResult`.
      */
     public async authenticateWithMagicLinkEmailAsync(
         username: string,
@@ -308,12 +309,13 @@ export class AuthArmorInteractiveClient {
      * @param abortSignal The abort signal to use for this request.
      *
      * @returns
-     * A promise that resolves with the authentication result. The promise will not resolve in the
-     * case of successful authentication.
+     * A promise that resolves with the authentication result.
      *
      * @remarks
      * The user will be redirected to the specified URL after they have logged in. The validation
      * token will be added as a query parameters with the name `registration_validation_token`.
+     *
+     * The validation token will not be included in the returned `RegistrationResult`.
      */
     public async registerWithMagicLinkEmailAsync(
         username: string,
@@ -388,6 +390,8 @@ export class AuthArmorInteractiveClient {
             | "interactiveConfig"
             | "onLogIn"
             | "onRegister"
+            | "onOutOfBandLogIn"
+            | "onOutOfBandRegister"
             | "onLogInFailure"
             | "onRegisterFailure"
             | "onError"
@@ -416,6 +420,8 @@ export class AuthArmorInteractiveClient {
                     ...props,
                     onLogIn: handleResult,
                     onRegister: handleResult,
+                    onOutOfBandLogIn: handleResult,
+                    onOutOfBandRegister: handleResult,
                     onLogInFailure: handleResult,
                     onRegisterFailure: handleResult,
                     onError: handleError

@@ -10,6 +10,7 @@ export interface IUiOptions {
     formMethodDescriptionForegroundColor: string;
     promptForegroundColor: string;
     promptDescriptionForegroundColor: string;
+    promptInfoForegroundColor: string;
     promptErrorForegroundColor: string;
     formButtonBackgroundColor: string;
     formButtonForegroundColor: string;

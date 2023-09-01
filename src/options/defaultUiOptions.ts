@@ -12,6 +12,7 @@ export const defaultUiOptions: IUiOptions = {
     formMethodDescriptionForegroundColor: "hsl(0deg 0% 30%)",
     promptForegroundColor: "hsl(0deg 0% 15%)",
     promptDescriptionForegroundColor: "hsl(0deg 0% 30%)",
+    promptInfoForegroundColor: "hsl(140deg 100% 40%)",
     promptErrorForegroundColor: "hsl(0deg 100% 40%)",
     formButtonBackgroundColor: "hsl(0deg 0% 15%)",
     formButtonForegroundColor: "hsl(0deg 0% 100%)",

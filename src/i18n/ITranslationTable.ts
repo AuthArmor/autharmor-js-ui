@@ -76,10 +76,12 @@ export interface ITranslationTable {
                 logIn: {
                     title: string;
                     description: string;
+                    outOfBandCompletionInfo: string;
                 };
                 register: {
                     title: string;
                     description: string;
+                    outOfBandCompletionInfo: string;
                 };
             };
             webAuthn: {

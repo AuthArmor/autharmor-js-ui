@@ -13,12 +13,21 @@ import {
     RegisterEvent,
     LogInFailureEvent,
     RegisterFailureEvent,
-    ErrorThrownEvent
+    ErrorThrownEvent,
+    OutOfBandLogInEvent,
+    OutOfBandRegisterEvent
 } from "./events";
 
 export type AuthArmorFormCustomElementProps = Omit<
     AuthArmorFormProps,
-    "client" | "onLogIn" | "onRegister" | "onLogInFailure" | "onRegisterFailure" | "onError"
+    | "client"
+    | "onLogIn"
+    | "onRegister"
+    | "onOutOfBandLogIn"
+    | "onOutOfBandRegister"
+    | "onLogInFailure"
+    | "onRegisterFailure"
+    | "onError"
 > & { client: AuthArmorFormProps["client"] | null };
 
 if (typeof window !== "undefined") {
@@ -44,6 +53,14 @@ if (typeof window !== "undefined") {
                 element.renderRoot.dispatchEvent(new RegisterEvent(registrationResult));
             };
 
+            const handleOutOfBandLogIn = (authenticationResult: IAuthenticationSuccessResult) => {
+                element.renderRoot.dispatchEvent(new OutOfBandLogInEvent(authenticationResult));
+            };
+
+            const handleOutOfBandRegister = (registrationResult: IRegistrationSuccessResult) => {
+                element.renderRoot.dispatchEvent(new OutOfBandRegisterEvent(registrationResult));
+            };
+
             const handleLogInFailure = (authenticationResult: IAuthenticationFailureResult) => {
                 element.renderRoot.dispatchEvent(new LogInFailureEvent(authenticationResult));
             };
@@ -63,6 +80,8 @@ if (typeof window !== "undefined") {
                             Pick<AuthArmorFormProps, "client">)}
                         onLogIn={handleLogIn}
                         onRegister={handleRegister}
+                        onOutOfBandLogIn={handleOutOfBandLogIn}
+                        onOutOfBandRegister={handleOutOfBandRegister}
                         onLogInFailure={handleLogInFailure}
                         onRegisterFailure={handleRegisterFailure}
                         onError={handleError}

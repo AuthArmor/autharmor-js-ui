@@ -6,6 +6,9 @@ export type MagicLinkEmailError = "network" | "unknown";
 
 export type MagicLinkEmailPromptProps = {
     isRegistering: boolean;
+
+    isOutOfBandCompleted: boolean;
+
     error?: MagicLinkEmailError | null;
 
     class?: string;
@@ -18,21 +21,22 @@ export function MagicLinkEmailPrompt(props: MagicLinkEmailPromptProps) {
     return (
         <div class={props.class} style={props.style}>
             <p class={promptStyles.prompt}>
-                {
-                    (props.isRegistering
-                        ? tt().form.prompts.magicLinkEmail.register
-                        : tt().form.prompts.magicLinkEmail.logIn
-                    ).title
-                }
+                {tt().form.prompts.magicLinkEmail[props.isRegistering ? "register" : "logIn"].title}
             </p>
             <p class={promptStyles.promptDescription}>
                 {
-                    (props.isRegistering
-                        ? tt().form.prompts.magicLinkEmail.register
-                        : tt().form.prompts.magicLinkEmail.logIn
-                    ).description
+                    tt().form.prompts.magicLinkEmail[props.isRegistering ? "register" : "logIn"]
+                        .description
                 }
             </p>
+            <Show when={props.isOutOfBandCompleted}>
+                <p class={promptStyles.info}>
+                    {
+                        tt().form.prompts.magicLinkEmail[props.isRegistering ? "register" : "logIn"]
+                            .outOfBandCompletionInfo
+                    }
+                </p>
+            </Show>
             <Show when={props.error !== undefined && props.error !== null}>
                 <p class={promptStyles.error}>{tt().form.errors.magicLinkEmail[props.error!]}</p>
             </Show>

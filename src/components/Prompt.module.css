@@ -23,6 +23,19 @@
     margin-block-start: 1.75rem;
 }
 
+.info {
+    margin: 0;
+    margin-block-start: 1.5rem;
+
+    padding: 0;
+
+    color: var(--prompt-info-foreground-color);
+
+    line-height: 125%;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
 .error {
     margin: 0;
     margin-block-start: 1.5rem;
@@ -31,6 +44,7 @@
 
     color: var(--prompt-error-foreground-color);
 
+    line-height: 125%;
     font-size: 0.875rem;
     font-weight: 500;
 }

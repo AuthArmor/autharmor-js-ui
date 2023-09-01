@@ -65,6 +65,9 @@ export type AuthArmorFormProps = {
     onLogIn: (authenticationResult: IAuthenticationSuccessResult) => void;
     onRegister: (registrationResult: IRegistrationSuccessResult) => void;
 
+    onOutOfBandLogIn: (authenticationResult: IAuthenticationSuccessResult) => void;
+    onOutOfBandRegister: (registrationResult: IRegistrationSuccessResult) => void;
+
     onLogInFailure: (authenticationResult: IAuthenticationFailureResult) => void;
     onRegisterFailure: (registrationResult: IRegistrationFailureResult) => void;
 
@@ -148,6 +151,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
 
     const [isLoading, setIsLoading] = createSignal(false);
     const [isSucceeded, setIsSucceeded] = createSignal(false);
+    const [isOutOfBandCompleted, setIsOutOfBandCompleted] = createSignal(false);
 
     const isDocumentVisible = useDocumentVisibility();
 
@@ -538,17 +542,27 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                         switch (currentAction()) {
                             case "logIn": {
                                 try {
-                                    await props.client.sendAuthenticateMagicLinkEmailAsync(
-                                        username,
-                                        props.interactiveConfig
-                                            .defaultMagicLinkEmailLogInRedirectUrl!,
-                                        {
-                                            ...props.interactiveConfig.defaultAuthenticateOptions,
-                                            ...props.interactiveConfig
-                                                .defaultMagicLinkEmailAuthenticateOptions
-                                        },
-                                        captchaConfirmation ?? undefined
-                                    );
+                                    const authenticationResult =
+                                        await props.client.sendAuthenticateMagicLinkEmailAsync(
+                                            username,
+                                            props.interactiveConfig
+                                                .defaultMagicLinkEmailLogInRedirectUrl!,
+                                            {
+                                                ...props.interactiveConfig
+                                                    .defaultAuthenticateOptions,
+                                                ...props.interactiveConfig
+                                                    .defaultMagicLinkEmailAuthenticateOptions
+                                            },
+                                            captchaConfirmation ?? undefined
+                                        );
+
+                                    if (authenticationResult.succeeded) {
+                                        setIsOutOfBandCompleted(true);
+
+                                        props.onOutOfBandLogIn(authenticationResult);
+                                    } else {
+                                        props.onLogInFailure(authenticationResult);
+                                    }
                                 } catch (error: unknown) {
                                     if (error instanceof TypeError) {
                                         setMagicLinkEmailError("network");
@@ -567,17 +581,26 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
 
                             case "register": {
                                 try {
-                                    await props.client.sendRegisterMagicLinkEmailAsync(
-                                        username,
-                                        props.interactiveConfig
-                                            .defaultMagicLinkEmailRegisterRedirectUrl!,
-                                        {
-                                            ...props.interactiveConfig.defaultRegisterOptions,
-                                            ...props.interactiveConfig
-                                                .defaultMagicLinkEmailRegisterOptions
-                                        },
-                                        captchaConfirmation ?? undefined
-                                    );
+                                    const registrationResult =
+                                        await props.client.sendRegisterMagicLinkEmailAsync(
+                                            username,
+                                            props.interactiveConfig
+                                                .defaultMagicLinkEmailRegisterRedirectUrl!,
+                                            {
+                                                ...props.interactiveConfig.defaultRegisterOptions,
+                                                ...props.interactiveConfig
+                                                    .defaultMagicLinkEmailRegisterOptions
+                                            },
+                                            captchaConfirmation ?? undefined
+                                        );
+
+                                    if (registrationResult.succeeded) {
+                                        setIsOutOfBandCompleted(true);
+
+                                        props.onOutOfBandRegister(registrationResult);
+                                    } else {
+                                        props.onRegisterFailure(registrationResult);
+                                    }
                                 } catch (error: unknown) {
                                     if (error instanceof TypeError) {
                                         setMagicLinkEmailError("network");
@@ -788,6 +811,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                                         isRegistering={
                                                             currentAction() === "register"
                                                         }
+                                                        isOutOfBandCompleted={isOutOfBandCompleted()}
                                                         error={magicLinkEmailError()}
                                                     />
                                                 </Match>

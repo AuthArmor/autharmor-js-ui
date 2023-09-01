@@ -86,11 +86,13 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                 magicLinkEmail: {
                     logIn: {
                         title: "Authenticate with magic link email.",
-                        description: "We’ve sent you an email with a link to log you in."
+                        description: "We’ve sent you an email with a link to log you in.",
+                        outOfBandCompletionInfo: "You’ve logged in on a different tab or window."
                     },
                     register: {
                         title: "Register with magic link email.",
-                        description: "We’ve sent you an email with a link to register you."
+                        description: "We’ve sent you an email with a link to register you.",
+                        outOfBandCompletionInfo: "You’ve registered on a different tab or window."
                     }
                 },
                 webAuthn: {

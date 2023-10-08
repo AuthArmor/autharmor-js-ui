@@ -4,8 +4,9 @@ import { FormsModule } from "@angular/forms";
 import {
     ApiError,
     AuthArmorClient,
-    IAuthenticationSuccessResult,
-    IRegistrationSuccessResult
+    AuthenticationResult,
+    IRegistrationSuccessResult,
+    RegistrationResult
 } from "@autharmor/autharmor-js";
 import {
     AuthArmorInteractiveClient,
@@ -88,7 +89,7 @@ export class ImperativeAuthComponent implements OnInit, OnDestroy {
     }
 
     public async authenticate(username: string) {
-        let authenticationResult: IAuthenticationSuccessResult;
+        let authenticationResult: AuthenticationResult;
 
         try {
             authenticationResult = await this.authArmorInteractiveClient.authenticateAsync(
@@ -111,7 +112,7 @@ export class ImperativeAuthComponent implements OnInit, OnDestroy {
     }
 
     public async register(username: string) {
-        let registrationResult: IRegistrationSuccessResult;
+        let registrationResult: RegistrationResult;
 
         try {
             registrationResult = await this.authArmorInteractiveClient.registerAsync(username);

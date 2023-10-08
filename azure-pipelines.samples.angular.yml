@@ -1,0 +1,79 @@
+# Node.js with Angular
+# Build a Node.js project that uses Angular.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- main
+
+pr: none
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: build
+    displayName: 'Build package'
+    jobs:
+    - job: build_package
+      displayName: 'Build package'
+      steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '18.x'
+        displayName: 'Install Node.js'
+
+      - script: npm install --global pnpm@latest-8
+        displayName: 'Install pnpm'
+
+      - script: pnpm install
+        displayName: 'Install dependencies'
+        workingDirectory: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/
+      
+      - task: DownloadSecureFile@1
+        name: envFile
+        displayName: 'Download production environment file'
+        inputs:
+          secureFile: 'autharmor-angular-sample.environment.production.ts'
+
+      - script: |
+          rm $(System.DefaultWorkingDirectory)/samples/autharmor-angular-sample/src/config/environment.ts
+          mv $(envFile.secureFilePath) $(System.DefaultWorkingDirectory)/samples/autharmor-angular-sample/src/config/environment.ts
+        displayName: 'Install production environment file'
+
+      - script: pnpm run ng build --configuration production
+        displayName: 'Build bundle'
+        workingDirectory: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/
+
+      - task: CopyFiles@2
+        displayName: 'Stage artifact files'
+        inputs:
+          sourceFolder: $(Build.Repository.LocalPath)/samples/autharmor-angular-sample/dist/autharmor-angular-sample/
+          targetFolder: $(Build.ArtifactStagingDirectory)
+
+      - publish: $(Build.ArtifactStagingDirectory)
+        artifact: autharmor-angular-sample-bundle
+        displayName: 'Publish bundle'
+
+  - stage: deploy_swa
+    displayName: 'Deploy to Azure Static Web App'
+    dependsOn: build
+    jobs:
+    - deployment: deploy_to_swa
+      displayName: 'Deploy to Azure Static Web App'
+      environment: sdk-production
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - download: current
+              artifact: autharmor-angular-sample-bundle
+            - task: AzureStaticWebApp@0
+              inputs:
+                production_branch: main
+                skip_app_build: true
+                skip_api_build: true
+                is_static_export: true
+                workingDirectory: $(Pipeline.Workspace)/autharmor-angular-sample-bundle/
+                app_location: /
+                azure_static_web_apps_api_token: $(AzureSwaDeploymentToken)

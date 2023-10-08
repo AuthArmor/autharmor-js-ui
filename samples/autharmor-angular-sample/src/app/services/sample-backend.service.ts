@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable, map } from "rxjs";
+import { Observable } from "rxjs";
 import { GreetingResponse } from "../api-models/greeting.response";
 import { LogInRequest } from "../api-models/log-in.request";
 import { LogInResponse } from "../api-models/log-in.response";

@@ -87,6 +87,10 @@ export class SignUpLogInComponent {
             .subscribe(({ token }) => this.handleTokenResponse(token));
     }
 
+    public onError(error: unknown) {
+        console.error(error);
+    }
+
     private handleTokenResponse(token: string) {
         this.tokenService.saveToken(token);
         this.router.navigate(["/"]);

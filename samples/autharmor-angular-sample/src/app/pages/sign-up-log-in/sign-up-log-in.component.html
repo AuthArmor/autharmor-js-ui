@@ -8,6 +8,7 @@
         [enableUsernamelessLogIn]="enableUsernamelessLogIn"
         (logIn)="onLogIn($any($event))"
         (register)="onRegister($any($event))"
+        (error)="onError($event)"
     ></autharmor-form>
     <form
         class="column is-three-fifths"

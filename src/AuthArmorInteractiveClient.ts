@@ -312,8 +312,9 @@ export class AuthArmorInteractiveClient {
      * A promise that resolves with the authentication result.
      *
      * @remarks
-     * The user will be redirected to the specified URL after they have logged in. The validation
-     * token will be added as a query parameters with the name `registration_validation_token`.
+     * The user will be redirected to the specified URL after they have registered. The validation
+     * token and registration ID will be added as query parameters with the names
+     * `registration_validation_token` and `registration_id` respectively.
      *
      * The validation token will not be included in the returned `RegistrationResult`.
      */

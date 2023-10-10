@@ -143,11 +143,11 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
     const [captchaConfirmation, setCaptchaConfirmation] =
         createSignal<ICaptchaConfirmationRequest | null>(null);
     const [isCaptchaConfirmationStale, setIsCaptchaConfirmationStale] = createSignal(false);
+    const isCaptchaRequired = () =>
+        (currentMethod() === "authenticator" && currentAction() === "logIn") ||
+        currentMethod() === "magicLinkEmail";
     const isCaptchaPending = () =>
-        ((currentMethod() === "authenticator" && currentAction() === "logIn") ||
-            currentMethod() === "magicLinkEmail") &&
-        hCaptchaSiteId() !== false &&
-        captchaConfirmation() === null;
+        isCaptchaRequired() && hCaptchaSiteId() !== false && captchaConfirmation() === null;
 
     const [isLoading, setIsLoading] = createSignal(false);
     const [isSucceeded, setIsSucceeded] = createSignal(false);
@@ -794,6 +794,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                     >
                                         <CaptchaProtectedWindow
                                             hCaptchaSiteId={hCaptchaSiteId() || null}
+                                            isCaptchaRequired={isCaptchaRequired()}
                                             onConfirm={handleCaptchaConfirm}
                                         >
                                             <Switch>

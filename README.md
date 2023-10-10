@@ -26,14 +26,14 @@ You can then import the CSS styles from `node_modules/@autharmor/autharmor-js-ui
 In projects without an NPM package manager, we also serve an IIFE bundle from our CDN which you can load as follows:
 
 ```html
-<script src="https://cdn.autharmor.com/scripts/autharmor-js/4.0.0-alpha.14/global/autharmor-js.js"></script>
-<script src="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-alpha.14/global/autharmor-js-ui.js"></script>
+<script src="https://cdn.autharmor.com/scripts/autharmor-js/4.0.0-rc.1/global/autharmor-js.js"></script>
+<script src="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-rc.1/global/autharmor-js-ui.js"></script>
 ```
 
 ```html
 <link
     rel="stylesheet"
-    href="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-alpha.14/global/autharmor-js-ui.css"
+    href="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-rc.1/global/autharmor-js-ui.css"
 />
 ```
 

@@ -61,6 +61,6 @@
         "typescript": "^5.2.2"
     },
     "peerDependencies": {
-        "@autharmor/autharmor-js": "^4.0.0"
+        "@autharmor/autharmor-js": "4.0.0-rc.1"
     }
 }

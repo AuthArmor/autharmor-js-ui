@@ -7,6 +7,8 @@ import { CaptchaPrompt } from "./CaptchaPrompt";
 export type CaptchaProtectedWindowProps = {
     hCaptchaSiteId: string | null;
 
+    isCaptchaRequired: boolean;
+
     children: JSXElement;
 
     onConfirm: (captchaConfirmation: ICaptchaConfirmationRequest) => void;
@@ -26,7 +28,7 @@ export function CaptchaProtectedWindow(props: CaptchaProtectedWindowProps) {
     const [isCaptchaActive, setIsCaptchaActive] = createSignal<boolean>(false);
 
     createEffect(() => {
-        if (props.hCaptchaSiteId !== null && !isCaptchaLoaded()) {
+        if (props.hCaptchaSiteId !== null && props.isCaptchaRequired && !isCaptchaLoaded()) {
             const script = document.createElement("script");
             script.src = "https://js.hcaptcha.com/1/api.js";
             script.async = true;
@@ -54,7 +56,7 @@ export function CaptchaProtectedWindow(props: CaptchaProtectedWindowProps) {
     };
 
     createEffect(() => {
-        if (!isCaptchaLoaded()) {
+        if (!isCaptchaLoaded() || !props.isCaptchaRequired) {
             return;
         }
 

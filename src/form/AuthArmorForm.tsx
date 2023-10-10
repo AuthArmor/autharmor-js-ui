@@ -461,8 +461,16 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                             abortController.signal
                                         );
 
+                                    if (abortController.signal.aborted) {
+                                        return;
+                                    }
+
                                     setQrCodeData(qrResult.qrCodeUrl);
                                 } catch (error: unknown) {
+                                    if (abortController.signal.aborted) {
+                                        return;
+                                    }
+
                                     if (error instanceof TypeError) {
                                         setAuthenticatorError("network");
                                     } else {
@@ -476,6 +484,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                 }
 
                                 const authenticationResult = await qrResult.resultAsync();
+
+                                if (abortController.signal.aborted) {
+                                    return;
+                                }
 
                                 if (authenticationResult.succeeded) {
                                     setIsSucceeded(true);
@@ -505,8 +517,16 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                             abortController.signal
                                         );
 
+                                    if (abortController.signal.aborted) {
+                                        return;
+                                    }
+
                                     setQrCodeData(qrResult.qrCodeUrl);
                                 } catch (error: unknown) {
+                                    if (abortController.signal.aborted) {
+                                        return;
+                                    }
+
                                     if (error instanceof TypeError) {
                                         setAuthenticatorError("network");
                                     } else {
@@ -520,6 +540,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                 }
 
                                 const registrationResult = await qrResult.resultAsync();
+
+                                if (abortController.signal.aborted) {
+                                    return;
+                                }
 
                                 if (registrationResult.succeeded) {
                                     setIsSucceeded(true);
@@ -556,6 +580,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                             captchaConfirmation ?? undefined
                                         );
 
+                                    if (abortController.signal.aborted) {
+                                        return;
+                                    }
+
                                     if (authenticationResult.succeeded) {
                                         setIsOutOfBandCompleted(true);
 
@@ -564,6 +592,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         props.onLogInFailure(authenticationResult);
                                     }
                                 } catch (error: unknown) {
+                                    if (abortController.signal.aborted) {
+                                        return;
+                                    }
+
                                     if (error instanceof TypeError) {
                                         setMagicLinkEmailError("network");
                                     } else {
@@ -594,6 +626,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                             captchaConfirmation ?? undefined
                                         );
 
+                                    if (abortController.signal.aborted) {
+                                        return;
+                                    }
+
                                     if (registrationResult.succeeded) {
                                         setIsOutOfBandCompleted(true);
 
@@ -602,6 +638,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         props.onRegisterFailure(registrationResult);
                                     }
                                 } catch (error: unknown) {
+                                    if (abortController.signal.aborted) {
+                                        return;
+                                    }
+
                                     if (error instanceof TypeError) {
                                         setMagicLinkEmailError("network");
                                     } else {
@@ -630,6 +670,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                     const authenticationResult =
                                         await props.client.authenticateWithWebAuthnAsync(username);
 
+                                    if (abortController.signal.aborted) {
+                                        return;
+                                    }
+
                                     if (authenticationResult.succeeded) {
                                         setIsSucceeded(true);
 
@@ -642,6 +686,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         props.onLogInFailure(authenticationResult);
                                     }
                                 } catch (error: unknown) {
+                                    if (abortController.signal.aborted) {
+                                        return;
+                                    }
+
                                     if (error instanceof TypeError) {
                                         setWebAuthnError("network");
                                     } else {
@@ -660,6 +708,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                     const registrationResult =
                                         await props.client.registerWithWebAuthnAsync(username);
 
+                                    if (abortController.signal.aborted) {
+                                        return;
+                                    }
+
                                     if (registrationResult.succeeded) {
                                         setIsSucceeded(true);
 
@@ -672,6 +724,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         props.onRegisterFailure(registrationResult);
                                     }
                                 } catch (error: unknown) {
+                                    if (abortController.signal.aborted) {
+                                        return;
+                                    }
+
                                     if (error instanceof TypeError) {
                                         setWebAuthnError("network");
                                     } else {

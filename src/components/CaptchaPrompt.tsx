@@ -14,7 +14,7 @@ export function CaptchaPrompt(props: CaptchaPromptProps) {
 
     return (
         <div class={props.class} style={props.style}>
-            <p class={promptStyles.prompt}>{tt().form.prompts.captcha.title}.</p>
+            <p class={promptStyles.prompt}>{tt().form.prompts.captcha.title}</p>
             <p class={promptStyles.promptDescription}>{tt().form.prompts.captcha.description}</p>
             <div class={promptStyles.promptAction}>{props.captcha}</div>
         </div>

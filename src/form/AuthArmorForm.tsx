@@ -330,6 +330,12 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                     await props.client.getAvailableAuthenticationMethodsAsync(username);
             } catch (error: unknown) {
                 if (!(error instanceof ApiError && error.statusCode === 404)) {
+                    if (currentAction() === "logIn") {
+                        setUsernameLogInError("unknown");
+                    } else {
+                        setUsernameRegisterError("unknown");
+                    }
+
                     props.onError(error);
                     return;
                 }

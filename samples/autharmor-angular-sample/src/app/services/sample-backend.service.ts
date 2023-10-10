@@ -6,7 +6,6 @@ import { LogInRequest } from "../api-models/log-in.request";
 import { LogInResponse } from "../api-models/log-in.response";
 import { RegisterRequest } from "../api-models/register.request";
 import { RegisterResponse } from "../api-models/register.response";
-import { RegisterWithMagicLinkRequest } from "../api-models/register-with-magic-link.request";
 import { environment } from "src/config/environment";
 
 @Injectable({
@@ -23,15 +22,6 @@ export class SampleBackendService {
 
     public register(request: RegisterRequest): Observable<RegisterResponse> {
         return this.http.post<RegisterResponse>(`${this.apiBaseUrl}/auth/register`, request);
-    }
-
-    public registerWithMagicLink(
-        request: RegisterWithMagicLinkRequest
-    ): Observable<RegisterResponse> {
-        return this.http.post<RegisterResponse>(
-            `${this.apiBaseUrl}/auth/register-magic-link`,
-            request
-        );
     }
 
     public getGreeting(token?: string): Observable<GreetingResponse> {

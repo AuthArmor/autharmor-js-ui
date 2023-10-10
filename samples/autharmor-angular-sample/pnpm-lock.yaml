@@ -30,11 +30,11 @@ dependencies:
     specifier: ^16.1.0
     version: 16.1.0(@angular/common@16.1.0)(@angular/core@16.1.0)(@angular/platform-browser@16.1.0)(rxjs@7.8.0)
   '@autharmor/autharmor-js':
-    specifier: 4.0.0-alpha.12
-    version: 4.0.0-alpha.12
+    specifier: 4.0.0-rc.1
+    version: 4.0.0-rc.1
   '@autharmor/autharmor-js-ui':
-    specifier: 4.0.0-alpha.12
-    version: 4.0.0-alpha.12(@autharmor/autharmor-js@4.0.0-alpha.12)
+    specifier: 4.0.0-rc.1
+    version: 4.0.0-rc.1(@autharmor/autharmor-js@4.0.0-rc.1)
   bulma:
     specifier: ^0.9.4
     version: 0.9.4
@@ -412,21 +412,21 @@ packages:
     resolution: {integrity: sha512-H71nDOOL8Y7kWRLqf6Sums+01Q5msqBW2KhDUTemh1tvY04eSkSXrK0uj/4mmY0Xr16/3zyZmsrxN7CKuRbNRg==}
     dev: true
 
-  /@autharmor/autharmor-js-ui@4.0.0-alpha.12(@autharmor/autharmor-js@4.0.0-alpha.12):
-    resolution: {integrity: sha512-IlJjj3q51YGy7ODp5ckEpoLuRZ0Y8CILVIg5E8XbGyKf/8BmATEqRcq25H4mN+Anj5G5IyqcJ56xMAc1KZO+1Q==}
+  /@autharmor/autharmor-js-ui@4.0.0-rc.1(@autharmor/autharmor-js@4.0.0-rc.1):
+    resolution: {integrity: sha512-9M+F1QfNSexjK1+tZQyClfoj8oaZIutDzZ7tll3wnwwQq5KoW20bjiIcJwmmRZYeY0n1gKJamHuMkXRUHo//Ag==}
     peerDependencies:
-      '@autharmor/autharmor-js': '>=4.0.0-alpha.11 <4.0.0-alpha.12'
+      '@autharmor/autharmor-js': 4.0.0-rc.1
     dependencies:
-      '@autharmor/autharmor-js': 4.0.0-alpha.12
+      '@autharmor/autharmor-js': 4.0.0-rc.1
       '@hcaptcha/types': 1.0.3
       clsx: 2.0.0
       qrcode-generator: 1.4.4
-      solid-element: 1.7.1(solid-js@1.7.11)
-      solid-js: 1.7.11
+      solid-element: 1.7.1(solid-js@1.8.1)
+      solid-js: 1.8.1
     dev: false
 
-  /@autharmor/autharmor-js@4.0.0-alpha.12:
-    resolution: {integrity: sha512-PUDH1lMRMS8eKzO9PEgBYA3NMVikSs0dpik40epoGwHq09TsBtLQ4yPWChEWdT774oZA2ksNFRgYLu5Wn7tHRg==}
+  /@autharmor/autharmor-js@4.0.0-rc.1:
+    resolution: {integrity: sha512-O7Y+nz9aPFBSFV8Ypk5fAblDCNgVC/rYV1YKneGBk/0iLpVa0U5Pp6NOiOcLoGhfYmkuDTxGxGRy+z/Zb1PbKg==}
     dev: false
 
   /@babel/code-frame@7.22.5:
@@ -5576,8 +5576,8 @@ packages:
       randombytes: 2.1.0
     dev: true
 
-  /seroval@0.5.1:
-    resolution: {integrity: sha512-ZfhQVB59hmIauJG5Ydynupy8KHyr5imGNtdDhbZG68Ufh1Ynkv9KOYOAABf71oVbQxJ8VkWnMHAjEHE7fWkH5g==}
+  /seroval@0.10.4:
+    resolution: {integrity: sha512-TdaE9JkoATjKu+vjwllieX8zWyBTUVxbgWDnOsDJFfmKbM7vLSukuCXuD3pO3kkCtX4daywOW8ps2VCdPhS8/w==}
     engines: {node: '>=10'}
     dev: false
 
@@ -5709,20 +5709,20 @@ packages:
       smart-buffer: 4.2.0
     dev: true
 
-  /solid-element@1.7.1(solid-js@1.7.11):
+  /solid-element@1.7.1(solid-js@1.8.1):
     resolution: {integrity: sha512-VtG3kg3HRUkq6QN4iyZKX1qmXYCEHMO3yH1DfakifaO+ncxHa56jU8SLtEgD55zR230pXQyPTWaEDDS0hTlmpg==}
     peerDependencies:
       solid-js: ^1.7.6
     dependencies:
       component-register: 0.8.3
-      solid-js: 1.7.11
+      solid-js: 1.8.1
     dev: false
 
-  /solid-js@1.7.11:
-    resolution: {integrity: sha512-JkuvsHt8jqy7USsy9xJtT18aF9r2pFO+GB8JQ2XGTvtF49rGTObB46iebD25sE3qVNvIbwglXOXdALnJq9IHtQ==}
+  /solid-js@1.8.1:
+    resolution: {integrity: sha512-HU4tB/vWY5/0P9GzbvePjK1aucNqUcF1XlAirZBjKkrkWG8XNIN9HSjscTC/nbl3A6JWjrW+OLcPEvWxsMhdng==}
     dependencies:
       csstype: 3.1.2
-      seroval: 0.5.1
+      seroval: 0.10.4
     dev: false
 
   /source-map-js@1.0.2:

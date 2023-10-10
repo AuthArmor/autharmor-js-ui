@@ -5,7 +5,6 @@ import {
     ApiError,
     AuthArmorClient,
     AuthenticationResult,
-    IRegistrationSuccessResult,
     RegistrationResult
 } from "@autharmor/autharmor-js";
 import {
@@ -16,9 +15,9 @@ import { Subscription, filter, firstValueFrom, map, merge, switchMap } from "rxj
 import { SampleBackendService } from "src/app/services/sample-backend.service";
 import { ActivatedRoute } from "@angular/router";
 import { LogInRequest } from "src/app/api-models/log-in.request";
-import { RegisterWithMagicLinkRequest } from "src/app/api-models/register-with-magic-link.request";
 import { AUTH_ARMOR_INTERACTIVE_CLIENT_CONFIG_TOKEN } from "src/app/providers/provideAuthArmorClients";
 import { environment } from "src/config/environment";
+import { RegisterRequest } from "src/app/api-models/register.request";
 
 @Component({
     selector: "app-imperative-auth",
@@ -46,14 +45,16 @@ export class ImperativeAuthComponent implements OnInit, OnDestroy {
         map((r) => r.token)
     );
     private magicLinkRegisterRequestTokens$ = this.activatedRoute.queryParamMap.pipe(
-        filter((p) => p.has("registration_validation_token")),
+        filter((p) => p.has("registration_id") && p.has("registration_validation_token")),
         map(
             (p) =>
                 ({
+                    registrationId: p.get("registration_id")!,
+                    authenticationMethod: "magicLinkEmail",
                     validationToken: p.get("registration_validation_token")!
-                } satisfies RegisterWithMagicLinkRequest)
+                } satisfies RegisterRequest)
         ),
-        switchMap((r) => this.backendService.registerWithMagicLink(r)),
+        switchMap((r) => this.backendService.register(r)),
         map((r) => r.token)
     );
     private magicLinkTokens$ = merge(

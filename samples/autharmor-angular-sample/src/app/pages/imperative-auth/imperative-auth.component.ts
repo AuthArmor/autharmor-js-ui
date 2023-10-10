@@ -105,6 +105,11 @@ export class ImperativeAuthComponent implements OnInit, OnDestroy {
             }
         }
 
+        if (!authenticationResult.succeeded) {
+            this.error = `Authentication did not succeed: ${authenticationResult.failureReason}.`;
+            return;
+        }
+
         const { token } = await firstValueFrom(this.backendService.logIn(authenticationResult));
         const { message } = await firstValueFrom(this.backendService.getGreeting(token));
 
@@ -124,6 +129,11 @@ export class ImperativeAuthComponent implements OnInit, OnDestroy {
                 this.error = "An unexpected error occurred. Please check the console.";
                 throw error;
             }
+        }
+
+        if (!registrationResult.succeeded) {
+            this.error = `Registration did not succeed: ${registrationResult.failureReason}.`;
+            return;
         }
 
         const { token } = await firstValueFrom(this.backendService.register(registrationResult));

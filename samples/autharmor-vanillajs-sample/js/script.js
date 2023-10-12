@@ -29,13 +29,6 @@ async function handleRegister({ registrationResult }) {
     window.location.href = "/";
 }
 
-async function handleRegisterWithMagicLinkEmail(validationToken) {
-    const token = await claimMagicLinkEmailRegistration(validationToken);
-    saveAuthToken(token);
-
-    window.location.href = "/";
-}
-
 async function fetchTokenFromAuthentication(authenticationResult) {
     const response = await fetch(`${backendBaseUrl}/auth/login`, {
         method: "POST",
@@ -57,22 +50,6 @@ async function fetchTokenFromRegistration(registrationResult) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(registrationResult)
-    });
-
-    const { token } = await response.json();
-
-    return token;
-}
-
-async function claimMagicLinkEmailRegistration(validationToken) {
-    const response = await fetch(`${backendBaseUrl}/auth/register-magic-link`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            validationToken
-        })
     });
 
     const { token } = await response.json();

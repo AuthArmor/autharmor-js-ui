@@ -8,12 +8,12 @@
 
         <link
             rel="stylesheet"
-            href="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0/global/autharmor-js-ui.css"
+            href="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-rc.1/global/autharmor-js-ui.css"
         />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
 
-        <script src="https://cdn.autharmor.com/scripts/autharmor-js/4.0.0/global/autharmor-js.js"></script>
-        <script src="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0/global/autharmor-js-ui.js"></script>
+        <script src="https://cdn.autharmor.com/scripts/autharmor-js/4.0.0-rc.1/global/autharmor-js.js"></script>
+        <script src="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-rc.1/global/autharmor-js-ui.js"></script>
 
         <script src="/js/script.js"></script>
 
@@ -57,13 +57,18 @@
                 };
 
                 const checkRegisterTokenFromQuery = async () => {
+                    const registrationId = queryParams.get("registration_id");
                     const validationToken = queryParams.get("registration_validation_token");
 
-                    if (validationToken === null) {
+                    if (registrationId === null || validationToken === null) {
                         return;
                     }
 
-                    await handleRegisterWithMagicLinkEmail(validationToken);
+                    await handleRegister({
+                        registrationId,
+                        authenticationMethod: "magicLinkEmail",
+                        validationToken
+                    });
                 };
 
                 checkAuthenticateTokenFromQuery();

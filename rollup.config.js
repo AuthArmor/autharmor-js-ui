@@ -5,7 +5,7 @@ import nodeResolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import image from "@rollup/plugin-image";
 import postcss from "rollup-plugin-postcss";
-import { existsSync, rmSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import ts from "typescript";
 import requireJSON5 from "require-json5";
 
@@ -76,6 +76,21 @@ export default defineConfig({
                     declaration: true,
                     emitDeclarationOnly: true
                 }).emit();
+            }
+        },
+        {
+            name: "serverStub",
+            buildEnd() {
+                if (existsSync("dist/serverStub")) {
+                    return;
+                }
+
+                mkdirSync("dist/server");
+                mkdirSync("dist/server/esm");
+                mkdirSync("dist/server/cjs");
+
+                writeFileSync("dist/server/esm/index.js", "export {};\n");
+                writeFileSync("dist/server/cjs/index.cjs", "");
             }
         }
     ]

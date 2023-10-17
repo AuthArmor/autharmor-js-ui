@@ -1,6 +1,6 @@
 {
     "name": "@autharmor/autharmor-js-ui",
-    "version": "4.0.0-rc.1",
+    "version": "4.0.0-rc.1.1",
     "type": "module",
     "source": "src/index.ts",
     "types": "./dist/types/index.d.ts",
@@ -10,9 +10,12 @@
         ".": {
             "types": "./dist/types/index.d.ts",
             "import": "./dist/esm/index.js",
+            "require": "./dist/cjs/index.cjs",
             "browser": "./dist/esm/index.js",
-            "node": "./dist/cjs/index.cjs",
-            "require": "./dist/cjs/index.cjs"
+            "node": {
+                "import": "./dist/server/esm/index.js",
+                "require": "./dist/server/cjs/index.cjs"
+            }
         },
         "./autharmor.css": "./dist/esm/autharmor-js-ui.css"
     },

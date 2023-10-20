@@ -6,8 +6,9 @@ This package provides a flexible and full-featured UI around the [@autharmor/aut
 
 This package is designed to work together with [@autharmor/autharmor-js](https://github.com/AuthArmor/autharmor-js). A knowledge of how that package works will be helpful in using this package.
 
-## Installation
+## Installation 
 
+#### NPM Imports
 This package is available on the NPM registry as `@autharmor/autharmor-js-ui`. You must have the `@autharmor/autharmor-js` package to use it. Use your project's package manager to install both the packages:
 
 ```sh
@@ -21,7 +22,15 @@ pnpm add @autharmor/autharmor-js @autharmor/autharmor-js-ui
 yarn add @autharmor/autharmor-js @autharmor/autharmor-js-ui
 ```
 
-You can then import the CSS styles from `node_modules/@autharmor/autharmor-js-ui/dist/esm/autharmor-js-ui.css`.
+##### Stylesheet
+
+You can then import the CSS styles from the node modules dist folder
+
+```css
+import "node_modules/@autharmor/autharmor-js-ui/dist/esm/autharmor-js-ui.css"
+```
+
+#### CDN Imports
 
 In projects without an NPM package manager, we also serve an IIFE bundle from our CDN which you can load as follows:
 
@@ -29,6 +38,13 @@ In projects without an NPM package manager, we also serve an IIFE bundle from ou
 <script src="https://cdn.autharmor.com/scripts/autharmor-js/4.0.0-rc.1/global/autharmor-js.js"></script>
 <script src="https://cdn.autharmor.com/scripts/autharmor-js-ui/4.0.0-rc.1/global/autharmor-js-ui.js"></script>
 ```
+This module's exports will then be available in the `authArmorUi` global variable. Instead of `import` statements, you can use destructuring:
+
+```js
+const { AuthArmorInteractiveClient } = authArmorUi;
+```
+
+##### Stylesheet
 
 ```html
 <link
@@ -37,11 +53,7 @@ In projects without an NPM package manager, we also serve an IIFE bundle from ou
 />
 ```
 
-This module's exports will then be available in the `authArmorUi` global variable. Instead of `import` statements, you can use destructuring:
 
-```js
-const { AuthArmorInteractiveClient } = authArmorUi;
-```
 
 ## Initial Setup
 

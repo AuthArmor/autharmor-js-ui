@@ -1,14 +1,9 @@
 import {
     ApiError,
-    AuthArmorClient,
     AuthenticationMethod,
     AuthenticationResult,
     AvailableAuthenticationMethods,
-    IAuthenticationFailureResult,
-    IAuthenticationSuccessResult,
     ICaptchaConfirmationRequest,
-    IRegistrationFailureResult,
-    IRegistrationSuccessResult,
     QrCodeResult,
     RegistrationResult
 } from "@autharmor/autharmor-js";
@@ -22,7 +17,6 @@ import {
     on,
     onCleanup
 } from "solid-js";
-import { IAuthArmorInteractiveClientConfiguration } from "../config";
 import { TabControl } from "../ui/TabControl";
 import { LogInForm } from "../components/LogInForm";
 import { RegisterForm } from "../components/RegisterForm";
@@ -45,34 +39,10 @@ import {
     UserAlreadyExistsError,
     UserNotFoundError
 } from "../errors";
+import { AuthArmorFormProps, FormAction } from "./AuthArmorFormProps";
 import styles from "./AuthArmorForm.module.css";
 
-export type FormAction = "logIn" | "register";
 export const defaultFormAction: FormAction = "logIn";
-
-export type AuthArmorFormProps = {
-    client: AuthArmorClient;
-    interactiveConfig: IAuthArmorInteractiveClientConfiguration;
-
-    action: FormAction | null;
-    username: string | null;
-    method: AuthenticationMethod | null;
-
-    defaultAction: FormAction | null;
-
-    enableUsernamelessLogIn: boolean;
-
-    onLogIn: (authenticationResult: IAuthenticationSuccessResult) => void;
-    onRegister: (registrationResult: IRegistrationSuccessResult) => void;
-
-    onOutOfBandLogIn: (authenticationResult: IAuthenticationSuccessResult) => void;
-    onOutOfBandRegister: (registrationResult: IRegistrationSuccessResult) => void;
-
-    onLogInFailure: (authenticationResult: IAuthenticationFailureResult) => void;
-    onRegisterFailure: (registrationResult: IRegistrationFailureResult) => void;
-
-    onError: (error: unknown) => void;
-};
 
 export function AuthArmorForm(props: AuthArmorFormProps) {
     const tt = () =>

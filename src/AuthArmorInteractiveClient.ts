@@ -10,12 +10,10 @@ import {
     AuthenticationResult,
     RegistrationResult
 } from "@autharmor/autharmor-js";
-import { JSXElement } from "solid-js";
-import { render } from "solid-js/web";
 import { IAuthArmorInteractiveClientConfiguration } from "./config";
 import { ITranslationTable, defaultTranslationTable } from "./i18n";
-import { ModalContainer } from "./ui/ModalContainer";
-import { AuthArmorForm, AuthArmorFormProps } from "./form/AuthArmorForm";
+import { ErrorThrownEvent } from "./webComponents";
+import { AuthArmorFormCustomElementProps } from "./webComponents/AuthArmorFormCustomElementProps";
 
 /**
  * The client for interacting with AuthArmor's client-side SDK providing a user-facing interface.
@@ -355,23 +353,40 @@ export class AuthArmorInteractiveClient {
      * If this interactive client does not have an explicitly specified render target, a new render
      * target is created that functions as a modal.
      */
-    protected render(code: () => JSXElement): () => void {
+    protected render(element: HTMLElement): () => void {
         if (this.renderTarget !== null) {
-            return render(code, this.renderTarget);
+            this.renderTarget.appendChild(element);
         }
 
-        const temporaryRenderTarget = document.createElement("div");
-        document.body.appendChild(temporaryRenderTarget);
+        const backdrop = document.createElement("div");
 
-        const solidCleanup = render(
-            () => ModalContainer({ children: code() }),
-            temporaryRenderTarget
-        );
+        backdrop.style.position = "fixed";
+        backdrop.style.inset = "0";
+        backdrop.style.display = "flex";
+        backdrop.style.alignItems = "center";
+        backdrop.style.justifyContent = "center";
+        backdrop.style.padding = "1rem";
+        backdrop.style.backgroundColor = "hsl(0deg 0% 0% / 50%)";
+        backdrop.style.backdropFilter = "blur(0.125rem)";
+        backdrop.style.zIndex = "999";
 
-        const cleanup = () => {
-            solidCleanup();
-            document.body.removeChild(temporaryRenderTarget);
-        };
+        const dialogContainer = document.createElement("div");
+
+        dialogContainer.style.boxSizing = "border-box";
+        dialogContainer.style.overflowY = "auto";
+        dialogContainer.style.borderRadius = "0.5rem";
+        dialogContainer.style.padding = "2rem";
+        dialogContainer.style.width = "min(32rem, 95vw)";
+        dialogContainer.style.height = "min(32rem, 95vh)";
+        dialogContainer.style.backgroundColor = "hsl(0deg 0% 100%)";
+
+        dialogContainer.appendChild(element);
+
+        backdrop.appendChild(dialogContainer);
+        
+        document.body.appendChild(backdrop);
+
+        const cleanup = () => document.body.removeChild(backdrop);
 
         return cleanup;
     }
@@ -385,49 +400,46 @@ export class AuthArmorInteractiveClient {
      * @returns A promise that resolves with the authentication or registration result.
      */
     protected evaluateFormAsync(
-        props: Omit<
-            AuthArmorFormProps,
-            | "client"
-            | "interactiveConfig"
-            | "onLogIn"
-            | "onRegister"
-            | "onOutOfBandLogIn"
-            | "onOutOfBandRegister"
-            | "onLogInFailure"
-            | "onRegisterFailure"
-            | "onError"
-        >,
+        props: Omit<AuthArmorFormCustomElementProps, "client" | "interactiveConfig">,
         configurationOverride: Partial<IAuthArmorInteractiveClientConfiguration> = {},
         abortSignal?: AbortSignal
     ): Promise<AuthenticationResult | RegistrationResult> {
         return new Promise((resolve, reject) => {
-            const handleResult = (result: AuthenticationResult | RegistrationResult) => {
+            const handleAuthenticationResult = (event: {
+                authenticationResult: AuthenticationResult;
+            }) => {
                 cleanup();
-                resolve(result);
+                resolve(event.authenticationResult);
             };
 
-            const handleError = (error: unknown) => {
+            const handleRegistrationResult = (event: {
+                registrationResult: RegistrationResult;
+            }) => {
                 cleanup();
-                reject(error);
+                resolve(event.registrationResult);
             };
 
-            const cleanup = this.render(() =>
-                AuthArmorForm({
-                    client: this.client,
-                    interactiveConfig: {
-                        ...this.configuration,
-                        ...configurationOverride
-                    },
-                    ...props,
-                    onLogIn: handleResult,
-                    onRegister: handleResult,
-                    onOutOfBandLogIn: handleResult,
-                    onOutOfBandRegister: handleResult,
-                    onLogInFailure: handleResult,
-                    onRegisterFailure: handleResult,
-                    onError: handleError
-                })
-            );
+            const handleError = (event: ErrorThrownEvent) => {
+                cleanup();
+                reject(event.error);
+            };
+
+            const formElement = document.createElement("autharmor-form");
+
+            formElement.client = this.client;
+            formElement.interactiveConfig = { ...this.configuration, ...configurationOverride };
+
+            Object.assign(formElement, props);
+
+            formElement.addEventListener("logIn" as any, handleAuthenticationResult);
+            formElement.addEventListener("register" as any, handleRegistrationResult);
+            formElement.addEventListener("outOfBandLogIn" as any, handleAuthenticationResult);
+            formElement.addEventListener("outOfBandRegister" as any, handleRegistrationResult);
+            formElement.addEventListener("logInFailure" as any, handleAuthenticationResult);
+            formElement.addEventListener("registerFailure" as any, handleRegistrationResult);
+            formElement.addEventListener("error" as any, handleError);
+
+            const cleanup = this.render(formElement);
 
             abortSignal?.addEventListener("abort", (reason) => {
                 cleanup();

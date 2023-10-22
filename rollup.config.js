@@ -16,67 +16,102 @@ rmSync("dist", {
     recursive: true
 });
 
-export default defineConfig({
-    input: "src/index.ts",
-    output: [
-        {
-            file: "dist/esm/index.js",
-            format: "esm"
-        },
-        {
-            file: "dist/cjs/index.cjs",
-            format: "cjs"
-        },
-        {
-            file: "dist/global/autharmor-js-ui.js",
-            format: "iife",
-            name: "authArmorUi",
-            globals: {
-                "@autharmor/autharmor-js": "authArmor"
-            }
-        }
-    ],
-    plugins: [
-        peerDepsExternal(),
-        babel({
-            extensions: [".js", ".ts", ".jsx", ".tsx"],
-            babelHelpers: "bundled",
-            presets: [
-                "babel-preset-solid",
-                "@babel/preset-typescript",
-                ["@babel/preset-env", { bugfixes: true, targets: pkg.browserslist }]
-            ]
-        }),
-        nodeResolve({
-            extensions: [".js", ".ts", ".jsx", ".tsx"]
-        }),
-        commonjs(),
-        image(),
-        postcss({
-            extract: "autharmor-js-ui.css",
-            modules: true
-        }),
-        {
-            name: "ts",
-            buildEnd() {
-                if (existsSync("dist/types")) {
-                    return;
+export default defineConfig([
+    {
+        input: "src/index.ts",
+        output: [
+            {
+                file: "dist/esm/index.js",
+                format: "esm"
+            },
+            {
+                file: "dist/cjs/index.cjs",
+                format: "cjs"
+            },
+            {
+                file: "dist/global/autharmor-js-ui.js",
+                format: "iife",
+                name: "authArmorUi",
+                globals: {
+                    "@autharmor/autharmor-js": "authArmor"
                 }
-
-                ts.createProgram(["src/index.ts"], {
-                    target: ts.ScriptTarget.ESNext,
-                    module: ts.ModuleKind.ESNext,
-                    moduleResolution: ts.ModuleResolutionKind.Bundler,
-                    jsx: ts.JsxEmit.Preserve,
-                    jsxImportSource: "solid-js",
-                    allowSyntheticDefaultImports: true,
-                    esModuleInterop: true,
-                    rootDir: "src",
-                    declarationDir: "dist/types",
-                    declaration: true,
-                    emitDeclarationOnly: true
-                }).emit();
             }
-        }
-    ]
-});
+        ],
+        plugins: [
+            peerDepsExternal(),
+            babel({
+                extensions: [".js", ".ts"],
+                babelHelpers: "bundled",
+                presets: [
+                    "@babel/preset-typescript",
+                    ["@babel/preset-env", { bugfixes: true, targets: pkg.browserslist }]
+                ]
+            }),
+            nodeResolve({
+                extensions: [".js", ".ts"]
+            }),
+            {
+                name: "ts",
+                buildEnd() {
+                    if (existsSync("dist/types")) {
+                        return;
+                    }
+
+                    ts.createProgram(["src/index.ts"], {
+                        target: ts.ScriptTarget.ESNext,
+                        module: ts.ModuleKind.ESNext,
+                        moduleResolution: ts.ModuleResolutionKind.Bundler,
+                        allowSyntheticDefaultImports: true,
+                        esModuleInterop: true,
+                        rootDir: "src",
+                        declarationDir: "dist/types",
+                        declaration: true,
+                        emitDeclarationOnly: true
+                    }).emit();
+                }
+            }
+        ]
+    },
+    {
+        input: "src/webComponents/register.ts",
+        output: [
+            {
+                file: "dist/esm/register.js",
+                format: "esm"
+            },
+            {
+                file: "dist/cjs/register.cjs",
+                format: "cjs"
+            },
+            {
+                file: "dist/global/autharmor-js-ui-register.js",
+                format: "iife",
+                name: "authArmorUiRegister",
+                globals: {
+                    "@autharmor/autharmor-js": "authArmor"
+                }
+            }
+        ],
+        plugins: [
+            peerDepsExternal(),
+            babel({
+                extensions: [".js", ".ts", ".jsx", ".tsx"],
+                babelHelpers: "bundled",
+                presets: [
+                    "babel-preset-solid",
+                    "@babel/preset-typescript",
+                    ["@babel/preset-env", { bugfixes: true, targets: pkg.browserslist }]
+                ]
+            }),
+            nodeResolve({
+                extensions: [".js", ".ts", ".jsx", ".tsx"]
+            }),
+            commonjs(),
+            image(),
+            postcss({
+                extract: "autharmor-js-ui.css",
+                modules: true
+            })
+        ]
+    }
+]);

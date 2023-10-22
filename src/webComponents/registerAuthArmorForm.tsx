@@ -7,7 +7,9 @@ import {
 } from "@autharmor/autharmor-js";
 import { Show } from "solid-js";
 import { customElement, noShadowDOM } from "solid-element";
-import { AuthArmorForm, AuthArmorFormProps } from "../form/AuthArmorForm";
+import { AuthArmorForm } from "../form/AuthArmorForm";
+import { AuthArmorFormProps } from "../form/AuthArmorFormProps";
+import { AuthArmorFormCustomElementProps } from "./AuthArmorFormCustomElementProps";
 import {
     LogInEvent,
     RegisterEvent,
@@ -18,19 +20,7 @@ import {
     OutOfBandRegisterEvent
 } from "./events";
 
-export type AuthArmorFormCustomElementProps = Omit<
-    AuthArmorFormProps,
-    | "client"
-    | "onLogIn"
-    | "onRegister"
-    | "onOutOfBandLogIn"
-    | "onOutOfBandRegister"
-    | "onLogInFailure"
-    | "onRegisterFailure"
-    | "onError"
-> & { client: AuthArmorFormProps["client"] | null };
-
-if (typeof window !== "undefined") {
+export function registerAuthArmorForm() {
     customElement(
         "autharmor-form",
         {

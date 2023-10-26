@@ -81,9 +81,3 @@ export function registerAuthArmorForm() {
         }
     );
 }
-
-declare global {
-    interface HTMLElementTagNameMap {
-        "autharmor-form": HTMLElement & AuthArmorFormCustomElementProps;
-    }
-}

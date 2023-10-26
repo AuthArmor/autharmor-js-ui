@@ -11,3 +11,9 @@ export type AuthArmorFormCustomElementProps = Omit<
     | "onRegisterFailure"
     | "onError"
 > & { client: AuthArmorFormProps["client"] | null };
+
+declare global {
+    interface HTMLElementTagNameMap {
+        "autharmor-form": HTMLElement & AuthArmorFormCustomElementProps;
+    }
+}

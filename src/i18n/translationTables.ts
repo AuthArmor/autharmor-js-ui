@@ -146,7 +146,7 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                     unknown: "An unknown error occurred. The console may have further details."
                 },
                 passkey: {
-                    declined: "You declined the request.",
+                    declined: "We were unable to process the request. This may have occurred because you declined the prompt.",
                     network: "A network error occurred. Please check the console.",
                     unknown: "An unknown error occurred. The console may have further details."
                 }

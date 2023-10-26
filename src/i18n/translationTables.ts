@@ -58,8 +58,8 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                     label: "Magic link email",
                     description: "Receive an email with a link to authenticate yourself."
                 },
-                webAuthn: {
-                    label: "WebAuthn",
+                passkey: {
+                    label: "Passkey",
                     description:
                         "Sign in using your browser’s built-in secure authentication mechanism."
                 }
@@ -95,14 +95,14 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                         outOfBandCompletionInfo: "You’ve registered on a different tab or window."
                     }
                 },
-                webAuthn: {
+                passkey: {
                     logIn: {
-                        title: "Authenticate with WebAuthn.",
+                        title: "Authenticate with passkey.",
                         description:
                             "Please check your browser or security device for instructions."
                     },
                     register: {
-                        title: "Register with WebAuthn.",
+                        title: "Register with passkey.",
                         description:
                             "Please check your browser or security device for instructions."
                     }
@@ -145,7 +145,7 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                     network: "A network error occurred. Please check the console.",
                     unknown: "An unknown error occurred. The console may have further details."
                 },
-                webAuthn: {
+                passkey: {
                     declined: "You declined the request.",
                     network: "A network error occurred. Please check the console.",
                     unknown: "An unknown error occurred. The console may have further details."

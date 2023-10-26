@@ -7,7 +7,7 @@ import {
     IMagicLinkEmailAuthenticateOptions,
     IRegisterOptions,
     IAuthenticatorRegisterOptions,
-    IWebAuthnRegisterOptions,
+    IPasskeyRegisterOptions,
     IMagicLinkEmailRegisterOptions
 } from "@autharmor/autharmor-js";
 import { IInternationalizationOptions, IUiOptions } from "../options";
@@ -22,7 +22,7 @@ export interface IAuthArmorInteractiveClientConfiguration {
     defaultMagicLinkEmailAuthenticateOptions?: Partial<IMagicLinkEmailAuthenticateOptions>;
     defaultRegisterOptions?: Partial<IRegisterOptions>;
     defaultAuthenticatorRegisterOptions?: Partial<IAuthenticatorRegisterOptions>;
-    defaultWebAuthnRegisterOptions?: Partial<IWebAuthnRegisterOptions>;
+    defaultPasskeyRegisterOptions?: Partial<IPasskeyRegisterOptions>;
     defaultMagicLinkEmailRegisterOptions?: Partial<IMagicLinkEmailRegisterOptions>;
 
     defaultMagicLinkEmailLogInRedirectUrl?: string;

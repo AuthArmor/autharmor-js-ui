@@ -2,17 +2,17 @@ import { JSX, Show } from "solid-js";
 import { useTranslationTable } from "../i18n";
 import promptStyles from "./Prompt.module.css";
 
-export type WebAuthnError = "declined" | "network" | "unknown";
+export type PasskeyError = "declined" | "network" | "unknown";
 
-export type WebAuthnPromptProps = {
+export type PasskeyPromptProps = {
     isRegistering: boolean;
-    error?: WebAuthnError | null;
+    error?: PasskeyError | null;
 
     class?: string;
     style?: string | JSX.CSSProperties;
 };
 
-export function WebAuthnPrompt(props: WebAuthnPromptProps) {
+export function PasskeyPrompt(props: PasskeyPromptProps) {
     const tt = useTranslationTable();
 
     return (
@@ -20,21 +20,21 @@ export function WebAuthnPrompt(props: WebAuthnPromptProps) {
             <p class={promptStyles.prompt}>
                 {
                     (props.isRegistering
-                        ? tt().form.prompts.webAuthn.register
-                        : tt().form.prompts.webAuthn.logIn
+                        ? tt().form.prompts.passkey.register
+                        : tt().form.prompts.passkey.logIn
                     ).title
                 }
             </p>
             <p class={promptStyles.promptDescription}>
                 {
                     (props.isRegistering
-                        ? tt().form.prompts.webAuthn.register
-                        : tt().form.prompts.webAuthn.logIn
+                        ? tt().form.prompts.passkey.register
+                        : tt().form.prompts.passkey.logIn
                     ).description
                 }
             </p>
             <Show when={props.error !== undefined && props.error !== null}>
-                <p class={promptStyles.error}>{tt().form.errors.webAuthn[props.error!]}</p>
+                <p class={promptStyles.error}>{tt().form.errors.passkey[props.error!]}</p>
             </Show>
         </div>
     );

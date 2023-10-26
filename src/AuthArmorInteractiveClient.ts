@@ -3,7 +3,7 @@ import {
     IAuthenticatorUserSpecificAuthenticateOptions,
     IMagicLinkEmailAuthenticateOptions,
     IAuthenticatorRegisterOptions,
-    IWebAuthnRegisterOptions,
+    IPasskeyRegisterOptions,
     IMagicLinkEmailRegisterOptions,
     IAuthenticateOptions,
     IRegisterOptions,
@@ -111,7 +111,7 @@ export class AuthArmorInteractiveClient {
     }
 
     /**
-     * Authenticates a user using WebAuthn.
+     * Authenticates a user using a passkey.
      *
      * @param username The username of the user.
      * @param options The options to use for this request.
@@ -119,7 +119,7 @@ export class AuthArmorInteractiveClient {
      *
      * @returns A promise that resolves with the authentication result.
      */
-    public async authenticateWithWebAuthnAsync(
+    public async authenticateWithPasskeyAsync(
         username: string,
         options: Partial<IAuthenticateOptions>,
         abortSignal?: AbortSignal
@@ -128,7 +128,7 @@ export class AuthArmorInteractiveClient {
             {
                 action: "logIn",
                 username,
-                method: "webAuthn",
+                method: "passkey",
                 defaultAction: "logIn",
                 enableUsernamelessLogIn: false
             },
@@ -219,8 +219,8 @@ export class AuthArmorInteractiveClient {
                     ...this.configuration.defaultAuthenticatorRegisterOptions,
                     ...options
                 },
-                defaultWebAuthnRegisterOptions: {
-                    ...this.configuration.defaultWebAuthnRegisterOptions,
+                defaultPasskeyRegisterOptions: {
+                    ...this.configuration.defaultPasskeyRegisterOptions,
                     ...options
                 },
                 defaultMagicLinkEmailRegisterOptions: {
@@ -265,7 +265,7 @@ export class AuthArmorInteractiveClient {
     }
 
     /**
-     * Authenticates a user using WebAuthn.
+     * Registers a user using a passkey.
      *
      * @param username The username of the user.
      * @param options The options to use for this request.
@@ -273,22 +273,22 @@ export class AuthArmorInteractiveClient {
      *
      * @returns A promise that resolves with the registration result.
      */
-    public async registerWithWebAuthnAsync(
+    public async registerWithPasskeyAsync(
         username: string,
-        options: Partial<IWebAuthnRegisterOptions>,
+        options: Partial<IPasskeyRegisterOptions>,
         abortSignal?: AbortSignal
     ): Promise<RegistrationResult> {
         return (await this.evaluateFormAsync(
             {
                 action: "register",
                 username,
-                method: "webAuthn",
+                method: "passkey",
                 defaultAction: "register",
                 enableUsernamelessLogIn: false
             },
             {
-                defaultWebAuthnRegisterOptions: {
-                    ...this.configuration.defaultWebAuthnRegisterOptions,
+                defaultPasskeyRegisterOptions: {
+                    ...this.configuration.defaultPasskeyRegisterOptions,
                     ...options
                 }
             },

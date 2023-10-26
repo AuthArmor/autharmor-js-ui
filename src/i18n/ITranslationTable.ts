@@ -50,7 +50,7 @@ export interface ITranslationTable {
                 label: string;
                 description: string;
             };
-            webAuthn: {
+            passkey: {
                 label: string;
                 description: string;
             };
@@ -84,7 +84,7 @@ export interface ITranslationTable {
                     outOfBandCompletionInfo: string;
                 };
             };
-            webAuthn: {
+            passkey: {
                 logIn: {
                     title: string;
                     description: string;
@@ -131,7 +131,7 @@ export interface ITranslationTable {
                 network: string;
                 unknown: string;
             };
-            webAuthn: {
+            passkey: {
                 declined: string;
                 network: string;
                 unknown: string;

@@ -7,7 +7,7 @@ import styles from "./MethodSelectionPrompt.module.css";
 import promptStyles from "./Prompt.module.css";
 import authenticatorIcon from "../assets/icons/authenticator.svg";
 import magicLinkEmailIcon from "../assets/icons/magicLinkEmail.svg";
-import webAuthnIcon from "../assets/icons/webAuthn.svg";
+import passkeyIcon from "../assets/icons/passkey.svg";
 
 export type MethodSelectionPromptProps = {
     availableMethods: AvailableAuthenticationMethods;
@@ -41,12 +41,12 @@ export function MethodSelectionPrompt(props: MethodSelectionPromptProps) {
                         onClick={() => props.onSelect("magicLinkEmail")}
                     />
                 </Show>
-                <Show when={props.availableMethods.webAuthn}>
+                <Show when={props.availableMethods.passkey}>
                     <OptionCard
-                        iconSrc={webAuthnIcon}
-                        label={tt().form.methods.webAuthn.label}
-                        description={tt().form.methods.webAuthn.description}
-                        onClick={() => props.onSelect("webAuthn")}
+                        iconSrc={passkeyIcon}
+                        label={tt().form.methods.passkey.label}
+                        description={tt().form.methods.passkey.description}
+                        onClick={() => props.onSelect("passkey")}
                     />
                 </Show>
             </div>

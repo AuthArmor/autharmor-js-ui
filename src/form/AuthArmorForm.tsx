@@ -24,7 +24,7 @@ import { MethodSelectionPrompt } from "../components/MethodSelectionPrompt";
 import { PromptContainer } from "../components/PromptContainer";
 import { AuthenticatorError, AuthenticatorPrompt } from "../components/AuthenticatorPrompt";
 import { MagicLinkEmailError, MagicLinkEmailPrompt } from "../components/MagicLinkEmailPrompt";
-import { WebAuthnError, WebAuthnPrompt } from "../components/WebAuthnPrompt";
+import { PasskeyError, PasskeyPrompt } from "../components/PasskeyPrompt";
 import { WaitPrompt } from "../components/WaitPrompt";
 import { UsernameLogInError } from "../components/UsernameLogIn";
 import { CaptchaProtectedWindow } from "../components/CaptchaProtectedWindow";
@@ -62,7 +62,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
     const [magicLinkEmailError, setMagicLinkEmailError] = createSignal<MagicLinkEmailError | null>(
         null
     );
-    const [webAuthnError, setWebAuthnError] = createSignal<WebAuthnError | null>(null);
+    const [passkeyError, setPasskeyError] = createSignal<PasskeyError | null>(null);
 
     const [userSelectedCurrentAction, setUserSelectedCurrentAction] =
         createSignal<FormAction | null>(null);
@@ -338,13 +338,13 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                     const availableMethods: AvailableAuthenticationMethods = {
                         authenticator: false,
                         magicLinkEmail: false,
-                        webAuthn: false,
+                        passkey: false,
                         ...(props.interactiveConfig.permittedMethods ?? {
                             authenticator: true,
                             magicLinkEmail:
                                 props.interactiveConfig.defaultMagicLinkEmailRegisterRedirectUrl !==
                                 undefined,
-                            webAuthn: true
+                            passkey: true
                         })
                     };
 
@@ -408,7 +408,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                 setIsLoading(true);
                 setAuthenticatorError(null);
                 setMagicLinkEmailError(null);
-                setWebAuthnError(null);
+                setPasskeyError(null);
                 setQrCodeData(null);
 
                 onCleanup(() => {
@@ -637,14 +637,14 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                         break;
                     }
 
-                    case "webAuthn": {
+                    case "passkey": {
                         setIsLoading(false);
 
                         switch (currentAction()) {
                             case "logIn": {
                                 try {
                                     const authenticationResult =
-                                        await props.client.authenticateWithWebAuthnAsync(username);
+                                        await props.client.authenticateWithPasskeyAsync(username);
 
                                     if (abortController.signal.aborted) {
                                         return;
@@ -655,8 +655,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
 
                                         props.onLogIn(authenticationResult);
                                     } else {
-                                        setWebAuthnError(
-                                            authenticationResult.failureReason as WebAuthnError
+                                        setPasskeyError(
+                                            authenticationResult.failureReason as PasskeyError
                                         );
 
                                         props.onLogInFailure(authenticationResult);
@@ -667,9 +667,9 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                     }
 
                                     if (error instanceof TypeError) {
-                                        setWebAuthnError("network");
+                                        setPasskeyError("network");
                                     } else {
-                                        setWebAuthnError("unknown");
+                                        setPasskeyError("unknown");
                                     }
 
                                     props.onError(error);
@@ -682,7 +682,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                             case "register": {
                                 try {
                                     const registrationResult =
-                                        await props.client.registerWithWebAuthnAsync(username);
+                                        await props.client.registerWithPasskeyAsync(username);
 
                                     if (abortController.signal.aborted) {
                                         return;
@@ -693,8 +693,8 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
 
                                         props.onRegister(registrationResult);
                                     } else {
-                                        setWebAuthnError(
-                                            registrationResult.failureReason as WebAuthnError
+                                        setPasskeyError(
+                                            registrationResult.failureReason as PasskeyError
                                         );
 
                                         props.onRegisterFailure(registrationResult);
@@ -705,9 +705,9 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                     }
 
                                     if (error instanceof TypeError) {
-                                        setWebAuthnError("network");
+                                        setPasskeyError("network");
                                     } else {
-                                        setWebAuthnError("unknown");
+                                        setPasskeyError("unknown");
                                     }
 
                                     props.onError(error);
@@ -848,12 +848,12 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                                         error={magicLinkEmailError()}
                                                     />
                                                 </Match>
-                                                <Match when={currentMethod() === "webAuthn"}>
-                                                    <WebAuthnPrompt
+                                                <Match when={currentMethod() === "passkey"}>
+                                                    <PasskeyPrompt
                                                         isRegistering={
                                                             currentAction() === "register"
                                                         }
-                                                        error={webAuthnError()}
+                                                        error={passkeyError()}
                                                     />
                                                 </Match>
                                             </Switch>

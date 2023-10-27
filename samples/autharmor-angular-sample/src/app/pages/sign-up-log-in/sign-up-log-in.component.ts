@@ -35,13 +35,13 @@ export class SignUpLogInComponent {
         permittedMethods: {
             authenticator: true,
             magicLinkEmail: true,
-            webAuthn: true
+            passkey: true
         }
     };
 
     public action: "logIn" | "register" | null = null;
     public username: string | null = null;
-    public method: "authenticator" | "webAuthn" | "magicLinkEmail" | null = null;
+    public method: "authenticator" | "passkey" | "magicLinkEmail" | null = null;
     public enableUsernamelessLogIn: boolean = true;
 
     public preferencesForm = new FormGroup({
@@ -52,12 +52,12 @@ export class SignUpLogInComponent {
             username: new FormControl("")
         }),
         enforceMethod: new FormGroup({
-            method: new FormControl<"authenticator" | "webAuthn" | "magicLinkEmail" | "">("")
+            method: new FormControl<"authenticator" | "passkey" | "magicLinkEmail" | "">("")
         }),
         allowedMethods: new FormGroup({
             authenticator: new FormControl(true),
             magicLinkEmail: new FormControl(true),
-            webAuthn: new FormControl(true)
+            passkey: new FormControl(true)
         }),
         miscellaneous: new FormGroup({
             enableUsernamelessLogIn: new FormControl(true)

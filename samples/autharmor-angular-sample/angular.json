@@ -56,7 +56,7 @@
                             "./node_modules/bulma/css/bulma.min.css"
                         ],
                         "scripts": [
-                            "./node_modules/@autharmor/autharmorjs-ui/dist/esm/register.js"
+                            "./node_modules/@autharmor/autharmor-js-ui/dist/esm/register.js"
                         ]
                     },
                     "configurations": {

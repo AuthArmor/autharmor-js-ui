@@ -837,6 +837,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                                             currentAction() === "register"
                                                         }
                                                         error={authenticatorError()}
+                                                        onErrorRecoverRequest={goBackHandler}
                                                     />
                                                 </Match>
                                                 <Match when={currentMethod() === "magicLinkEmail"}>
@@ -846,6 +847,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                                         }
                                                         isOutOfBandCompleted={isOutOfBandCompleted()}
                                                         error={magicLinkEmailError()}
+                                                        onErrorRecoverRequest={goBackHandler}
                                                     />
                                                 </Match>
                                                 <Match when={currentMethod() === "passkey"}>
@@ -854,6 +856,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                                             currentAction() === "register"
                                                         }
                                                         error={passkeyError()}
+                                                        onErrorRecoverRequest={goBackHandler}
                                                     />
                                                 </Match>
                                             </Switch>

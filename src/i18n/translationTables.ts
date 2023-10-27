@@ -149,7 +149,8 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                     declined: "We were unable to process the request. This may have occurred because you declined the prompt.",
                     network: "A network error occurred. Please check the console.",
                     unknown: "An unknown error occurred. The console may have further details."
-                }
+                },
+                recover: "Go back and try again."
             }
         }
     }

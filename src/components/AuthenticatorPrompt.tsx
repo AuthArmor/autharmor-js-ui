@@ -15,6 +15,8 @@ export type AuthenticatorPromptProps = {
     qrCodeData: string | null;
     error?: AuthenticatorError | null;
 
+    onErrorRecoverRequest?: () => void;
+
     class?: string;
     style?: string | JSX.CSSProperties;
 };
@@ -60,6 +62,14 @@ export function AuthenticatorPrompt(props: AuthenticatorPromptProps) {
             </div>
             <Show when={props.error !== undefined && props.error !== null}>
                 <p class={promptStyles.error}>{tt().form.errors.authenticator[props.error!]}</p>
+                <Show when={props.onErrorRecoverRequest !== undefined}>
+                    <button
+                        class={promptStyles.errorButton}
+                        onClick={() => props.onErrorRecoverRequest!()}
+                    >
+                        {tt().form.errors.recover}
+                    </button>
+                </Show>
             </Show>
         </div>
     );

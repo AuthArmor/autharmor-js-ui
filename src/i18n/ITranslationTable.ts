@@ -136,6 +136,7 @@ export interface ITranslationTable {
                 network: string;
                 unknown: string;
             };
+            recover: string;
         };
     };
 }

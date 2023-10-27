@@ -48,3 +48,25 @@
     font-size: 0.875rem;
     font-weight: 500;
 }
+
+.errorButton {
+    display: block;
+
+    border: none;
+
+    margin: 0;
+    margin-block-start: 0.5rem;
+
+    padding: 0;
+
+    background-color: transparent;
+    color: var(--prompt-error-foreground-color);
+
+    text-align: start;
+    text-decoration: underline;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+
+    cursor: pointer;
+}

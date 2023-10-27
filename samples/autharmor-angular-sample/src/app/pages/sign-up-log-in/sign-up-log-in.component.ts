@@ -6,7 +6,7 @@ import {
     LogInEvent,
     RegisterEvent
 } from "@autharmor/autharmor-js-ui";
-import "@autharmor/autharmor-js-ui";
+import "@autharmor/autharmor-js-ui/webc";
 import { SampleBackendService } from "src/app/services/sample-backend.service";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import { Router } from "@angular/router";

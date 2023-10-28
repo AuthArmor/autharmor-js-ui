@@ -837,7 +837,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                                             currentAction() === "register"
                                                         }
                                                         error={authenticatorError()}
-                                                        onErrorRecoverRequest={goBackHandler}
+                                                        onErrorRecoverRequest={goBackHandler()}
                                                     />
                                                 </Match>
                                                 <Match when={currentMethod() === "magicLinkEmail"}>
@@ -847,7 +847,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                                         }
                                                         isOutOfBandCompleted={isOutOfBandCompleted()}
                                                         error={magicLinkEmailError()}
-                                                        onErrorRecoverRequest={goBackHandler}
+                                                        onErrorRecoverRequest={goBackHandler()}
                                                     />
                                                 </Match>
                                                 <Match when={currentMethod() === "passkey"}>
@@ -856,7 +856,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                                             currentAction() === "register"
                                                         }
                                                         error={passkeyError()}
-                                                        onErrorRecoverRequest={goBackHandler}
+                                                        onErrorRecoverRequest={goBackHandler()}
                                                     />
                                                 </Match>
                                             </Switch>

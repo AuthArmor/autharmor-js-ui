@@ -33,8 +33,8 @@ dependencies:
     specifier: 4.0.0-rc.2.1
     version: 4.0.0-rc.2.1
   '@autharmor/autharmor-js-ui':
-    specifier: 4.0.0-rc.2.1
-    version: 4.0.0-rc.2.1(@autharmor/autharmor-js@4.0.0-rc.2.1)
+    specifier: 4.0.0-rc.2.2
+    version: 4.0.0-rc.2.2(@autharmor/autharmor-js@4.0.0-rc.2.1)
   bulma:
     specifier: ^0.9.4
     version: 0.9.4
@@ -412,8 +412,8 @@ packages:
     resolution: {integrity: sha512-H71nDOOL8Y7kWRLqf6Sums+01Q5msqBW2KhDUTemh1tvY04eSkSXrK0uj/4mmY0Xr16/3zyZmsrxN7CKuRbNRg==}
     dev: true
 
-  /@autharmor/autharmor-js-ui@4.0.0-rc.2.1(@autharmor/autharmor-js@4.0.0-rc.2.1):
-    resolution: {integrity: sha512-niWfXnm2imKXaZroOeo48ihaekjZecKXgIbU82W+Z3zIWA0fenU9wPFWPltC9GK07xvtEM0ceJcT6TpvXAwYgA==}
+  /@autharmor/autharmor-js-ui@4.0.0-rc.2.2(@autharmor/autharmor-js@4.0.0-rc.2.1):
+    resolution: {integrity: sha512-I8Ea+RxesRat/c6As9Ewx1UMYNhRh07uq768s0Af/y+O9djU44oBopuHkdVfWqp2I9ydgmo48SAKqqEamS8ygg==}
     peerDependencies:
       '@autharmor/autharmor-js': 4.0.0-rc.2.1
     dependencies:

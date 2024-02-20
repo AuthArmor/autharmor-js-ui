@@ -18,7 +18,7 @@
         "@angular/platform-browser-dynamic": "^16.1.0",
         "@angular/router": "^16.1.0",
         "@autharmor/autharmor-js": "4.0.0-rc.2.1",
-        "@autharmor/autharmor-js-ui": "4.0.0-rc.2.1",
+        "@autharmor/autharmor-js-ui": "4.0.0-rc.2.2",
         "bulma": "^0.9.4",
         "rxjs": "~7.8.0",
         "tslib": "^2.3.0",

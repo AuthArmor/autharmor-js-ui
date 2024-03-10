@@ -56,7 +56,7 @@ export function AuthenticatorPrompt(props: AuthenticatorPromptProps) {
                             />
                         }
                     >
-                        <AppLink data={props.qrCodeData!} />
+                        <AppLink data={props.qrCodeData!} class={styles.appLink} />
                     </Show>
                 </Show>
             </div>

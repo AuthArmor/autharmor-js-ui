@@ -43,10 +43,10 @@ export function UsernameLogIn(props: UsernameLogInProps) {
                     error={errorString()}
                 >
                     <InputFormControl ref={inputRef} type="text" />
-                    <ButtonFormControl type="submit" disabled={props.isLoading}>
-                        {tt().form.actions.logIn.username.submit}
-                    </ButtonFormControl>
                 </FormField>
+                <ButtonFormControl type="submit" disabled={props.isLoading}>
+                    {tt().form.actions.logIn.username.submit}
+                </ButtonFormControl>
             </form>
         </div>
     );

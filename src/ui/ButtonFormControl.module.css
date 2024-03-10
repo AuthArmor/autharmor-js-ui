@@ -1,4 +1,8 @@
 .button {
+    align-self: center;
+
+    width: 15rem;
+
     background-color: var(--form-button-background-color);
     color: var(--form-button-foreground-color);
 
@@ -14,6 +18,8 @@
 }
 
 .button.button {
+    border-radius: 0.5rem;
+
     padding-inline: 1.25rem;
 }
 

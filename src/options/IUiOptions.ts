@@ -6,8 +6,10 @@ export interface IUiOptions {
     qrCodeErrorForegroundColor: string;
     verificationCodeForegroundColor: string;
     verificationCodeValueForegroundColor: string;
+    formDividerColor: string;
     formMethodTitleForegroundColor: string;
     formMethodDescriptionForegroundColor: string;
+    formMethodLinkForegroundColor: string;
     promptForegroundColor: string;
     promptDescriptionForegroundColor: string;
     promptInfoForegroundColor: string;

@@ -23,6 +23,10 @@ export interface ITranslationTable {
                     };
                     submit: string;
                 };
+                methodButtons: {
+                    usernameless: string;
+                    username: string;
+                };
                 prompt: <TUsername>(usernameToken: TUsername) => (string | TUsername)[];
             };
             register: {

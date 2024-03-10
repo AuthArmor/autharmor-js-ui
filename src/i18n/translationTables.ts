@@ -30,6 +30,10 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                         },
                         submit: "Continue"
                     },
+                    methodButtons: {
+                        username: "Sign in with username or email instead",
+                        usernameless: "Sign in with app instead"
+                    },
                     prompt: (username) => ["Authenticating as ", username, "."]
                 },
                 register: {
@@ -113,8 +117,7 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                 },
                 captcha: {
                     title: "Verification needed.",
-                    description:
-                        "We need to make sure you’re not a robot."
+                    description: "We need to make sure you’re not a robot."
                 }
             },
             errors: {
@@ -146,7 +149,8 @@ export const translationTables: Record<IncludedLanguages, ITranslationTable> = {
                     unknown: "An unknown error occurred. The console may have further details."
                 },
                 passkey: {
-                    declined: "We were unable to process the request. This may have occurred because you declined the prompt.",
+                    declined:
+                        "We were unable to process the request. This may have occurred because you declined the prompt.",
                     network: "A network error occurred. Please check the console.",
                     unknown: "An unknown error occurred. The console may have further details."
                 },

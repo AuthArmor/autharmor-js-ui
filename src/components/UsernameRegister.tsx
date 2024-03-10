@@ -47,10 +47,10 @@ export function UsernameRegister(props: UsernameRegisterProps) {
                     error={errorString()}
                 >
                     <InputFormControl ref={inputRef} type="text" />
-                    <ButtonFormControl type="submit" disabled={props.isLoading}>
-                        {tt().form.actions.register.username.submit}
-                    </ButtonFormControl>
                 </FormField>
+                <ButtonFormControl type="submit" disabled={props.isLoading}>
+                    {tt().form.actions.register.username.submit}
+                </ButtonFormControl>
             </form>
         </div>
     );

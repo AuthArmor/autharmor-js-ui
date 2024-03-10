@@ -1,5 +1,6 @@
 import { JSX, Show } from "solid-js";
 import { useTranslationTable } from "../i18n";
+import { ProgressLoader } from "../ui/ProgressLoader";
 import promptStyles from "./Prompt.module.css";
 
 export type PasskeyError = "declined" | "network" | "unknown";
@@ -16,6 +17,8 @@ export type PasskeyPromptProps = {
 
 export function PasskeyPrompt(props: PasskeyPromptProps) {
     const tt = useTranslationTable();
+
+    const isError = () => props.error !== undefined && props.error !== null;
 
     return (
         <div class={props.class} style={props.style}>
@@ -35,7 +38,8 @@ export function PasskeyPrompt(props: PasskeyPromptProps) {
                     ).description
                 }
             </p>
-            <Show when={props.error !== undefined && props.error !== null}>
+            <ProgressLoader isActive={!isError()} class={promptStyles.loader} />
+            <Show when={isError()}>
                 <p class={promptStyles.error}>{tt().form.errors.passkey[props.error!]}</p>
                 <Show when={props.onErrorRecoverRequest !== undefined}>
                     <button

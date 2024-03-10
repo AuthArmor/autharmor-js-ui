@@ -32,6 +32,9 @@ export interface IUiOptions {
     qrCodeLoaderColor: string;
     qrCodeLoaderActiveColor1: string;
     qrCodeLoaderActiveColor2: string;
+    progressLoaderColor: string;
+    progressLoaderActiveColor1: string;
+    progressLoaderActiveColor2: string;
     tabForegroundColor: string;
     tabHoverForegroundColor: string;
     tabActiveForegroundColor: string;

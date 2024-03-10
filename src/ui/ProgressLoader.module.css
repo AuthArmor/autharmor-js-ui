@@ -1,0 +1,46 @@
+.progressLoader {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1.5rem;
+
+    width: max-content;
+}
+
+.progressLoader > div {
+    width: 0.75rem;
+    height: 0.75rem;
+
+    background-color: var(--progress-loader-color);
+
+    transition: background-color 0.2s ease-out;
+}
+
+.progressLoader > div:nth-child(1) {
+    animation-delay: -0.4s;
+}
+
+.progressLoader > div:nth-child(2) {
+    animation-delay: -0.2s;
+}
+
+.progressLoader > div:nth-child(3) {
+    animation-delay: 0s;
+}
+
+.activeProgressLoader > div {
+    animation: lds-grid 0.8s linear infinite alternate;
+}
+
+@keyframes lds-grid {
+    from {
+        background-color: var(--progress-loader-active-color-2);
+    }
+
+    30% {
+        background-color: var(--progress-loader-active-color-1);
+    }
+
+    to {
+        background-color: var(--progress-loader-active-color-1);
+    }
+}

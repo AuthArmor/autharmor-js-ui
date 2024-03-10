@@ -2,6 +2,7 @@
     display: block;
 
     margin-block-start: 2rem;
+    margin-inline: auto;
 
     width: 10rem;
     height: 10rem;
@@ -16,6 +17,7 @@
 
 .qrCodeLoader {
     margin-block-start: 2rem;
+    margin-inline: auto;
 
     width: 10rem;
     height: 10rem;
@@ -23,10 +25,12 @@
 
 .appLink.appLink {
     margin-block-start: 2rem;
+    margin-inline: auto;
 }
 
 .appLinkLoader {
     margin-block-start: 2rem;
+    margin-inline: auto;
 
     width: 6rem;
     height: 2rem;

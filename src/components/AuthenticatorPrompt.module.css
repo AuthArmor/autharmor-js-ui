@@ -1,4 +1,6 @@
 .qrCode {
+    margin-inline: auto;
+
     width: 10rem;
     height: 10rem;
 
@@ -8,4 +10,8 @@
 .errorStateQrCode {
     color: var(--qr-code-error-foreground-color);
     filter: blur(0.0625rem);
+}
+
+.appLink {
+    margin-inline: auto;
 }

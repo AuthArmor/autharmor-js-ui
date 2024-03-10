@@ -14,7 +14,7 @@ export function provideAuthArmorClients(): Provider[] {
         webAuthnClientId: environment.webAuthnClientId
     });
 
-    const authArmorIntractiveClientConfig: IAuthArmorInteractiveClientConfiguration = {
+    const authArmorInteractiveClientConfig: IAuthArmorInteractiveClientConfiguration = {
         defaultMagicLinkEmailLogInRedirectUrl: `${environment.frontendBaseUrl}/`,
         defaultMagicLinkEmailRegisterRedirectUrl: `${environment.frontendBaseUrl}/`
     };
@@ -23,7 +23,7 @@ export function provideAuthArmorClients(): Provider[] {
         { provide: AuthArmorClient, useValue: authArmorClient },
         {
             provide: AUTH_ARMOR_INTERACTIVE_CLIENT_CONFIG_TOKEN,
-            useValue: authArmorIntractiveClientConfig
+            useValue: authArmorInteractiveClientConfig
         }
     ];
 }

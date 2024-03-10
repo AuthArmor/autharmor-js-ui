@@ -5,6 +5,8 @@
         [client]="authArmorClient"
         [interactiveConfig]="authArmorInteractiveClientConfig"
         [action]="action"
+        [username]="username"
+        [method]="method"
         [enableUsernamelessLogIn]="enableUsernamelessLogIn"
         (logIn)="onLogIn($any($event))"
         (register)="onRegister($any($event))"

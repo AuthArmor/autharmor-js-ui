@@ -34,6 +34,9 @@ export const defaultUiOptions: IUiOptions = {
     qrCodeLoaderColor: "hsl(0deg 0% 75%)",
     qrCodeLoaderActiveColor1: "hsl(0deg 0% 85%)",
     qrCodeLoaderActiveColor2: "hsl(0deg 0% 15%)",
+    progressLoaderColor: "hsl(0deg 0% 75%)",
+    progressLoaderActiveColor1: "hsl(0deg 0% 85%)",
+    progressLoaderActiveColor2: "hsl(290deg 100% 80%)",
     tabForegroundColor: "hsl(0deg 0% 45%)",
     tabHoverForegroundColor: "hsl(0deg 0% 15%)",
     tabActiveForegroundColor: "hsl(290deg 100% 40%)"

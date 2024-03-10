@@ -816,7 +816,10 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                     <Show
                                         when={currentMethod() !== null}
                                         fallback={
-                                            <Show when={availableMethods() !== null}>
+                                            <Show
+                                                when={availableMethods() !== null}
+                                                fallback={<WaitPrompt />}
+                                            >
                                                 <MethodSelectionPrompt
                                                     availableMethods={availableMethods()!}
                                                     onSelect={handleMethodSelect}

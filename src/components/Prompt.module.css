@@ -19,6 +19,11 @@
     font-weight: 400;
 }
 
+.loader {
+    margin-block-start: 1.75rem;
+    margin-inline: auto;
+}
+
 .promptAction {
     margin-block-start: 1.75rem;
 }

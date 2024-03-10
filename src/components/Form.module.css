@@ -1,7 +1,15 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2.25rem;
+}
+
+.formDivider {
+    display: block;
+
+    height: 1px;
+
+    background-color: var(--form-divider-color);
 }
 
 .methodTitle {
@@ -33,4 +41,23 @@
     gap: 2rem;
 
     margin-block-start: 1.5rem;
+}
+
+.methodLink {
+    border: none;
+
+    margin: 0;
+    
+    padding: 0;
+
+    background-color: transparent;
+    color: var(--form-method-link-foreground-color);
+
+    text-align: center;
+    text-decoration: underline;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    font-weight: 500;
+
+    cursor: pointer;
 }

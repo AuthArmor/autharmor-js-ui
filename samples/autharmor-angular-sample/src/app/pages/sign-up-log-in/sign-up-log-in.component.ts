@@ -36,6 +36,9 @@ export class SignUpLogInComponent {
             authenticator: true,
             magicLinkEmail: true,
             passkey: true
+        },
+        defaultAuthenticatorAuthenticateOptions: {
+            useVisualVerify: false
         }
     };
 
@@ -60,7 +63,8 @@ export class SignUpLogInComponent {
             passkey: new FormControl(true)
         }),
         miscellaneous: new FormGroup({
-            enableUsernamelessLogIn: new FormControl(true)
+            enableUsernamelessLogIn: new FormControl(true),
+            requireVisualVerification: new FormControl(false)
         })
     });
 
@@ -73,6 +77,8 @@ export class SignUpLogInComponent {
         this.authArmorInteractiveClientConfig.permittedMethods =
             preferences.allowedMethods as AvailableAuthenticationMethods;
         this.enableUsernamelessLogIn = preferences.miscellaneous.enableUsernamelessLogIn ?? true;
+        this.authArmorInteractiveClientConfig.defaultAuthenticatorAuthenticateOptions!.useVisualVerify =
+            preferences.miscellaneous.requireVisualVerification || false;
     }
 
     public onLogIn({ authenticationResult }: LogInEvent) {

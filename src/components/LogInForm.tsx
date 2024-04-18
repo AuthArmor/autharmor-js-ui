@@ -8,6 +8,7 @@ export type LogInFormProps = {
     qrCodeData: string | null | false;
     verificationCode?: string | null;
     isLoading?: boolean;
+    preferUsernamelessLogIn?: boolean;
     usernamelessError?: UsernamelessLogInError | null;
     usernameError?: UsernameLogInError | null;
 
@@ -24,7 +25,7 @@ export function LogInForm(props: LogInFormProps) {
         createSignal<boolean>(false);
 
     const isUsernameForm = () =>
-        isUsernamelessLogInAvailable() ? isUserSelectedUsernameForm() : true;
+        isUsernamelessLogInAvailable() ? isUserSelectedUsernameForm() : !props.preferUsernamelessLogIn;
 
     const toggleUserSelectedUsernameForm = () => {
         setIsUserSelectedUsernameForm((isUserSelectedUsernameForm) => !isUserSelectedUsernameForm);

@@ -789,6 +789,7 @@ export function AuthArmorForm(props: AuthArmorFormProps) {
                                         }
                                         verificationCode={usernamelessLogInVerificationCode()}
                                         isLoading={isLoading()}
+                                        preferUsernamelessLogIn={props.interactiveConfig.preferUsernamelessLogIn}
                                         usernameError={usernameLogInError()}
                                         usernamelessError={usernamelessLogInError()}
                                         onUsernamelessRetry={handleUsernamelessRetry}

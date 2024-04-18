@@ -31,4 +31,6 @@ export interface IAuthArmorInteractiveClientConfiguration {
     uiOptions?: IUiOptions;
 
     internationalizationOptions?: IInternationalizationOptions;
+
+    preferUsernamelessLogIn?: boolean;
 }

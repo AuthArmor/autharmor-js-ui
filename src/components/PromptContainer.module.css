@@ -17,7 +17,7 @@
     padding: 0;
 
     background-color: transparent;
-    color: hsl(0deg 0% 15%);
+    color: var(--prompt-back-button-foreground-color);
 
     cursor: pointer;
 }
@@ -34,14 +34,14 @@
 
     padding: 0;
 
-    color: hsl(0deg 0% 30%);
+    color: var(--prompt-purpose-foreground-color);
 
     font-size: 1.125rem;
     font-weight: 500;
 }
 
 .promptPurposeDetail {
-    color: hsl(0deg 0% 15%);
+    color: var(--prompt-purpose-detail-foreground-color);
 
     font-weight: 600;
 }

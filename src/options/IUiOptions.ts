@@ -6,6 +6,8 @@ export interface IUiOptions {
     qrCodeErrorForegroundColor: string;
     verificationCodeForegroundColor: string;
     verificationCodeValueForegroundColor: string;
+    usernamelessErrorForegroundColor: string;
+    usernamelessErrorRetryButtonForegroundColor: string;
     formDividerColor: string;
     formMethodTitleForegroundColor: string;
     formMethodDescriptionForegroundColor: string;
@@ -14,6 +16,9 @@ export interface IUiOptions {
     promptDescriptionForegroundColor: string;
     promptInfoForegroundColor: string;
     promptErrorForegroundColor: string;
+    promptBackButtonForegroundColor: string;
+    promptPurposeForegroundColor: string;
+    promptPurposeDetailForegroundColor: string;
     formButtonBackgroundColor: string;
     formButtonForegroundColor: string;
     formButtonHoverBackgroundColor: string;

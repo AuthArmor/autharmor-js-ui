@@ -61,7 +61,7 @@
 
     padding: 0;
 
-    color: hsl(0deg 100% 40%);
+    color: var(--usernameless-error-foreground-color);
 
     text-align: center;
     font-size: 0.875rem;
@@ -79,7 +79,7 @@
     padding: 0;
 
     background-color: transparent;
-    color: hsl(0deg 0% 15%);
+    color: var(--usernameless-error-retry-button-foreground-color);
 
     text-align: center;
     text-decoration: underline;

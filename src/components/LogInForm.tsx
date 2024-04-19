@@ -22,13 +22,13 @@ export function LogInForm(props: LogInFormProps) {
     const isUsernamelessLogInAvailable = () => props.qrCodeData !== false;
 
     const [isUserSelectedUsernameForm, setIsUserSelectedUsernameForm] =
-        createSignal<boolean>(false);
+        createSignal<boolean | null>(null);
 
     const isUsernameForm = () =>
-        isUsernamelessLogInAvailable() ? isUserSelectedUsernameForm() : !props.preferUsernamelessLogIn;
+        isUsernamelessLogInAvailable() ? isUserSelectedUsernameForm() ?? !props.preferUsernamelessLogIn : false;
 
     const toggleUserSelectedUsernameForm = () => {
-        setIsUserSelectedUsernameForm((isUserSelectedUsernameForm) => !isUserSelectedUsernameForm);
+        setIsUserSelectedUsernameForm(!isUsernameForm());
     };
 
     return (
